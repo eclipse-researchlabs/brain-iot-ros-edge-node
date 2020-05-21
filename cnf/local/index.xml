@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<repository xmlns="http://www.osgi.org/xmlns/repository/v1.0.0" name="Local" increment="1590079373000">
+<repository xmlns="http://www.osgi.org/xmlns/repository/v1.0.0" name="Local" increment="1590079664000">
   <resource>
     <capability namespace="osgi.identity">
       <attribute name="license" value="http://www.apache.org/licenses/LICENSE-2.0.txt"/>
@@ -2379,14 +2379,14 @@
     <capability namespace="osgi.identity">
       <attribute name="osgi.identity" value="eu.brain.iot.robot.service"/>
       <attribute name="type" value="osgi.bundle"/>
-      <attribute name="version" value="1.0.0.202005211642" type="Version"/>
+      <attribute name="version" value="1.0.0" type="Version"/>
     </capability>
     <capability namespace="osgi.wiring.bundle">
-      <attribute name="bundle-version" value="1.0.0.202005211642" type="Version"/>
+      <attribute name="bundle-version" value="1.0.0" type="Version"/>
       <attribute name="osgi.wiring.bundle" value="eu.brain.iot.robot.service"/>
     </capability>
     <capability namespace="osgi.wiring.host">
-      <attribute name="bundle-version" value="1.0.0.202005211642" type="Version"/>
+      <attribute name="bundle-version" value="1.0.0" type="Version"/>
       <attribute name="osgi.wiring.host" value="eu.brain.iot.robot.service"/>
     </capability>
     <capability namespace="osgi.service">
@@ -2410,10 +2410,10 @@
       <attribute name="author" value="LINKS"/>
     </capability>
     <capability namespace="osgi.content">
-      <attribute name="size" value="51342" type="Long"/>
+      <attribute name="size" value="51332" type="Long"/>
       <attribute name="url" value="eu.brain.iot.robot.service/eu.brain.iot.robot.service-1.0.0.jar"/>
       <attribute name="mime" value="application/vnd.osgi.bundle"/>
-      <attribute name="osgi.content" value="56644798E845F992842E2BCF6AA7A1721432FFBF3AE3C279F8F5D4535D317EC1"/>
+      <attribute name="osgi.content" value="228C895AFE94791EBDF784D2E12395437F38C0599286A7BAE8F58FB0006D1690"/>
     </capability>
     <requirement namespace="osgi.wiring.package">
       <directive name="filter" value="(&amp;(osgi.wiring.package=ar_track_alvar_msgs)(&amp;(version&gt;=1.0.0)(!(version&gt;=2.0.0))))"/>
