@@ -45,7 +45,7 @@ g! test goto 1 4 	#to move robot_1 to the STORAGE area("y":-3.6,"x":8,"theta":-3
 ```
 The fellowing is the logs printed:
 
-	```bash
+```bash
 	g! test goto 1 4
 	inside test!!
 	>> Robot 1 received an event: class eu.brain.iot.robot.events.WriteGOTO
@@ -67,7 +67,7 @@ The fellowing is the logs printed:
 	************************************
 	RobotId=1 mission=4 result=1
 	************************************
-	```
+```
 Then, we can see robot 1 moving to the target position. Also you can run 3 robots simulation in 2D or 3D. But to do this you need to run the simulation from project [Brain-IoT rb1 simulation](https://git.repository-pert.ismb.it/BRAIN-IoT/brain-iot-rb1-simulation).
 
 
