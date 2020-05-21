@@ -192,11 +192,11 @@ The Felix gogo commands are composed of two parts separated by a colon: <Command
 	In order to run the robot service, we should do as mentioned in quick start , first run the simluator, then run the following command in another terminal:
 	```bash
 	$ cd ~/brain-iot_ros-osgi/eu.brain.iot.robot.service
-	$ bnd run launch.bndrun
+	$ bnd run test.bndrun
 	```
 	And then, after the terminal is not printing message(which means the robot service is finished initialization) and "g!" is displayed as the last ouput, execute the "test" command and robot in the simulation will be running and the terminal will also print messages as this:
 	```bash
-	g! test goto 1 1
+	g! test goto 1 4
 	inside test!!
 	>> Robot 1 received an event: class eu.brain.iot.robot.events.WriteGOTO
 	g! 
