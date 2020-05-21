@@ -29,7 +29,7 @@ Help-> Eclipse Markerplace-> search 'Bndtools'-> Installed->Restart Eclipse.
 ## Tutorial - Try it 
 ### Quick start:
 Run a simulation test to see how it works. 
-Start with running a single robot 1 with Stage simulator
+Start with running a single robot 1 with Stage simulator, here there is no nevigation with the door. 
 ```bash
 #Staring the Brain-IoT Stage simulation
 $ roslaunch rb1_brainiot_bringup brainiot_stage.launch world:=~/catkin_ws/src/rb1_brainiot_bringup/worlds/door_map-rb1-base.world
@@ -42,6 +42,8 @@ $ bnd run test.bndrun
 #After the logs stop in the terminal, press 'Enter' button
 g! help             #to see the all possible commands in felix GoGo console
 g! test goto 1 4 	#to move robot_1 to the STORAGE area("y":-3.6,"x":8,"theta":-3.14) in front of cart_1(rb1_base_a_cart2_contact)
+g! test pick 1 1    #robot_1 pick cart1
+g! test place 1 1   #robot1 place cart1
 ```
 The fellowing is the logs printed:
 ```bash
