@@ -1,0 +1,35 @@
+{
+
+    ":configurator:resource-version" : 1,
+    ":configurator:symbolic-name" : "eu.brain.iot.service.robotic.robot.config",
+    ":configurator:version" : "0.0.1-SNAPSHOT",
+    
+
+    
+    "eu.brain.iot.example.robot.Door": {
+    	"host": "localhost", 
+        "port": "8080",
+        "id": "ExampleDoor"
+    },
+    
+    
+    "eu.brain.iot.example.robot.Robot~robotA": {
+           "host": "localhost", 
+           "port": 8080,
+           "name": "rb1_base_a",
+           "id": 1
+    },
+    "eu.brain.iot.example.robot.Robot~robotB": {
+           "host": "localhost", 
+           "port": 8080,
+           "name": "rb1_base_b",
+           "id": 2
+    },
+    "eu.brain.iot.example.robot.Robot~robotC": {
+          "host": "localhost", 
+          "port": 8080,
+           "name": "rb1_base_c",
+           "id": 3
+    }
+
+}

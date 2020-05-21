@@ -1,0 +1,11 @@
+.DS_Store
+.gradle/
+.metadata
+.recommenders/
+RemoteSystemsTempFiles/
+*.git/
+**/generated/
+**/bin/
+git.sh
+
+

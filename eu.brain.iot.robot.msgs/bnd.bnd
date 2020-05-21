@@ -1,0 +1,74 @@
+-buildpath: \
+	org.ros.rosjava.message_generation,\
+	org.ros.rosjava_messages.geometry_msgs,\
+	org.ros.rosjava_messages.std_msgs,\
+	org.ros.rosjava_messages.trajectory_msgs;version=latest,\
+	org.jboss.netty
+-baseline: *
+javac.source: 1.8
+javac.target: 1.8
+
+Bundle-Version: 1.0.0.${tstamp}
+Export-Package: \
+actionlib,\
+actionlib_msgs,\
+amcl,\
+ar_track,\
+controller_manager_msgs,\
+dynamic_reconfigure,\
+map_msgs,\
+nodelet,\
+robot_localization,\
+robot_pose_ekf,\
+std_srvs,\
+topic_tools,\
+control_msgs,\
+elevator_node,\
+marker_mapping,\
+pcl_msgs,\
+robotnik_base_hw_sim,\
+roscpp,\
+stereo_msgs,\
+trajectory_msgs,\
+amcl,\
+control_toolbox,\
+gazebo_msgs,\
+mavros_msgs,\
+polled_camera,\
+robotnik_elevator_interface_msgs,\
+rosgraph_msgs,\
+system_monitor,\
+twist_mux_msgs,\
+ar_track_alvar_msgs,\
+costmap_2d,\
+geographic_msgs,\
+move_base_msgs,\
+procedures_msgs,\
+robotnik_fms_msgs,\
+sensor_msgs,\
+teb_local_planner,\
+uuid_msgs,\
+base_local_planner,\
+costmap_converter,\
+geometry_msgs,\
+navfn,\
+rb1_base_pad ,\
+robotnik_msgs,\
+shape_msg,\
+tf,\
+visualization_msgs,\
+bond,\
+diagnostic_msgs,\
+hector_gazebo_plugins,\
+nav_msgs,\
+robotnik_navigation_msgs,\
+std_msgs,\
+tf2_msgs,\
+robot_local_control_msgs,\
+shape_msgs,
+
+                                                     
+
+  
+
+
