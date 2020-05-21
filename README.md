@@ -44,6 +44,7 @@ g! help             #to see the all possible commands in felix GoGo console
 g! test goto 1 4 	#to move robot_1 to the STORAGE area("y":-3.6,"x":8,"theta":-3.14) in front of cart_1(rb1_base_a_cart2_contact)
 ```
 The fellowing is the logs printed:
+
 	```bash
 	g! test goto 1 4
 	inside test!!
