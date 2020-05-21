@@ -25,6 +25,28 @@ Install BNDTool IDE in Eclipse
 ``` bash
 Help-> Eclipse Markerplace-> search 'Bndtools'-> Installed->Restart Eclipse.
 ```
+
+## Tutorial - Try it 
+### Quick start:
+Run a simulation test to see how it works. 
+Start with running a single robot 1 with Stage simulator
+```bash
+#Staring the Stage simulation
+$ roslaunch rb1_brainiot_bringup brainiot_stage.launch world:=~/catkin_ws/src/rb1_brainiot_bringup/worlds/door_map-rb1-base.world
+$ roslaunch rb1_brainiot_bringup rb1_base_stage_complete.launch launch_stage:=false launch_rviz:=false
+
+#After Stage simulation is running, download the project
+$ git clone https://git.repository-pert.ismb.it/BRAIN-IoT/ros-edge-node.git
+$ cd eu.brain.iot.robot.service
+$ bnd run test.bndrun
+#After the logs stop in the terminal, press 'Enter' button
+g! help             #to see the all possible commands in felix GoGo console
+g! test goto 1 4 	#to move robot_1 to the STORAGE area("y":-3.6,"x":8,"theta":-3.14) in front of cart_1(rb1_base_a_cart2_contact)
+```
+
+Then, we can see robot 1 moving to the target position. Also you can run 3 robots simulation in 2D or 3D. But to do this you need to run the simulation from project [Brain-IoT rb1 simulation](https://git.repository-pert.ismb.it/BRAIN-IoT/brain-iot-rb1-simulation).
+
+
 ## Import the project into Eclipse for Developers
 
 Clone and import all sub-projects in eclipse.
@@ -44,26 +66,6 @@ URL: http://download.eclipse.org/egit/updates
 >So if there is already a cnf project in the bnd workspace, when you want to import the second bnd repository which also contains a cnf project, you must discard it, and just clone&import other sub-projects in the second repository by keeping the `Copy projects into workspace` option is checked.\
 >Anyway, just to keep all sub-projects staying together in the same workspace with the cnf project.
 
-
-## Tutorial - Try it 
-### Quick start:
-Run a simulation test to see how it works. 
-Start with running a single robot 1 with Stage simulator
-```bash
-#Staring the Stage simulation
-$ roslaunch rb1_brainiot_bringup brainiot_stage.launch world:=~/catkin_ws/src/rb1_brainiot_bringup/worlds/door_map-rb1-base.world
-$ roslaunch rb1_brainiot_bringup rb1_base_stage_complete.launch launch_stage:=false launch_rviz:=false
-
-#After Stage simulation is running, download the project
-$ git clone https://git.repository-pert.ismb.it/BRAIN-IoT/ros-edge-node.git
-$ cd eu.brain.iot.robot.service
-$ bnd run test.bndrun
-#After the logs stop in the terminal, press 'Enter' button
-g! help             #to see the all possible commands in felix GoGo console
-g! test goto 1 4 	#to move robot 1 to positon in front of cart 1
-```
-
-Then, we can see robot 1 moving to the target position. Also you can run 3 robots simulation in 2D or 3D. But to do this you need to run the simulation from project [Brain-IoT rb1 simulation](https://git.repository-pert.ismb.it/BRAIN-IoT/brain-iot-rb1-simulation).
 
 ### General description of bundles:
 The bundles in BRAIN-IoT_ROS-OSGI project can be subdivided in four categories by their functions. They are:
@@ -212,7 +214,7 @@ The Felix gogo commands are composed of two parts separated by a colon: <Command
 	GoToComponent: GET GoTo_Query_State Response: result = ok  state = running
  	GoToComponent: GET GoTo_Query_State Response: result = ok  state = finished
 	************************************
-	RobotId=1 mission=3 result=1
+	RobotId=1 mission=4 result=1
 	************************************
 	Orchestrator Received an event type class eu.brain.iot.robot.events.QueryStateValueReturn
 	```
