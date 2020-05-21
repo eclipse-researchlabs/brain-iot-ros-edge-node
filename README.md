@@ -59,9 +59,10 @@ $ git clone https://git.repository-pert.ismb.it/BRAIN-IoT/ros-edge-node.git
 $ cd eu.brain.iot.robot.service
 $ bnd run test.bndrun
 #After the logs stop in the terminal, press 'Enter' button
-g! help				#to see the all possible commands in felix GoGo console
+g! help             #to see the all possible commands in felix GoGo console
 g! test goto 1 4 	#to move robot 1 to positon in front of cart 1
 ```
+
 Then, we can see robot 1 moving to the target position. Also you can run 3 robots simulation in 2D or 3D. But to do this you need to run the simulation from project [Brain-IoT rb1 simulation](https://git.repository-pert.ismb.it/BRAIN-IoT/brain-iot-rb1-simulation).
 
 ### General description of bundles:
