@@ -1,12 +1,12 @@
 # BRAIN-IoT ROS Edge Node 
 
-This project is an implementation of ROS Edge Node based on the existing [rososgi](https://github.com/ibcn-cloudlet/rososgi) project. The ROS Edge Node provide the connectivity for ROS-based device within an OSGi environment, it exposes the ROS topics/services as OSGi services and integrates with the EventBus developed in BRAIN-IoT Fabric (show as the figure 1). Hence, the ROS Edge Node can be packaged as a smart behvior OSGi bundle, deployed in BRAIN-IoT Fabric as a BRAIN-IoT service, and communicate with other BRAIN-IoT services via  EventBus. 
+This project is an implementation of ROS Edge Node based on the existing [rososgi](https://github.com/ibcn-cloudlet/rososgi) project. The ROS Edge Node provide the connectivity for ROS-based device within an OSGi environment, it exposes the ROS topics/services as OSGi services and integrates with the EventBus developed in BRAIN-IoT Fabric (show as the figure below). Hence, the ROS Edge Node can be packaged as a smart behvior OSGi bundle, deployed in BRAIN-IoT Fabric as a BRAIN-IoT service, and communicate with other BRAIN-IoT services via  EventBus. 
 ![image](./Ros-Edge-Node.png)
 
 ## Requirement
  * Ros distribution: kinetic
  * Ros version:      1.12.14
- * Gazebo version:   7.0.0
+ * Stage Simulation: [Brain-IoT rb1 simulation](https://git.repository-pert.ismb.it/BRAIN-IoT/brain-iot-rb1-simulation)
  * JDK 1.8 
  * BND
 
@@ -29,7 +29,7 @@ Help-> Eclipse Markerplace-> search 'Bndtools'-> Installed->Restart Eclipse.
 
 Clone and import all sub-projects in eclipse.
 ``` bash
-$ git clone https://git.repository-pert.ismb.it/xtao/brain-iot_ros-osgi.git
+$ git clone https://git.repository-pert.ismb.it/BRAIN-IoT/ros-edge-node.git
 In Eclipse: Import-> Existing Projects into Workspace-> Select the cpswarm-common-> Copy projects into workspace-> Finish;
             Window-> Show View-> Other-> Bndtools-> Repositories.
 ```
@@ -51,7 +51,7 @@ Run a simulation test to see how it works.
 Start with running a single robot 1 with Stage simulator
 ```bash
 #Staring the Stage simulation
-$ roslaunch rb1_brainiot_bringup brainiot_stage.launch world:=/home/rui/catkin_ws/src/rb1_brainiot_bringup/worlds/door_map-rb1-base.world
+$ roslaunch rb1_brainiot_bringup brainiot_stage.launch world:=~/catkin_ws/src/rb1_brainiot_bringup/worlds/door_map-rb1-base.world
 $ roslaunch rb1_brainiot_bringup rb1_base_stage_complete.launch launch_stage:=false launch_rviz:=false
 
 #After Stage simulation is running, download the project
