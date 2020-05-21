@@ -200,7 +200,8 @@ The Felix gogo commands are composed of two parts separated by a colon: <Command
 	inside test!!
 	>> Robot 1 received an event: class eu.brain.iot.robot.events.WriteGOTO
 	g! 
-	GoToComponent: GET GoTo Response: result = ok  state = queued GoToComponent: GET GoTo_Query_State Response: result = ok  state = queued
+	GoToComponent: GET GoTo Response: result = ok  state = queued 
+	GoToComponent: GET GoTo_Query_State Response: result = ok  state = queued
 	GoToComponent: GET GoTo_Query_State Response: result = ok  state = queued
 	GoToComponent: GET GoTo_Query_State Response: result = ok  state = queued
 	GoToComponent: GET GoTo_Query_State Response: result = ok  state = queued
