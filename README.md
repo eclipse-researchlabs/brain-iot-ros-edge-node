@@ -1,12 +1,14 @@
 # BRAIN-IoT ROS Edge Node 
 
 This project is an implementation of ROS Edge Node based on the existing [rososgi](https://github.com/ibcn-cloudlet/rososgi) project. The ROS Edge Node provide the connectivity for ROS-based device within an OSGi environment, it exposes the ROS topics/services as OSGi services and integrates with the EventBus developed in BRAIN-IoT Fabric (show as the figure 1). Hence, the ROS Edge Node can be packaged as a smart behvior OSGi bundle, deployed in BRAIN-IoT Fabric as a BRAIN-IoT service, and communicate with other BRAIN-IoT services via  EventBus. 
-![image](https://git.repository-pert.ismb.it/xtao/brain-iot_ros-osgi/raw/rex/readme.figures/fig1.png)
+![image](https://git.repository-pert.ismb.it/xtao/brain-iot_ros-osgi/blob/latest/readme.figures/Ros-Edge-Node.png)
 
 ## Requirement
  * Ros distribution: kinetic
  * Ros version:      1.12.14
  * Gazebo version:   7.0.0
+ * JDK 1.8 
+ * BND
 
 ## Setup
 Install Ros system and set up the Ros environment variable `ROS_MASTER_URI=http://localhost:11311` by default in order to set up your local machine as a ROS master.
@@ -46,24 +48,21 @@ URL: http://download.eclipse.org/egit/updates
 ## Tutorial - Try it 
 ### Quick start:
 Run a simulation test to see how it works. 
-Start with running single robot with gazebo simulation and the Robot Service. 
+Start with running a single robot 1 with Stage simulator
 ```bash
-#Download the project
-$ git clone https://git.repository-pert.ismb.it/xtao/brain-iot_ros-osgi.git
+#Staring the Stage simulation
+$ roslaunch rb1_brainiot_bringup brainiot_stage.launch world:=/home/rui/catkin_ws/src/rb1_brainiot_bringup/worlds/door_map-rb1-base.world
+$ roslaunch rb1_brainiot_bringup rb1_base_stage_complete.launch launch_stage:=false launch_rviz:=false
 
-#In terminal 1 run the single robot simulation
-$ cd ~/brain-iot_ros-osgi/be.iminds.iot.simulator.gazebo
-$ bnd run gazebo.bndrun
-
-#After gazebo is running
-#In terminal 2 run the robot service
-$ cd ~/brain-iot_ros-osgi/eu.brain.iot.robot.service
-$ bnd run launch.bndrun
-#After the print in the terminal stops
-g! help				#to see the possible commands
-g! test goto 1 4 	#to move robot 1 to positon in front fo cart 1
+#After Stage simulation is running, download the project
+$ git clone https://git.repository-pert.ismb.it/BRAIN-IoT/ros-edge-node.git
+$ cd eu.brain.iot.robot.service
+$ bnd run test.bndrun
+#After the logs stop in the terminal, press 'Enter' button
+g! help				#to see the all possible commands in felix GoGo console
+g! test goto 1 4 	#to move robot 1 to positon in front of cart 1
 ```
-Then, we can see robot 1 moving to the target position. Also you can run 3 robots simulation in 2D or 3D + the RobotService. But to do this you need to run the simulation from project [Brain-IoT rb1 simulation](https://git.repository-pert.ismb.it/BRAIN-IoT/brain-iot-rb1-simulation).
+Then, we can see robot 1 moving to the target position. Also you can run 3 robots simulation in 2D or 3D. But to do this you need to run the simulation from project [Brain-IoT rb1 simulation](https://git.repository-pert.ismb.it/BRAIN-IoT/brain-iot-rb1-simulation).
 
 ### General description of bundles:
 The bundles in BRAIN-IoT_ROS-OSGI project can be subdivided in four categories by their functions. They are:
