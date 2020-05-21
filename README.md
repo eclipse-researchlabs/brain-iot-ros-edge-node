@@ -31,7 +31,7 @@ Help-> Eclipse Markerplace-> search 'Bndtools'-> Installed->Restart Eclipse.
 Run a simulation test to see how it works. 
 Start with running a single robot 1 with Stage simulator
 ```bash
-#Staring the Stage simulation
+#Staring the Brain-IoT Stage simulation
 $ roslaunch rb1_brainiot_bringup brainiot_stage.launch world:=~/catkin_ws/src/rb1_brainiot_bringup/worlds/door_map-rb1-base.world
 $ roslaunch rb1_brainiot_bringup rb1_base_stage_complete.launch launch_stage:=false launch_rviz:=false
 
@@ -43,7 +43,30 @@ $ bnd run test.bndrun
 g! help             #to see the all possible commands in felix GoGo console
 g! test goto 1 4 	#to move robot_1 to the STORAGE area("y":-3.6,"x":8,"theta":-3.14) in front of cart_1(rb1_base_a_cart2_contact)
 ```
-
+The fellowing is the logs printed:
+	```bash
+	g! test goto 1 4
+	inside test!!
+	>> Robot 1 received an event: class eu.brain.iot.robot.events.WriteGOTO
+	g! 
+	GoToComponent: GET GoTo Response: result = ok  state = queued 
+	GoToComponent: GET GoTo_Query_State Response: result = ok  state = queued
+	GoToComponent: GET GoTo_Query_State Response: result = ok  state = queued
+	GoToComponent: GET GoTo_Query_State Response: result = ok  state = queued
+	GoToComponent: GET GoTo_Query_State Response: result = ok  state = queued
+	GoToComponent: GET GoTo_Query_State Response: result = ok  state = queued
+	GoToComponent: GET GoTo_Query_State Response: result = ok  state = queued
+	GoToComponent: GET GoTo_Query_State Response: result = ok  state = queued
+	GoToComponent: GET GoTo_Query_State Response: result = ok  state = queued
+	GoToComponent: GET GoTo_Query_State Response: result = ok  state = running
+	GoToComponent: GET GoTo_Query_State Response: result = ok  state = running
+	...
+	GoToComponent: GET GoTo_Query_State Response: result = ok  state = running
+ 	GoToComponent: GET GoTo_Query_State Response: result = ok  state = finished
+	************************************
+	RobotId=1 mission=4 result=1
+	************************************
+	```
 Then, we can see robot 1 moving to the target position. Also you can run 3 robots simulation in 2D or 3D. But to do this you need to run the simulation from project [Brain-IoT rb1 simulation](https://git.repository-pert.ismb.it/BRAIN-IoT/brain-iot-rb1-simulation).
 
 
