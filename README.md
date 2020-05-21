@@ -1,7 +1,7 @@
 # BRAIN-IoT ROS Edge Node 
 
 This project is an implementation of ROS Edge Node based on the existing [rososgi](https://github.com/ibcn-cloudlet/rososgi) project. The ROS Edge Node provide the connectivity for ROS-based device within an OSGi environment, it exposes the ROS topics/services as OSGi services and integrates with the EventBus developed in BRAIN-IoT Fabric (show as the figure 1). Hence, the ROS Edge Node can be packaged as a smart behvior OSGi bundle, deployed in BRAIN-IoT Fabric as a BRAIN-IoT service, and communicate with other BRAIN-IoT services via  EventBus. 
-![image](https://git.repository-pert.ismb.it/xtao/brain-iot_ros-osgi/blob/latest/readme.figures/Ros-Edge-Node.png)
+![image](https://git.repository-pert.ismb.it/BRAIN-IoT/ros-edge-node/blob/master/Ros-Edge-Node.png)
 
 ## Requirement
  * Ros distribution: kinetic
