@@ -1,7 +1,0 @@
--runrequires: bnd.identity;id='eu.brain.iot.robot.config'
--runfw: org.apache.felix.framework;version='[6.0.2,6.0.2]'
--runee: JavaSE-1.8
--runbundles: \
-	eu.brain.iot.robot.config;version='[0.0.0,0.0.1)',\
-	org.apache.felix.configadmin;version='[1.9.8,1.9.9)',\
-	org.apache.felix.configurator;version='[1.0.6,1.0.7)'

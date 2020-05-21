@@ -1,4 +1,0 @@
-// Available to customize the build
-wrapper {
-  jarFile = rootProject.file('.gradle-wrapper/gradle-wrapper.jar')
-}
