@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<repository xmlns="http://www.osgi.org/xmlns/repository/v1.0.0" name="Local" increment="1590078738000">
+<repository xmlns="http://www.osgi.org/xmlns/repository/v1.0.0" name="Local" increment="1590079373000">
   <resource>
     <capability namespace="osgi.identity">
       <attribute name="license" value="http://www.apache.org/licenses/LICENSE-2.0.txt"/>
@@ -2037,14 +2037,14 @@
     <capability namespace="osgi.identity">
       <attribute name="osgi.identity" value="eu.brain.iot.robot.msgs"/>
       <attribute name="type" value="osgi.bundle"/>
-      <attribute name="version" value="1.0.0.202005211540" type="Version"/>
+      <attribute name="version" value="1.0.0" type="Version"/>
     </capability>
     <capability namespace="osgi.wiring.bundle">
-      <attribute name="bundle-version" value="1.0.0.202005211540" type="Version"/>
+      <attribute name="bundle-version" value="1.0.0" type="Version"/>
       <attribute name="osgi.wiring.bundle" value="eu.brain.iot.robot.msgs"/>
     </capability>
     <capability namespace="osgi.wiring.host">
-      <attribute name="bundle-version" value="1.0.0.202005211540" type="Version"/>
+      <attribute name="bundle-version" value="1.0.0" type="Version"/>
       <attribute name="osgi.wiring.host" value="eu.brain.iot.robot.msgs"/>
     </capability>
     <capability namespace="osgi.wiring.package">
@@ -2318,17 +2318,13 @@
     </capability>
     <capability namespace="osgi.wiring.package">
       <attribute name="version" value="1.0.0" type="Version"/>
-      <attribute name="osgi.wiring.package" value="amcl"/>
-    </capability>
-    <capability namespace="osgi.wiring.package">
-      <attribute name="version" value="1.0.0" type="Version"/>
       <attribute name="osgi.wiring.package" value="shape_msg"/>
     </capability>
     <capability namespace="osgi.content">
-      <attribute name="size" value="1145678" type="Long"/>
+      <attribute name="size" value="1145660" type="Long"/>
       <attribute name="url" value="eu.brain.iot.robot.msgs/eu.brain.iot.robot.msgs-1.0.0.jar"/>
       <attribute name="mime" value="application/vnd.osgi.bundle"/>
-      <attribute name="osgi.content" value="CE2E1AD73BC95F261468213E924C7EB605AEFABCC14A4D0D36F9362695550970"/>
+      <attribute name="osgi.content" value="89BC8B0F516FF462EA475B0A35D640269ADB312CBBE2F28AA9CB7CA422F91973"/>
     </capability>
     <requirement namespace="osgi.wiring.package">
       <directive name="filter" value="(&amp;(osgi.wiring.package=actionlib_msgs))"/>
@@ -2383,14 +2379,14 @@
     <capability namespace="osgi.identity">
       <attribute name="osgi.identity" value="eu.brain.iot.robot.service"/>
       <attribute name="type" value="osgi.bundle"/>
-      <attribute name="version" value="1.0.0.202005211632" type="Version"/>
+      <attribute name="version" value="1.0.0.202005211642" type="Version"/>
     </capability>
     <capability namespace="osgi.wiring.bundle">
-      <attribute name="bundle-version" value="1.0.0.202005211632" type="Version"/>
+      <attribute name="bundle-version" value="1.0.0.202005211642" type="Version"/>
       <attribute name="osgi.wiring.bundle" value="eu.brain.iot.robot.service"/>
     </capability>
     <capability namespace="osgi.wiring.host">
-      <attribute name="bundle-version" value="1.0.0.202005211632" type="Version"/>
+      <attribute name="bundle-version" value="1.0.0.202005211642" type="Version"/>
       <attribute name="osgi.wiring.host" value="eu.brain.iot.robot.service"/>
     </capability>
     <capability namespace="osgi.service">
@@ -2414,10 +2410,10 @@
       <attribute name="author" value="LINKS"/>
     </capability>
     <capability namespace="osgi.content">
-      <attribute name="size" value="51343" type="Long"/>
+      <attribute name="size" value="51342" type="Long"/>
       <attribute name="url" value="eu.brain.iot.robot.service/eu.brain.iot.robot.service-1.0.0.jar"/>
       <attribute name="mime" value="application/vnd.osgi.bundle"/>
-      <attribute name="osgi.content" value="D8EC06F2BC8FF1F378E53F66A1BF0B9DE9F5BAC1CB338F32BE89CDFF28A6AE72"/>
+      <attribute name="osgi.content" value="56644798E845F992842E2BCF6AA7A1721432FFBF3AE3C279F8F5D4535D317EC1"/>
     </capability>
     <requirement namespace="osgi.wiring.package">
       <directive name="filter" value="(&amp;(osgi.wiring.package=ar_track_alvar_msgs)(&amp;(version&gt;=1.0.0)(!(version&gt;=2.0.0))))"/>
@@ -6420,14 +6416,14 @@
     <capability namespace="osgi.identity">
       <attribute name="osgi.identity" value="eu.brain.iot.robot.config"/>
       <attribute name="type" value="osgi.bundle"/>
-      <attribute name="version" value="1.0.0.202005211614" type="Version"/>
+      <attribute name="version" value="1.0.0" type="Version"/>
     </capability>
     <capability namespace="osgi.wiring.bundle">
-      <attribute name="bundle-version" value="1.0.0.202005211614" type="Version"/>
+      <attribute name="bundle-version" value="1.0.0" type="Version"/>
       <attribute name="osgi.wiring.bundle" value="eu.brain.iot.robot.config"/>
     </capability>
     <capability namespace="osgi.wiring.host">
-      <attribute name="bundle-version" value="1.0.0.202005211614" type="Version"/>
+      <attribute name="bundle-version" value="1.0.0" type="Version"/>
       <attribute name="osgi.wiring.host" value="eu.brain.iot.robot.config"/>
     </capability>
     <capability namespace="osgi.wiring.package">
@@ -6435,10 +6431,10 @@
       <attribute name="osgi.wiring.package" value="eu.brain.iot.robot.config"/>
     </capability>
     <capability namespace="osgi.content">
-      <attribute name="size" value="3936" type="Long"/>
+      <attribute name="size" value="3927" type="Long"/>
       <attribute name="url" value="eu.brain.iot.robot.config/eu.brain.iot.robot.config-1.0.0.jar"/>
       <attribute name="mime" value="application/vnd.osgi.bundle"/>
-      <attribute name="osgi.content" value="B592DD99824F2527807DF826E2832BCBEE38424D99D8DCB70E4E0EA73AEEDE74"/>
+      <attribute name="osgi.content" value="C0AC72DA58618E8CBA3B1B6915A46B6A1FDF191069304BC4133479CE51A0E234"/>
     </capability>
     <requirement namespace="osgi.extender">
       <directive name="filter" value="(&amp;(osgi.extender=osgi.configurator)(version&gt;=1.0.0)(!(version&gt;=2.0.0)))"/>

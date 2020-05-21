@@ -8,7 +8,7 @@
 javac.source: 1.8
 javac.target: 1.8
 
-Bundle-Version: 1.0.0.${tstamp}
+Bundle-Version: 1.0.0
 Export-Package: \
 actionlib,\
 actionlib_msgs,\
@@ -30,7 +30,6 @@ robotnik_base_hw_sim,\
 roscpp,\
 stereo_msgs,\
 trajectory_msgs,\
-amcl,\
 control_toolbox,\
 gazebo_msgs,\
 mavros_msgs,\
@@ -65,7 +64,7 @@ robotnik_navigation_msgs,\
 std_msgs,\
 tf2_msgs,\
 robot_local_control_msgs,\
-shape_msgs,
+shape_msgs
 
                                                      
 

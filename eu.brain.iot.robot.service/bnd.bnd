@@ -3,14 +3,14 @@
 	osgi.core;version=6.0,\
 	osgi.cmpn;version=6.0,\
 	org.ros.rosjava,\
-	eu.brain.iot.robot.msgs;version=latest,\
 	be.iminds.iot.ros.msgs.generator;version=latest,\
 	org.ros.rosjava.message_generation,\
 	org.apache.felix.gogo.runtime,\
 	be.iminds.iot.ros.api;version=latest,\
 	com.paremus.brain.iot.eventing.api,\
 	org.osgi.service.configurator,\
-	eu.brain.iot.robot.api;version=latest
+	eu.brain.iot.robot.api;version=latest,\
+	eu.brain.iot.robot.msgs;version=latest
 javac.source: 1.8
 javac.target: 1.8
 
