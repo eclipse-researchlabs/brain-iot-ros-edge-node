@@ -137,7 +137,7 @@ public class GoToComponentImpl implements GoToComponent {
 			}
 			@Override
 			public void onSuccess(ProcedureQueryResponse queryStateResponse) {
-				if(queryStateResponse.getState().getCurrentState().equals("finished"))
+			//	if(queryStateResponse.getState().getCurrentState().equals("finished"))
 				System.out.println("\n GoToComponent: GET GoTo_Query_State Response: result = "+queryStateResponse.getResult().getResult()+"  state = "+ queryStateResponse.getState().getCurrentState());
 				response.set(queryStateResponse.getState().getCurrentState());		
 			}

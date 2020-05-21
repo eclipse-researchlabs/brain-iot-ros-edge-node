@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<repository xmlns="http://www.osgi.org/xmlns/repository/v1.0.0" name="Local" increment="1590080184000">
+<repository xmlns="http://www.osgi.org/xmlns/repository/v1.0.0" name="Local" increment="1590094271000">
   <resource>
     <capability namespace="osgi.identity">
       <attribute name="license" value="http://www.apache.org/licenses/LICENSE-2.0.txt"/>
@@ -2410,10 +2410,10 @@
       <attribute name="author" value="LINKS"/>
     </capability>
     <capability namespace="osgi.content">
-      <attribute name="size" value="51332" type="Long"/>
+      <attribute name="size" value="51265" type="Long"/>
       <attribute name="url" value="eu.brain.iot.robot.service/eu.brain.iot.robot.service-1.0.0.jar"/>
       <attribute name="mime" value="application/vnd.osgi.bundle"/>
-      <attribute name="osgi.content" value="228C895AFE94791EBDF784D2E12395437F38C0599286A7BAE8F58FB0006D1690"/>
+      <attribute name="osgi.content" value="3647529C2C7743D00D9EA08402C1AA88B47E8228C55168CC6BEDC4810F5F14B1"/>
     </capability>
     <requirement namespace="osgi.wiring.package">
       <directive name="filter" value="(&amp;(osgi.wiring.package=ar_track_alvar_msgs)(&amp;(version&gt;=1.0.0)(!(version&gt;=2.0.0))))"/>
