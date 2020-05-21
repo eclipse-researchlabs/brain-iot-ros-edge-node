@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<repository xmlns="http://www.osgi.org/xmlns/repository/v1.0.0" name="Local" increment="1590079664000">
+<repository xmlns="http://www.osgi.org/xmlns/repository/v1.0.0" name="Local" increment="1590080184000">
   <resource>
     <capability namespace="osgi.identity">
       <attribute name="license" value="http://www.apache.org/licenses/LICENSE-2.0.txt"/>
@@ -6431,10 +6431,10 @@
       <attribute name="osgi.wiring.package" value="eu.brain.iot.robot.config"/>
     </capability>
     <capability namespace="osgi.content">
-      <attribute name="size" value="3927" type="Long"/>
+      <attribute name="size" value="3898" type="Long"/>
       <attribute name="url" value="eu.brain.iot.robot.config/eu.brain.iot.robot.config-1.0.0.jar"/>
       <attribute name="mime" value="application/vnd.osgi.bundle"/>
-      <attribute name="osgi.content" value="C0AC72DA58618E8CBA3B1B6915A46B6A1FDF191069304BC4133479CE51A0E234"/>
+      <attribute name="osgi.content" value="D14AE4F03011A51D164C4DD91AD40DE8D5E01EE57CC39B42535C911CAC687912"/>
     </capability>
     <requirement namespace="osgi.extender">
       <directive name="filter" value="(&amp;(osgi.extender=osgi.configurator)(version&gt;=1.0.0)(!(version&gt;=2.0.0)))"/>

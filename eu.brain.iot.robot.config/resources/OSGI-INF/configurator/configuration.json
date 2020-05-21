@@ -18,18 +18,6 @@
            "port": 8080,
            "name": "rb1_base_a",
            "id": 1
-    },
-    "eu.brain.iot.example.robot.Robot~robotB": {
-           "host": "localhost", 
-           "port": 8080,
-           "name": "rb1_base_b",
-           "id": 2
-    },
-    "eu.brain.iot.example.robot.Robot~robotC": {
-          "host": "localhost", 
-          "port": 8080,
-           "name": "rb1_base_c",
-           "id": 3
     }
 
 }
