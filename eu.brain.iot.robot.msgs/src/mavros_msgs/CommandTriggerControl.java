@@ -1,0 +1,6 @@
+package mavros_msgs;
+
+public interface CommandTriggerControl extends org.ros.internal.message.Message {
+  static final java.lang.String _TYPE = "mavros_msgs/CommandTriggerControl";
+  static final java.lang.String _DEFINITION = "# Type for controlling onboard camera triggering system\n\nbool    trigger_enable\t\t# Trigger enable/disable\nbool    sequence_reset\t\t# Reset the trigger sequence\nbool    trigger_pause\t\t# Pause triggering, but without switching the camera off or retracting it.\n---\nbool success\nuint8 result\n";
+}

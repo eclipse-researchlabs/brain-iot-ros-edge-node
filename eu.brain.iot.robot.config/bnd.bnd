@@ -1,0 +1,11 @@
+# Example Project Template
+# Make sure to edit the name, category and help document.
+<<<<<<< HEAD
+
+=======
+Bundle-Version: 1.0.0.${tstamp}
+>>>>>>> 580dd4b3ab85979c286751f9745f5b844b58fa0a
+-resourceonly: true
+-includeresource: resources
+-buildpath: org.osgi.service.configurator
+Export-Package: eu.brain.iot.robot.config
