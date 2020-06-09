@@ -122,7 +122,7 @@ public class RobotService extends AbstractNodeMain implements SmartBehaviour<Rob
    
    @Override
 	public GraphName getDefaultNodeName() {
-		return GraphName.of("rb1_base_"+config.id()+"/serviceController");
+		return GraphName.of(config.name()+"/serviceController");
 	}
 
 	@Override
