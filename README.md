@@ -78,7 +78,7 @@ Then, we can see robot 1 moving to the target position. Also you can run 3 robot
 Clone and import all sub-projects in eclipse.
 ``` bash
 $ git clone https://git.repository-pert.ismb.it/BRAIN-IoT/ros-edge-node.git
-In Eclipse: Import-> Existing Projects into Workspace-> Select the cpswarm-common-> Copy projects into workspace-> Finish;
+In Eclipse: Import-> Existing Projects into Workspace-> Select the cloned ros-edge-node repository-> Copy projects into workspace-> Finish;
             Window-> Show View-> Other-> Bndtools-> Repositories.
 ```
 But sometimes it could occur errors when first time building the project in Eclipse after you import it. You can solve the problem by deleting everything in the workspace and re-import the project by using the git tool inside Eclipse.If the Git tooling is not available in your Eclipse, you can install it via the Eclipse installation manager.
