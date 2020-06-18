@@ -57,15 +57,10 @@ The fellowing is the logs printed:
 	GoToComponent: GET GoTo_Query_State Response: result = ok  state = queued
 	GoToComponent: GET GoTo_Query_State Response: result = ok  state = queued
 	GoToComponent: GET GoTo_Query_State Response: result = ok  state = queued
-	GoToComponent: GET GoTo_Query_State Response: result = ok  state = queued
-	GoToComponent: GET GoTo_Query_State Response: result = ok  state = queued
-	GoToComponent: GET GoTo_Query_State Response: result = ok  state = queued
-	GoToComponent: GET GoTo_Query_State Response: result = ok  state = queued
-	GoToComponent: GET GoTo_Query_State Response: result = ok  state = queued
+	GoToComponent: GET GoTo_Query_State Response: result = ok  state = running
 	GoToComponent: GET GoTo_Query_State Response: result = ok  state = running
 	GoToComponent: GET GoTo_Query_State Response: result = ok  state = running
 	...
-	GoToComponent: GET GoTo_Query_State Response: result = ok  state = running
  	GoToComponent: GET GoTo_Query_State Response: result = ok  state = finished
 	************************************
 	RobotId=1 mission=4 result=1
@@ -250,15 +245,10 @@ The Felix gogo commands are composed of two parts separated by a colon: <Command
 	GoToComponent: GET GoTo_Query_State Response: result = ok  state = queued
 	GoToComponent: GET GoTo_Query_State Response: result = ok  state = queued
 	GoToComponent: GET GoTo_Query_State Response: result = ok  state = queued
-	GoToComponent: GET GoTo_Query_State Response: result = ok  state = queued
-	GoToComponent: GET GoTo_Query_State Response: result = ok  state = queued
-	GoToComponent: GET GoTo_Query_State Response: result = ok  state = queued
-	GoToComponent: GET GoTo_Query_State Response: result = ok  state = queued
-	GoToComponent: GET GoTo_Query_State Response: result = ok  state = queued
+	GoToComponent: GET GoTo_Query_State Response: result = ok  state = running
 	GoToComponent: GET GoTo_Query_State Response: result = ok  state = running
 	GoToComponent: GET GoTo_Query_State Response: result = ok  state = running
 	...
-	GoToComponent: GET GoTo_Query_State Response: result = ok  state = running
  	GoToComponent: GET GoTo_Query_State Response: result = ok  state = finished
 	************************************
 	RobotId=1 mission=4 result=1
@@ -268,7 +258,7 @@ The Felix gogo commands are composed of two parts separated by a colon: <Command
 	Most of these messages here are the response messages to the robot service from the robot. Only the one between two "*" lines is the data the orchestrator received after the mission is finished. And in this project, the numbers have the following meanings:
 	```bash
 	----GotoMission---------CancleMission----QueryMission----Result
-	0--------------------------------------------------------“error”
+	0-------------------------------------------------------“error”
 	1---“PLACE CENETR”--------------------------------------“finished”
 	2---“PLACE LEFT”----------------------------------------“queued”
 	3---“PLACE RIGHT”--------“CancleGoTo”---“QueryGoTo”-----“running”
