@@ -178,9 +178,9 @@ public class RobotService extends AbstractNodeMain implements SmartBehaviour<Rob
 				if(queryreturnedvalue.value==1)		//the command is correctly received, 1 stands for result=ok
 				{      // then to check if the CMD is finished or not, then return the 'finished(1)/unknown(5)/default(0)' state
 					queryreturnedvalue.value=-1;
+					System.out.println("Querying GOTO state......");
 					while(queryreturnedvalue.value!=1 && queryreturnedvalue.value!=5 && queryreturnedvalue.value!=0 )
 					{    //(1=finished, 2=queued, 3=running, 4=paused, 5=unknown, 0=default)
-						System.out.println("Querying GOTO state......");
 						queryreturnedvalue.value =queryState(3);
 					}
 				}
@@ -201,10 +201,10 @@ public class RobotService extends AbstractNodeMain implements SmartBehaviour<Rob
 				queryreturnedvalue.mission = 7;
 				if(queryreturnedvalue.value==1)
 				{
+					System.out.println("Querying PICK state......");
 					queryreturnedvalue.value=-1;
 					while(queryreturnedvalue.value!=1 && queryreturnedvalue.value!=5 && queryreturnedvalue.value!=0)
 					{
-						System.out.println("Querying PICK state......");
 						queryreturnedvalue.value =queryState(7);
 					}
 				}
@@ -220,10 +220,10 @@ public class RobotService extends AbstractNodeMain implements SmartBehaviour<Rob
 				queryreturnedvalue.mission = 11;
 				if(queryreturnedvalue.value==1)
 				{
+					System.out.println("Querying PLACE state......");
 					queryreturnedvalue.value=-1;
 					while(queryreturnedvalue.value!=1 && queryreturnedvalue.value!=5 && queryreturnedvalue.value!=0)
 					{
-						System.out.println("Querying PLACE state......");
 						queryreturnedvalue.value =queryState(11);
 					}
 				}
