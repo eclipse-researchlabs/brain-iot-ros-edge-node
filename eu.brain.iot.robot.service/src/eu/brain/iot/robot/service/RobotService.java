@@ -139,16 +139,16 @@ public class RobotService extends AbstractNodeMain implements SmartBehaviour<Rob
 		System.out.println("ar_pose_marker registered.");                     
 		GoToComponent=new GoToComponentImpl(robotName, connectedNode,msgfactory);
 		GoToComponent.register();
-		System.out.println("GoToComponent service registed.");
+		System.out.println("GoToComponent service registered.");
 		PickComponent=new PickComponentImpl(robotName,connectedNode,msgfactory);
 		PickComponent.register();
-		System.out.println("PickComponent service registed.");
+		System.out.println("PickComponent service registered.");
 		PlaceComponent=new PlaceComponentImpl(robotName,connectedNode,msgfactory);
 		PlaceComponent.register();
-		System.out.println("PlaceComponent service registed.");
+		System.out.println("PlaceComponent service registered.");
 		door_controller=new DoorControllerImpl(robotName,connectedNode,msgfactory);
 		door_controller.register();
-		System.out.println("Door service registed.");
+		System.out.println("Door service registered.");
 		
 		try{
 			this.robotWarehouse=new Warehouse();
@@ -156,66 +156,10 @@ public class RobotService extends AbstractNodeMain implements SmartBehaviour<Rob
 			e.printStackTrace();
 		}
 		
-
-//		try {
-//			test();
-//		} catch (InterruptedException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
 		
 	}
 	
-	public void test() throws InterruptedException {
-		System.out.println(robotId+"GET the current status:" + availibility.getCurrentStatus().getRobotState());
-//		System.out.println(robotId+"GOT the markers:"+ ar_pose_marker.getMarkersList().getMarkers().size());
-		door_controller.DoorOpen();
-		taskMoveCart(robotId);
-//		pickCart(1);
-//		queryState(3);
-//		writeGOTO(robotName,1);
-//		queryState(3);	 	
-//		writeGOTO(robotName,1);
-//		writeGOTO(robotName,1);
-//		cancel(3);
-//		queryState(3);
-//		queryState(3);
-//		cancel(3);
-//		queryState(7);
-//		queryState(7);
-//		writeGOTO(robotName,1);
-//		cancel(3);
-//		queryState(7);
-//		pickCart(1);
-//		System.out.println("query:"+queryState(7));
-//		cancel(7);
-//		cancel(7);
-//		queryState(7);
-//		placeCART();
-//		cancel(11);
-//		robot_local_control_msgs.GoToPetitionRequest GoTorequest=GoToComponent.constructGoToMessage();
-//		GoToComponent.call_GoTo(GoTorequest);
-//	    ProcedureQueryRequest queryStateRequest=GoToComponent.constructQueryStateMessage();
-//		GoToComponent.call_Query_State(queryStateRequest);
-//		GoToComponent.call_GoTo(GoTorequest);
-//		GoToComponent.call_Query_State(queryStateRequest);
-//		ProcedureQueryRequest cancelRequest=GoToComponent.constructCancleMessage();
-//		GoToComponent.call_Cancel(cancelRequest);
-//		GoToComponent.call_Query_State(queryStateRequest);
-//		robot_local_control_msgs.PickPetitionRequest pickRequest=PickComponent.constructPickMessage("rb1_base_a_cart2_contact");
-//		PickComponent.call_Pick(pickRequest);
-//		procedures_msgs.ProcedureQueryRequest queryPickStateRequest=PickComponent.constructPickQuerySateMessage();
-//		PickComponent.call_Query_State(queryPickStateRequest);
-//		procedures_msgs.ProcedureQueryRequest cancelPickRequest=PickComponent.constructPickCancleMessage();
-//		PickComponent.call_Cancel(cancelPickRequest);
-//		PickComponent.call_Query_State(queryPickStateRequest);
-//		robot_local_control_msgs.PlacePetitionRequest placeRequest =PlaceComponent.constructPlaceRequest(); 
-//		PlaceComponent.call_Place(placeRequest);
-        
-//        writeGOTO(robotName,1);
-//		door_controller.DoorClose();
-		
-	}
+
 
 
 	@Override
@@ -228,14 +172,15 @@ public class RobotService extends AbstractNodeMain implements SmartBehaviour<Rob
 			WriteGOTO wgoto = (WriteGOTO) event;
 			worker.execute(() ->{ 
 				QueryStateValueReturn queryreturnedvalue =new QueryStateValueReturn();
-				queryreturnedvalue.value=writeGOTO(wgoto.mission);//First check the command is correctly send or not
+				queryreturnedvalue.value=writeGOTO(wgoto.mission);//First check the command is correctly send or not => returnVal[0] means the response  result(ok/error) 
 				queryreturnedvalue.robotId = robotId;
 				queryreturnedvalue.mission = wgoto.mission;
-				if(queryreturnedvalue.value==1)//the command is correctly received
-				{
+				if(queryreturnedvalue.value==1)		//the command is correctly received, 1 stands for result=ok
+				{      // then to check if the CMD is finished or not, then return the 'finished(1)/unknown(5)/default(0)' state
 					queryreturnedvalue.value=-1;
 					while(queryreturnedvalue.value!=1 && queryreturnedvalue.value!=5 && queryreturnedvalue.value!=0 )
-					{
+					{    //(1=finished, 2=queued, 3=running, 4=paused, 5=unknown, 0=default)
+						System.out.println("Querying GOTO state......");
 						queryreturnedvalue.value =queryState(3);
 					}
 				}
@@ -259,6 +204,7 @@ public class RobotService extends AbstractNodeMain implements SmartBehaviour<Rob
 					queryreturnedvalue.value=-1;
 					while(queryreturnedvalue.value!=1 && queryreturnedvalue.value!=5 && queryreturnedvalue.value!=0)
 					{
+						System.out.println("Querying PICK state......");
 						queryreturnedvalue.value =queryState(7);
 					}
 				}
@@ -266,7 +212,7 @@ public class RobotService extends AbstractNodeMain implements SmartBehaviour<Rob
 				});
 			
 		} else if (event instanceof PlaceCART) {
-			PlaceCART plcacart = (PlaceCART) event;
+			PlaceCART placeCart = (PlaceCART) event;
 			worker.execute(() ->{ 
 				QueryStateValueReturn queryreturnedvalue =new QueryStateValueReturn();
 				queryreturnedvalue.value=placeCART();
@@ -277,6 +223,7 @@ public class RobotService extends AbstractNodeMain implements SmartBehaviour<Rob
 					queryreturnedvalue.value=-1;
 					while(queryreturnedvalue.value!=1 && queryreturnedvalue.value!=5 && queryreturnedvalue.value!=0)
 					{
+						System.out.println("Querying PLACE state......");
 						queryreturnedvalue.value =queryState(11);
 					}
 				}
@@ -292,7 +239,7 @@ public class RobotService extends AbstractNodeMain implements SmartBehaviour<Rob
 					queryreturnedvalue.value =queryState(querySate.mission);
 					eventBus.deliver(queryreturnedvalue);
 					
-					System.out.println(" >> Robot "+this.config.id()+" reply with QueryStateValueReturn: " + queryreturnedvalue.value);			
+					System.out.println(" >> Robot "+this.config.id()+" reply with QueryStateValueReturn event: value = " + queryreturnedvalue.value);			
 			});
 							
 		} else if (event instanceof CheckMarker) {
@@ -301,7 +248,7 @@ public class RobotService extends AbstractNodeMain implements SmartBehaviour<Rob
 					checkreturnedvalue.robotId = event.robotId;
 					checkreturnedvalue.value=checkMarkers(event.robotId,5);
 					eventBus.deliver(checkreturnedvalue);									
-					System.out.println(" >> Robot "+this.config.id()+" reply with CheckValueReturn: " + checkreturnedvalue.value);	
+					System.out.println(" >> Robot "+this.config.id()+" reply with CheckValueReturn event: value =  " + checkreturnedvalue.value);	
 			});						
 		} else {
 			System.out.println("Argh! Robot "+this.config.id()+" Received an unknown event type " + event.getClass());

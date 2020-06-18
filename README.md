@@ -8,7 +8,8 @@ The BRAINIoT events provided by ROS Edge Node can be downloaded from [here](http
  * Ros version:      1.12.14
  * Stage Simulation: [Brain-IoT rb1 simulation](https://git.repository-pert.ismb.it/BRAIN-IoT/brain-iot-rb1-simulation)
  * JDK 1.8 
- * BND
+ * bnd command line tool
+ * BNDTool in Eclipse
 
 ## Setup
 Install Ros system and set up the Ros environment variable `ROS_MASTER_URI=http://localhost:11311` by default in order to set up your local machine as a ROS master.
@@ -39,11 +40,11 @@ $ roslaunch rb1_brainiot_bringup rb1_base_stage_complete.launch launch_stage:=fa
 $ git clone https://git.repository-pert.ismb.it/BRAIN-IoT/ros-edge-node.git
 $ cd eu.brain.iot.robot.service
 $ bnd run test.bndrun
-#After the logs stop in the terminal, press 'Enter' button
+#After the logs stop in the console, press 'Enter' button
 g! help             #to see the all possible commands in felix GoGo console
-g! test goto 1 4 	#to move robot_1 to the STORAGE area("y":-3.6,"x":8,"theta":-3.14) in front of cart_1(rb1_base_a_cart2_contact)
+g! test goto 1 4 	  #to move robot_1 to the STORAGE area("y":-3.6,"x":8,"theta":-3.14) in front of cart_1(rb1_base_a_cart2_contact)
 g! test pick 1 1    #robot_1 pick cart1
-g! test goto 1 5    #move robot_1 to another place
+g! test goto 1 5    #move robot_1 to another place {"y":-3.6,"x":8,"theta":-3.14}, just for test
 g! test place 1 1   #robot1 place cart1
 ```
 The fellowing is the logs printed:
@@ -72,6 +73,23 @@ The fellowing is the logs printed:
 ```
 Then, we can see robot 1 moving to the target position. Also you can run 3 robots simulation in 2D or 3D. But to do this you need to run the simulation from project [Brain-IoT rb1 simulation](https://git.repository-pert.ismb.it/BRAIN-IoT/brain-iot-rb1-simulation).
 
+The following are a sequence of event commands sent from Felix GoGo console to instruct the 3 robots move their carts to the dropping area (pose PLACE_LEFT, PLACE_CENTER, PLACE_RIGHT) separatly in the ROS simulation: (requires to run the `launch.bndrun` which will start orchestrator & door bundles together for opening door at the startup of the launch file.)
+
+Note: before using all of the cmds below, please import this project in Eclipse following the steps in the next section, then open the `configuration.json` file in the `eu.brain.iot.robot.config` sub-project to uncomment the configs of other two robots.
+
+```bash
+$ cd eu.brain.iot.robot.service
+$ bnd run launch.bndrun
+```
+
+```bash
+test goto 1 4      test pick 1 1   test goto 1 2 (PLACE_LEFT)     test place 1 1    # robot1 move cart1 to 'Place_left'
+test goto 2 4      test pick 2 2   test goto 2 1 (PLACE_CENTER)   test place 2 2    # robot2 move cart2 to 'Place_center'
+test goto 3 4      test pick 3 3   test goto 3 3 (PLACE_RIGHT)    test place 3 3    # robot3 move cart3 to 'Place_right'
+
+cancel goto 1   cancel pick 1   cancel place 1      # cancel a specific task being performed by a robot (robot 1 used here, simular for other robots: 2, 3)
+
+```
 
 ## Import the project into Eclipse for Developers
 
