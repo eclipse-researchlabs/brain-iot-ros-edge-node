@@ -73,7 +73,7 @@ The fellowing is the logs printed:
 ```
 Then, we can see robot 1 moving to the target position. Also you can run 3 robots simulation in 2D or 3D. But to do this you need to run the simulation from project [Brain-IoT rb1 simulation](https://git.repository-pert.ismb.it/BRAIN-IoT/brain-iot-rb1-simulation).
 
-The following are a sequence of event commands sent from Felix GoGo console to instruct the 3 robots move their carts to the dropping area (pose PLACE_LEFT, PLACE_CENTER, PLACE_RIGHT) separatly in the ROS simulation: (requires to run the `launch.bndrun` which will start orchestrator & door bundles together for opening door at the startup of the launch file.)
+The following are a sequence of event commands sent from Felix GoGo console to instruct the 3 robots move their carts to the dropping area **(pose PLACE_LEFT, PLACE_CENTER, PLACE_RIGHT)** separatly in the ROS simulation locally: (requires to run the `launch.bndrun` which will start `orchestrator & door` bundles together for opening door at the startup of the launch file.)
 
 Note: before using all of the cmds below, please import this project in Eclipse following the steps in the next section, then open the `configuration.json` file in the `eu.brain.iot.robot.config` sub-project to uncomment the configs of other two robots.
 
