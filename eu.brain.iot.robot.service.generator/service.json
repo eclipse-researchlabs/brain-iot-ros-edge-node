@@ -1,0 +1,83 @@
+{ 
+  "RosClasses":[
+	{
+      "ClassName": "GoToComponent",
+      "ServceClients": [
+        {
+          "serviceClientName": "gotoRun",
+          "serviceName": "/#robotName/robot_local_control/NavigationComponent/GoToComponent/add",
+          "serviceType": "robot_local_control_msgs/GoToPetition",
+          "serviceRequestType": "robot_local_control_msgs.GoToPetitionRequest",
+          "serviceResponseType": "robot_local_control_msgs.GoToPetitionResponse"
+        },
+        {
+          "serviceClientName": "gotoCancle",
+          "serviceName": "/#robotName/robot_local_control/NavigationComponent/GoToComponent/cancel",
+          "serviceType": "procedures_msgs/ProcedureQuery",
+          "serviceRequestType": "procedures_msgs.ProcedureQueryRequest",
+          "serviceResponseType": "procedures_msgs.ProcedureQueryResponse"
+        },
+		{
+          "serviceClientName": "gotoQuery",
+          "serviceName": "/#robotName/robot_local_control/NavigationComponent/GoToComponent/query_state",
+          "serviceType": "procedures_msgs/ProcedureQuery",
+          "serviceRequestType": "procedures_msgs.ProcedureQueryRequest",
+          "serviceResponseType": "procedures_msgs.ProcedureQueryResponse"
+        }
+      ]
+   },
+	{
+      "ClassName": "PickComponent",
+      "ServceClients": [
+        {
+          "serviceClientName": "pickRun",
+          "serviceName": "/#robotName/robot_local_control/NavigationComponent/PickComponent/add",
+          "serviceType": "robot_local_control_msgs/PickPetition",
+          "serviceRequestType": "robot_local_control_msgs.PickPetitionRequest",
+          "serviceResponseType": "robot_local_control_msgs.PickPetitionResponse"
+        },
+        {
+          "serviceClientName": "pickCancle",
+          "serviceName": "/#robotName/robot_local_control/NavigationComponent/PickComponent/cancel",
+          "serviceType": "procedures_msgs/ProcedureQuery",
+          "serviceRequestType": "procedures_msgs.ProcedureQueryRequest",
+          "serviceResponseType": "procedures_msgs.ProcedureQueryResponse"
+        },
+		{
+          "serviceClientName": "pickQuery",
+          "serviceName": "/#robotName/robot_local_control/NavigationComponent/PickComponent/query_state",
+          "serviceType": "procedures_msgs/ProcedureQuery",
+          "serviceRequestType": "procedures_msgs.ProcedureQueryRequest",
+          "serviceResponseType": "procedures_msgs.ProcedureQueryResponse"
+        }
+      ]
+   },
+	{
+      "ClassName": "PlaceComponent",
+      "ServceClients": [
+        {
+          "serviceClientName": "placeRun",
+          "serviceName": "/#robotName/robot_local_control/NavigationComponent/PlaceComponent/add",
+          "serviceType": "robot_local_control_msgs/PlacePetition",
+          "serviceRequestType": "robot_local_control_msgs.PlacePetitionRequest",
+          "serviceResponseType": "robot_local_control_msgs.PlacePetitionResponse"
+        },
+        {
+          "serviceClientName": "placeCancle",
+          "serviceName": "/#robotName/robot_local_control/NavigationComponent/PlaceComponent/cancel",
+          "serviceType": "procedures_msgs/ProcedureQuery",
+          "serviceRequestType": "procedures_msgs.ProcedureQueryRequest",
+          "serviceResponseType": "procedures_msgs.ProcedureQueryResponse"
+        },
+		{
+          "serviceClientName": "placeQuery",
+          "serviceName": "/#robotName/robot_local_control/NavigationComponent/PlaceComponent/query_state",
+          "serviceType": "procedures_msgs/ProcedureQuery",
+          "serviceRequestType": "procedures_msgs.ProcedureQueryRequest",
+          "serviceResponseType": "procedures_msgs.ProcedureQueryResponse"
+        }
+      ]
+   }
+  ]
+}
+

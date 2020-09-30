@@ -8,7 +8,6 @@
 		local = ${build}/templates
 
 
-
 -releaserepo: Release
 -baselinerepo: Release
 # Always use contracts  
@@ -29,6 +28,6 @@ mockito-deps: org.objenesis; version=2.6.0,\
   net.bytebuddy.byte-buddy-agent; version=1.7.9 
 -pluginpath: \
 	${workspace}/cnf/local/biz.aQute.repository/biz.aQute.repository-2.1.0.jar,\
-	${workspace}/cnf/local/biz.aQute.bndlib/biz.aQute.bndlib-4.1.0.jar
+	${workspace}/cnf/local/biz.aQute.bndlib/biz.aQute.bndlib-4.2.0.jar
 
-	
+
