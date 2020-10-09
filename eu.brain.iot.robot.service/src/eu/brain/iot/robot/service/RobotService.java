@@ -226,7 +226,7 @@ public class RobotService extends AbstractNodeMain implements SmartBehaviour<Rob
 			e.printStackTrace();
 		}
 		
-		test();
+	//	test();
 	}
 	
 	
