@@ -108,7 +108,7 @@ public class RosImpl extends AbstractNodeMain implements Ros {
 			if(uri==null){
 				throw new Exception("No master URI configured!");
 			}
-			masterURI = new URI("http://192.168.2.202:11311");
+			masterURI = new URI(uri); // http://192.168.2.202:11311
 			distro = getVariable("ROS_DISTRO", "ros.distro", properties);
 			namespace = getVariable("ROS_NAMESPACE", "ros.namespace", properties);
 			root = getVariable("ROS_ROOT", "ros.root", properties);

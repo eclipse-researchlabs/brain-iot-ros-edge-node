@@ -1,6 +1,9 @@
 package eu.brain.iot.robot.service;
 
 import ar_track_alvar_msgs.AlvarMarkers;
+
+import java.util.concurrent.TimeUnit;
+
 import org.ros.node.ConnectedNode;
 
 public abstract class Ar_pose_markerComponent {
@@ -19,7 +22,15 @@ public abstract class Ar_pose_markerComponent {
     }
 
     public AlvarMarkers get_poseMarker_value() {
-        while (poseMarker.getCurrentValue() == null);
-        return poseMarker.getCurrentValue();
+    	AlvarMarkers markers = poseMarker.getCurrentValue();
+        while (markers == null) {
+        	try {
+				TimeUnit.SECONDS.sleep(1);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+        	markers = poseMarker.getCurrentValue();
+        }
+        return markers;
     }
 }

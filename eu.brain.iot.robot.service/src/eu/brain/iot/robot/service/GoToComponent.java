@@ -3,9 +3,13 @@ package eu.brain.iot.robot.service;
 import org.ros.message.MessageFactory;
 import org.ros.message.Time;
 import org.ros.node.ConnectedNode;
+
+import eu.brain.iot.robot.api.CallResponse;
 import procedures_msgs.ProcedureHeader;
 import procedures_msgs.ProcedureQueryRequest;
 import procedures_msgs.ProcedureQueryResponse;
+import procedures_msgs.ProcedureResult;
+import procedures_msgs.ProcedureState;
 import robot_local_control_msgs.GoToPetitionRequest;
 import robot_local_control_msgs.GoToPetitionResponse;
 
@@ -46,14 +50,20 @@ public abstract class GoToComponent {
         String result;
         String state;
         GoToPetitionResponse responseVal;
+        ProcedureResult pr;
         Integer[] returnVal = new Integer[] { 0, 0 };
         responseVal = gotoRun.call(request);
         if (responseVal!= null) {
             result = responseVal.getResult().getResult();
             state = responseVal.getState().getCurrentState();
         } else {
+        	System.out.println(robotName+" GoToComponent GoTo Response timeout! return null");
             return returnVal;
         }
+        CallResponse cr = new CallResponse();
+        cr.result = responseVal.getResult().getResult();
+        cr.current_state = responseVal.getState().getCurrentState();
+        
         if (result.compareTo("ok") == 0) {
             returnVal[ 0 ] = 1;
         }
@@ -94,6 +104,7 @@ public abstract class GoToComponent {
             result = responseVal.getResult().getResult();
             state = responseVal.getState().getCurrentState();
         } else {
+        	System.out.println(robotName+" GoToComponent Cancel Response timeout! return null");
             return returnVal;
         }
         if (result.compareTo("ok") == 0) {
@@ -139,39 +150,73 @@ public abstract class GoToComponent {
      * @return
      *     returnVal[0] is the check result of response result,returnVal[1] is the check result of response state
      */
-    public Integer[] call_gotoQuery(ProcedureQueryRequest request) {
-        String result;
-        String state;
-        ProcedureQueryResponse responseVal;
-        Integer[] returnVal = new Integer[] { 0, 0 };
-        responseVal = gotoQuery.call(request);
-        if (responseVal!= null) {
-            result = responseVal.getResult().getResult();
-            state = responseVal.getState().getCurrentState();
+    public CallResponse call_gotoQuery(ProcedureQueryRequest request) {       
+        CallResponse callResp = null;
+        ProcedureQueryResponse pqr;
+        pqr = gotoQuery.call(request);
+        
+        if (pqr!= null) {
+        	ProcedureState pState = pqr.getState();
+        	ProcedureResult pResult = pqr.getResult();
+        	
+        	callResp = new CallResponse();
+        	callResp.result = pResult.getResult();
+        	callResp.current_state = pState.getCurrentState();
+        	callResp.last_event = pState.getLastEvent();
+        	callResp.message = pResult.getMessage();
+            
         } else {
-            return returnVal;
+        	System.out.println(robotName+" GoToComponent Query Response timeout! return null");
         }
-        if (result.compareTo("ok") == 0) {
-            returnVal[ 0 ] = 1;
-        }
-        if (state.compareTo("finished") == 0) {
-            returnVal[ 1 ] = 1;
-        }
-        if (state.compareTo("queued") == 0) {
-            returnVal[ 1 ] = 2;
-        }
-        if (state.compareTo("running") == 0) {
-            returnVal[ 1 ] = 3;
-        }
-        if (state.compareTo("paused") == 0) {
-            returnVal[ 1 ] = 4;
-        }
-        if (state.compareTo("unknown") == 0) {
-            returnVal[ 1 ] = 5;
-        }
-        return returnVal;
+        return callResp;
     }
+    
+  /*  example response.  for "queued", 
+    {
+        "_format": "ros",
+        "state": {
+            "header": {
+                "priority": 0,
+                "stamp": {
+                    "secs": 0,
+                    "nsecs": 0
+                },
+                "id": 4,
+                "name": ""
+            },
+            "current_state": "queued",
+            "last_event": "added"
+        },
+        "result": {
+            "message": "",
+            "result": "ok"
+        }
+    }
+    
+    */
 
+  /*  for "unknown", possible response is (maybe the same command sent before previous one isn't done):
+   *   {
+        "_format": "ros",
+        "state": {
+            "header": {
+                "priority": 0,
+                "stamp": {
+                    "secs": 417,
+                    "nsecs": 500000000
+                },
+                "id": -1,
+                "name": ""
+            },
+            "current_state": "unknown",
+            "last_event": "abort"
+        },
+        "result": {
+            "message": "Could not add procedure to \"GoToComponent\" because component: \"GoToComponent\" is already running a procedure",
+            "result": "error"
+        }
+    }  */
+    
     /**
      * Default message constructor, need override according to usage
      */

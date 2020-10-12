@@ -46,7 +46,7 @@ public class GenericService<T1, T2>  {
 			   long endTime = System.currentTimeMillis();
 				if ((endTime-startTime)>10000)
 				{
-					System.out.println("Response timeout");
+					System.out.println("Response timeout 10s");
 					return null;
 				}
 		   }// wait the receving of the response

@@ -3,9 +3,13 @@ package eu.brain.iot.robot.service;
 import org.ros.message.MessageFactory;
 import org.ros.message.Time;
 import org.ros.node.ConnectedNode;
+
+import eu.brain.iot.robot.api.CallResponse;
 import procedures_msgs.ProcedureHeader;
 import procedures_msgs.ProcedureQueryRequest;
 import procedures_msgs.ProcedureQueryResponse;
+import procedures_msgs.ProcedureResult;
+import procedures_msgs.ProcedureState;
 import robot_local_control_msgs.PlacePetitionRequest;
 import robot_local_control_msgs.PlacePetitionResponse;
 
@@ -135,41 +139,26 @@ public abstract class PlaceComponent {
         return request;
     }
 
-    /**
-     * @return
-     *     returnVal[0] is the check result of response result,returnVal[1] is the check result of response state
-     */
-    public Integer[] call_placeQuery(ProcedureQueryRequest request) {
-        String result;
-        String state;
-        ProcedureQueryResponse responseVal;
-        Integer[] returnVal = new Integer[] { 0, 0 };
-        responseVal = placeQuery.call(request);
-        if (responseVal!= null) {
-            result = responseVal.getResult().getResult();
-            state = responseVal.getState().getCurrentState();
+   
+    public CallResponse call_placeQuery(ProcedureQueryRequest request) {
+        CallResponse callResp = null;
+        ProcedureQueryResponse pqr;
+        pqr = placeQuery.call(request);
+        
+        if (pqr!= null) {
+        	ProcedureState pState = pqr.getState();
+        	ProcedureResult pResult = pqr.getResult();
+        	
+        	callResp = new CallResponse();
+        	callResp.result = pResult.getResult();
+        	callResp.current_state = pState.getCurrentState();
+        	callResp.last_event = pState.getLastEvent();
+        	callResp.message = pResult.getMessage();
+            
         } else {
-            return returnVal;
+        	System.out.println(robotName+" PlaceComponent Query Response timeout! return null");
         }
-        if (result.compareTo("ok") == 0) {
-            returnVal[ 0 ] = 1;
-        }
-        if (state.compareTo("finished") == 0) {
-            returnVal[ 1 ] = 1;
-        }
-        if (state.compareTo("queued") == 0) {
-            returnVal[ 1 ] = 2;
-        }
-        if (state.compareTo("running") == 0) {
-            returnVal[ 1 ] = 3;
-        }
-        if (state.compareTo("paused") == 0) {
-            returnVal[ 1 ] = 4;
-        }
-        if (state.compareTo("unknown") == 0) {
-            returnVal[ 1 ] = 5;
-        }
-        return returnVal;
+        return callResp;
     }
 
     /**

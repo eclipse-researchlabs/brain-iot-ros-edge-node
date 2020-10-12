@@ -31,3 +31,4 @@ mockito-deps: org.objenesis; version=2.6.0,\
 	${workspace}/cnf/local/biz.aQute.bndlib/biz.aQute.bndlib-4.2.0.jar
 
 
+
