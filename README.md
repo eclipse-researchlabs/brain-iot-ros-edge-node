@@ -28,6 +28,122 @@ Install BNDTool IDE in Eclipse
 Help-> Eclipse Markerplace-> search 'Bndtools'-> Installed->Restart Eclipse.
 ```
 
+## Run it in a physical robot
+
+Follow below `Import the project into Eclipse for Developers` section to import it in Eclipse which will automatically build all projects.
+
+#### Change the configuration to the robot IP
+
+Enter the **be.iminds.iot.ros.core** sun-project, open **config.properties** file, and replace the `localhost` part of `ros.master.uri` property with the real robot IP, save it.
+
+#### Configure Warehouse Map
+
+Enter the **eu.brain.iot.robot.api/resources** folder to configuare the warehouse map.
+
+There are two JSON files:
+
+**carts.json**: The mapping info of the cart market ID and its name. After the robot reach the picking point, robot behaviour send `CheckMarker` event to robot who will reply with the markerID, then a `PickCart` command is sent
+    
+**map.json**: this is a simplified file to store the coordinates. There are three poses in unload area and three poses in the storage area, each pose has its name used to create a task list table which contains the info about which cart should be moved to which storage pose.
+
+Content of **cart.json**:
+```JSON
+{
+	"Carts":[
+		{
+			"MarkerID":2,
+			"NAME":"rb1_base_a_cart2_contact"
+		},
+		{
+			"MarkerID":3,
+			"NAME":"rb1_base_b_cart3_contact"
+		},
+		{
+			"MarkerID":4,
+			"NAME":"rb1_base_c_cart4_contact"
+		}
+	]
+}
+
+```
+Content of **map.json**:
+```JSON
+{ 
+	"Map":{
+		"PlaceCenter":{"y":0,"x":0,"z":-3.14},
+		"PlaceLeft":{"y":-7.75,"x":0,"z":-3.14},
+		"PlaceRight":{"y":7.75,"x":0,"z":-3.14},
+		"UNLOAD":[
+		{
+		    "pickPoseID":1,
+		    "pose":{"y":-3.6,"x":8,"z":-3.14}
+		},
+		{
+		    "pickPoseID":2,
+		    "pose":{"y":-5.5,"x":8,"z":-3.14}
+		},
+		{
+		    "pickPoseID":3,
+		    "pose":{"y":-7.75,"x":8,"z":-3.14}
+		}
+		]
+	}
+}
+```
+The two config files can be changed based on the real map coordinates.
+
+Internally created shared task list table used by multiple Robot Behaviours:
+
+![image](./tasklist.png)
+
+This is a hard-coded table in Robot Behaviour, the **pickPoseID** and **placePose** correspond to the coordinates in map.json, but you can modify the coordinates in map.json as you want. For the first time to test in a real robot, in current version, only one robot behaviour will be instantiated and control one robot to mave all carts in 3 iterations.
+
+*Contact me if you want to change the number of the carts to be moved!*
+
+This table will be refined according to the updated robotic use case, and multiple tables will be created and managed by a warehouse manager, and integrate with senSinact.
+
+#### Configure the door and only one robot
+
+Enter **eu.brain.iot.robot.config** project and open **resources/OSGI-INF/configurator/configuration.json**:
+
+```
+{
+    ":configurator:resource-version" : 1,
+    ":configurator:symbolic-name" : "eu.brain.iot.service.robotic.robot.config",
+    ":configurator:version" : "0.0.1-SNAPSHOT",
+
+    "eu.brain.iot.example.robot.Door": {
+    	"host": "192.168.2.202", 
+        "port": "8080",
+        "id": "ExampleDoor"
+    },
+    
+    "eu.brain.iot.example.robot.Robot~robotA": {
+           "name": "rb1_base_a",
+           "id": 1
+    }
+}
+
+```
+When you run the test.bndrun file in nect step, the door smart behaviour developed by UGA for M18 review will be also run together with ROS Edge Node and Robot Behaviour. So here in this configuration file you need to overwrite the real door IP in warehouse. There is one problem in current door smart behaviour, that is once the test.bndrun is launched, the door will always be automatically opened. This problem will be fixed in next version.
+
+In addition, if you're using a robot whose name is different with **rb1\_base\_a**, remember to replace it, its name is one part of ROS services. 
+
+#### Run in a robot
+
+Enter the **eu.brain.iot.robot.service** project, package the **test.bndrun** as an executable jar:
+
+```bash
+$ cd eu.brain.iot.robot.service
+$ bnd package test.bndrun
+$ ls
+test.jar
+```
+Finally, start up the robot, then run the executable jar everywhere, not limited to the robot, maybe on your laptop, because the ROS Edge Node will (remotely) connect to the robot through its IP. 
+```bash
+$ java -jar test.jar
+```
+
 ## Tutorial - Try it 
 ### Quick start:
 Run a simulation test to see how it works. 
