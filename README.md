@@ -32,19 +32,19 @@ Help-> Eclipse Markerplace-> search 'Bndtools'-> Installed->Restart Eclipse.
 
 Follow below `Import the project into Eclipse for Developers` section to import it in Eclipse which will automatically build all projects.
 
-### Change the configuration to the robot IP
+#### Change the configuration to the robot IP
 
 Enter the **be.iminds.iot.ros.core** sun-project, open **config.properties** file, and replace the `localhost` part of `ros.master.uri` property with the real robot IP, save it.
 
-### Configure Warehouse Map
+#### Configure Warehouse Map
 
 Enter the **eu.brain.iot.robot.api/resources** folder to configuare the warehouse map.
 
 There are two JSON files:
 
-    **carts.json**: The mapping info of the cart market ID and its name. After the robot reach the picking point, robot behaviour send `CheckMarker` event to robot who will reply with the markerID, then a `PickCart` command is sent
+**carts.json**: The mapping info of the cart market ID and its name. After the robot reach the picking point, robot behaviour send `CheckMarker` event to robot who will reply with the markerID, then a `PickCart` command is sent
     
-    **map.json**: this is a simplified file to store the coordinates. There are three poses in unload area and three poses in the storage area, each pose has its name used to create a task list table which contains the info about which cart should be moved to which storage pose.
+**map.json**: this is a simplified file to store the coordinates. There are three poses in unload area and three poses in the storage area, each pose has its name used to create a task list table which contains the info about which cart should be moved to which storage pose.
 
 Content of **cart.json**:
 ```JSON
@@ -88,7 +88,6 @@ Content of **map.json**:
 		}
 		]
 	}
-
 }
 ```
 The two config files can be changed based on the real map coordinates.
@@ -103,7 +102,7 @@ This is a hard-coded table in Robot Behaviour, the **pickPoseID** and **placePos
 
 This table will be refined according to the updated robotic use case, and multiple tables will be created and managed by a warehouse manager, and integrate with senSinact.
 
-### Configure the door and only one robot
+#### Configure the door and only one robot
 
 Enter **eu.brain.iot.robot.config** project and open **resources/OSGI-INF/configurator/configuration.json**:
 
@@ -130,7 +129,7 @@ When you run the test.bndrun file in nect step, the door smart behaviour develop
 
 In addition, if you're using a robot whose name is different with **rb1\_base\_a**, remember to replace it, its name is one part of ROS services. 
 
-### Run in a robot
+#### Run in a robot
 
 Enter the **eu.brain.iot.robot.service** project, package the **test.bndrun** as an executable jar:
 
