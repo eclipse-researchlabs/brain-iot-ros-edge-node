@@ -1,12 +1,6 @@
 -buildpath: \
-	org.ros.rosjava.message_generation,\
-	org.ros.rosjava_messages.geometry_msgs,\
-	org.ros.rosjava_messages.std_msgs,\
-	org.ros.rosjava_messages.trajectory_msgs;version=latest,\
-	org.jboss.netty
--baseline: *
-javac.source: 1.8
-javac.target: 1.8
+	org.jboss.netty,\
+	org.ros.rosjava.message_generation;version=0.2
 
 Bundle-Version: 1.0.0
 Export-Package: \

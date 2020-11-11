@@ -1,0 +1,1574 @@
+... logging to /home/xu/.ros/log/95f1c1e2-5970-11ea-9b50-24ee9a123176/roslaunch-xu-TECRA-X40-E-19780.log
+Checking log directory for disk usage. This may take awhile.
+Press Ctrl-C to interrupt
+Done checking log file disk usage. Usage is <1GB.
+]2;roscore
+[1mstarted roslaunch server http://xu-TECRA-X40-E:37193/[0m
+ros_comm version 1.12.14
+
+
+SUMMARY
+========
+
+PARAMETERS
+ * /rosdistro: kinetic
+ * /rosversion: 1.12.14
+
+NODES
+
+auto-starting new master
+[1mprocess[master]: started with pid [19792][0m
+[1mROS_MASTER_URI=http://xu-TECRA-X40-E: 11311/[0m
+]2;roscore http://xu-TECRA-X40-E: 11311/
+[1msetting /run_id to 95f1c1e2-5970-11ea-9b50-24ee9a123176[0m
+[1mprocess[rosout-1]: started with pid [19820][0m
+started core service [/rosout]
+[rosout-1] killing on exit
+[master] killing on exit
+shutting down processing monitor...
+... shutting down processing monitor complete
+[1mdone[0m
+... logging to /home/xu/.ros/log/02c18528-5971-11ea-9b50-24ee9a123176/roslaunch-xu-TECRA-X40-E-24772.log
+Checking log directory for disk usage. This may take awhile.
+Press Ctrl-C to interrupt
+Done checking log file disk usage. Usage is <1GB.
+]2;roscore
+[1mstarted roslaunch server http://xu-TECRA-X40-E:34419/[0m
+ros_comm version 1.12.14
+
+
+SUMMARY
+========
+
+PARAMETERS
+ * /rosdistro: kinetic
+ * /rosversion: 1.12.14
+
+NODES
+
+auto-starting new master
+[1mprocess[master]: started with pid [24784][0m
+[1mROS_MASTER_URI=http://xu-TECRA-X40-E: 11311/[0m
+]2;roscore http://xu-TECRA-X40-E: 11311/
+[1msetting /run_id to 02c18528-5971-11ea-9b50-24ee9a123176[0m
+[1mprocess[rosout-1]: started with pid [24812][0m
+started core service [/rosout]
+[rosout-1] killing on exit
+[master] killing on exit
+shutting down processing monitor...
+... shutting down processing monitor complete
+[1mdone[0m
+... logging to /home/xu/.ros/log/0731ee24-5974-11ea-9b50-24ee9a123176/roslaunch-xu-TECRA-X40-E-2183.log
+Checking log directory for disk usage. This may take awhile.
+Press Ctrl-C to interrupt
+Done checking log file disk usage. Usage is <1GB.
+]2;roscore
+[1mstarted roslaunch server http://xu-TECRA-X40-E:39663/[0m
+ros_comm version 1.12.14
+
+
+SUMMARY
+========
+
+PARAMETERS
+ * /rosdistro: kinetic
+ * /rosversion: 1.12.14
+
+NODES
+
+auto-starting new master
+[1mprocess[master]: started with pid [2196][0m
+[1mROS_MASTER_URI=http://xu-TECRA-X40-E: 11311/[0m
+]2;roscore http://xu-TECRA-X40-E: 11311/
+[1msetting /run_id to 0731ee24-5974-11ea-9b50-24ee9a123176[0m
+[1mprocess[rosout-1]: started with pid [2224][0m
+started core service [/rosout]
+[rosout-1] killing on exit
+[master] killing on exit
+shutting down processing monitor...
+... shutting down processing monitor complete
+[1mdone[0m
+... logging to /home/xu/.ros/log/98638d10-5a1b-11ea-9b50-24ee9a123176/roslaunch-xu-TECRA-X40-E-30338.log
+Checking log directory for disk usage. This may take awhile.
+Press Ctrl-C to interrupt
+Done checking log file disk usage. Usage is <1GB.
+]2;roscore
+[1mstarted roslaunch server http://xu-TECRA-X40-E:38359/[0m
+ros_comm version 1.12.14
+
+
+SUMMARY
+========
+
+PARAMETERS
+ * /rosdistro: kinetic
+ * /rosversion: 1.12.14
+
+NODES
+
+auto-starting new master
+[1mprocess[master]: started with pid [30350][0m
+[1mROS_MASTER_URI=http://xu-TECRA-X40-E: 11311/[0m
+]2;roscore http://xu-TECRA-X40-E: 11311/
+[1msetting /run_id to 98638d10-5a1b-11ea-9b50-24ee9a123176[0m
+[1mprocess[rosout-1]: started with pid [30378][0m
+started core service [/rosout]
+[rosout-1] killing on exit
+[master] killing on exit
+shutting down processing monitor...
+... shutting down processing monitor complete
+[1mdone[0m
+[31m[ERROR] [1582971610.797138401]: poll failed with error Interrupted system call[0m
+[31m[ERROR] [1583011295.797645481]: poll failed with error Interrupted system call[0m
+[31m[ERROR] [1583055589.798543894]: poll failed with error Interrupted system call[0m
+... logging to /home/xu/.ros/log/f6eb1880-5c5f-11ea-9755-24ee9a123176/roslaunch-xu-TECRA-X40-E-6621.log
+Checking log directory for disk usage. This may take awhile.
+Press Ctrl-C to interrupt
+Done checking log file disk usage. Usage is <1GB.
+]2;roscore
+[1mstarted roslaunch server http://xu-TECRA-X40-E:37855/[0m
+ros_comm version 1.12.14
+
+
+SUMMARY
+========
+
+PARAMETERS
+ * /rosdistro: kinetic
+ * /rosversion: 1.12.14
+
+NODES
+
+auto-starting new master
+[1mprocess[master]: started with pid [6642][0m
+[1mROS_MASTER_URI=http://xu-TECRA-X40-E: 11311/[0m
+]2;roscore http://xu-TECRA-X40-E: 11311/
+[1msetting /run_id to f6eb1880-5c5f-11ea-9755-24ee9a123176[0m
+[1mprocess[rosout-1]: started with pid [6672][0m
+started core service [/rosout]
+[rosout-1] killing on exit
+[master] killing on exit
+shutting down processing monitor...
+... shutting down processing monitor complete
+[1mdone[0m
+[31m[ERROR] [1583274646.044224110]: poll failed with error Interrupted system call[0m
+... logging to /home/xu/.ros/log/1cf2b248-5d61-11ea-8dc8-24ee9a123176/roslaunch-xu-TECRA-X40-E-1785.log
+Checking log directory for disk usage. This may take awhile.
+Press Ctrl-C to interrupt
+Done checking log file disk usage. Usage is <1GB.
+]2;roscore
+[1mstarted roslaunch server http://xu-TECRA-X40-E:33813/[0m
+ros_comm version 1.12.14
+
+
+SUMMARY
+========
+
+PARAMETERS
+ * /rosdistro: kinetic
+ * /rosversion: 1.12.14
+
+NODES
+
+auto-starting new master
+[1mprocess[master]: started with pid [1797][0m
+[1mROS_MASTER_URI=http://xu-TECRA-X40-E: 11311/[0m
+]2;roscore http://xu-TECRA-X40-E: 11311/
+[1msetting /run_id to 1cf2b248-5d61-11ea-8dc8-24ee9a123176[0m
+[1mprocess[rosout-1]: started with pid [1842][0m
+started core service [/rosout]
+[rosout-1] killing on exit
+[master] killing on exit
+shutting down processing monitor...
+... shutting down processing monitor complete
+[1mdone[0m
+[31m[ERROR] [1583356329.902520326]: poll failed with error Interrupted system call[0m
+[31m[ERROR] [1583360517.659534877]: poll failed with error Interrupted system call[0m
+[31m[ERROR] [1583395411.865308234]: poll failed with error Interrupted system call[0m
+[31m[ERROR] [1583481477.662931989]: poll failed with error Interrupted system call[0m
+[31m[ERROR] [1583503496.895843943]: poll failed with error Interrupted system call[0m
+[31m[ERROR] [1583578760.440903483]: poll failed with error Interrupted system call[0m
+[31m[ERROR] [1583661709.661697058]: poll failed with error Interrupted system call[0m
+[31m[ERROR] [1583680986.897920541]: poll failed with error Interrupted system call[0m
+[31m[ERROR] [1583740466.868352151]: poll failed with error Interrupted system call[0m
+... logging to /home/xu/.ros/log/b3b69d4e-62b0-11ea-8dc8-24ee9a123176/roslaunch-xu-TECRA-X40-E-24288.log
+Checking log directory for disk usage. This may take awhile.
+Press Ctrl-C to interrupt
+Done checking log file disk usage. Usage is <1GB.
+]2;roscore
+[1mstarted roslaunch server http://xu-TECRA-X40-E:45961/[0m
+ros_comm version 1.12.14
+
+
+SUMMARY
+========
+
+PARAMETERS
+ * /rosdistro: kinetic
+ * /rosversion: 1.12.14
+
+NODES
+
+auto-starting new master
+[1mprocess[master]: started with pid [24300][0m
+[1mROS_MASTER_URI=http://xu-TECRA-X40-E: 11311/[0m
+]2;roscore http://xu-TECRA-X40-E: 11311/
+[1msetting /run_id to b3b69d4e-62b0-11ea-8dc8-24ee9a123176[0m
+[1mprocess[rosout-1]: started with pid [24342][0m
+started core service [/rosout]
+[rosout-1] killing on exit
+[master] killing on exit
+shutting down processing monitor...
+... shutting down processing monitor complete
+[1mdone[0m
+... logging to /home/xu/.ros/log/d5670e70-62b4-11ea-8dc8-24ee9a123176/roslaunch-xu-TECRA-X40-E-6138.log
+Checking log directory for disk usage. This may take awhile.
+Press Ctrl-C to interrupt
+Done checking log file disk usage. Usage is <1GB.
+]2;roscore
+[1mstarted roslaunch server http://xu-TECRA-X40-E:39687/[0m
+ros_comm version 1.12.14
+
+
+SUMMARY
+========
+
+PARAMETERS
+ * /rosdistro: kinetic
+ * /rosversion: 1.12.14
+
+NODES
+
+auto-starting new master
+[1mprocess[master]: started with pid [6149][0m
+[1mROS_MASTER_URI=http://xu-TECRA-X40-E: 11311/[0m
+]2;roscore http://xu-TECRA-X40-E: 11311/
+[1msetting /run_id to d5670e70-62b4-11ea-8dc8-24ee9a123176[0m
+[1mprocess[rosout-1]: started with pid [6181][0m
+started core service [/rosout]
+[rosout-1] killing on exit
+[master] killing on exit
+shutting down processing monitor...
+... shutting down processing monitor complete
+[1mdone[0m
+... logging to /home/xu/.ros/log/ecf51258-62b4-11ea-8dc8-24ee9a123176/roslaunch-xu-TECRA-X40-E-9408.log
+Checking log directory for disk usage. This may take awhile.
+Press Ctrl-C to interrupt
+Done checking log file disk usage. Usage is <1GB.
+]2;roscore
+[1mstarted roslaunch server http://xu-TECRA-X40-E:35359/[0m
+ros_comm version 1.12.14
+
+
+SUMMARY
+========
+
+PARAMETERS
+ * /rosdistro: kinetic
+ * /rosversion: 1.12.14
+
+NODES
+
+auto-starting new master
+[1mprocess[master]: started with pid [9420][0m
+[1mROS_MASTER_URI=http://xu-TECRA-X40-E: 11311/[0m
+]2;roscore http://xu-TECRA-X40-E: 11311/
+[1msetting /run_id to ecf51258-62b4-11ea-8dc8-24ee9a123176[0m
+[1mprocess[rosout-1]: started with pid [9461][0m
+started core service [/rosout]
+[rosout-1] killing on exit
+[master] killing on exit
+shutting down processing monitor...
+... shutting down processing monitor complete
+[1mdone[0m
+... logging to /home/xu/.ros/log/6a1617cc-62bb-11ea-8dc8-24ee9a123176/roslaunch-xu-TECRA-X40-E-28994.log
+Checking log directory for disk usage. This may take awhile.
+Press Ctrl-C to interrupt
+Done checking log file disk usage. Usage is <1GB.
+]2;roscore
+[1mstarted roslaunch server http://xu-TECRA-X40-E:42017/[0m
+ros_comm version 1.12.14
+
+
+SUMMARY
+========
+
+PARAMETERS
+ * /rosdistro: kinetic
+ * /rosversion: 1.12.14
+
+NODES
+
+auto-starting new master
+[1mprocess[master]: started with pid [29008][0m
+[1mROS_MASTER_URI=http://xu-TECRA-X40-E: 11311/[0m
+]2;roscore http://xu-TECRA-X40-E: 11311/
+[1msetting /run_id to 6a1617cc-62bb-11ea-8dc8-24ee9a123176[0m
+[1mprocess[rosout-1]: started with pid [29036][0m
+started core service [/rosout]
+[rosout-1] killing on exit
+[master] killing on exit
+shutting down processing monitor...
+... shutting down processing monitor complete
+[1mdone[0m
+... logging to /home/xu/.ros/log/b7d856aa-62bb-11ea-8dc8-24ee9a123176/roslaunch-xu-TECRA-X40-E-939.log
+Checking log directory for disk usage. This may take awhile.
+Press Ctrl-C to interrupt
+Done checking log file disk usage. Usage is <1GB.
+]2;roscore
+[1mstarted roslaunch server http://xu-TECRA-X40-E:33337/[0m
+ros_comm version 1.12.14
+
+
+SUMMARY
+========
+
+PARAMETERS
+ * /rosdistro: kinetic
+ * /rosversion: 1.12.14
+
+NODES
+
+auto-starting new master
+[1mprocess[master]: started with pid [952][0m
+[1mROS_MASTER_URI=http://xu-TECRA-X40-E: 11311/[0m
+]2;roscore http://xu-TECRA-X40-E: 11311/
+[1msetting /run_id to b7d856aa-62bb-11ea-8dc8-24ee9a123176[0m
+[1mprocess[rosout-1]: started with pid [1003][0m
+started core service [/rosout]
+[rosout-1] killing on exit
+[master] killing on exit
+shutting down processing monitor...
+... shutting down processing monitor complete
+[1mdone[0m
+... logging to /home/xu/.ros/log/c4b4476a-62bd-11ea-8dc8-24ee9a123176/roslaunch-xu-TECRA-X40-E-11037.log
+Checking log directory for disk usage. This may take awhile.
+Press Ctrl-C to interrupt
+Done checking log file disk usage. Usage is <1GB.
+]2;roscore
+[1mstarted roslaunch server http://xu-TECRA-X40-E:42261/[0m
+ros_comm version 1.12.14
+
+
+SUMMARY
+========
+
+PARAMETERS
+ * /rosdistro: kinetic
+ * /rosversion: 1.12.14
+
+NODES
+
+auto-starting new master
+[1mprocess[master]: started with pid [11050][0m
+[1mROS_MASTER_URI=http://xu-TECRA-X40-E: 11311/[0m
+]2;roscore http://xu-TECRA-X40-E: 11311/
+[1msetting /run_id to c4b4476a-62bd-11ea-8dc8-24ee9a123176[0m
+[1mprocess[rosout-1]: started with pid [11078][0m
+started core service [/rosout]
+[rosout-1] killing on exit
+[master] killing on exit
+shutting down processing monitor...
+... shutting down processing monitor complete
+[1mdone[0m
+[31m[ERROR] [1583841624.879601486]: poll failed with error Interrupted system call[0m
+... logging to /home/xu/.ros/log/e739b900-62bd-11ea-8dc8-24ee9a123176/roslaunch-xu-TECRA-X40-E-14614.log
+Checking log directory for disk usage. This may take awhile.
+Press Ctrl-C to interrupt
+Done checking log file disk usage. Usage is <1GB.
+]2;roscore
+[1mstarted roslaunch server http://xu-TECRA-X40-E:43421/[0m
+ros_comm version 1.12.14
+
+
+SUMMARY
+========
+
+PARAMETERS
+ * /rosdistro: kinetic
+ * /rosversion: 1.12.14
+
+NODES
+
+auto-starting new master
+[1mprocess[master]: started with pid [14629][0m
+[1mROS_MASTER_URI=http://xu-TECRA-X40-E: 11311/[0m
+]2;roscore http://xu-TECRA-X40-E: 11311/
+[1msetting /run_id to e739b900-62bd-11ea-8dc8-24ee9a123176[0m
+[1mprocess[rosout-1]: started with pid [14663][0m
+started core service [/rosout]
+[rosout-1] killing on exit
+[master] killing on exit
+shutting down processing monitor...
+... shutting down processing monitor complete
+[1mdone[0m
+... logging to /home/xu/.ros/log/346071d0-630c-11ea-8dc8-24ee9a123176/roslaunch-xu-TECRA-X40-E-5759.log
+Checking log directory for disk usage. This may take awhile.
+Press Ctrl-C to interrupt
+Done checking log file disk usage. Usage is <1GB.
+]2;roscore
+[1mstarted roslaunch server http://xu-TECRA-X40-E:33443/[0m
+ros_comm version 1.12.14
+
+
+SUMMARY
+========
+
+PARAMETERS
+ * /rosdistro: kinetic
+ * /rosversion: 1.12.14
+
+NODES
+
+auto-starting new master
+[1mprocess[master]: started with pid [5771][0m
+[1mROS_MASTER_URI=http://xu-TECRA-X40-E: 11311/[0m
+]2;roscore http://xu-TECRA-X40-E: 11311/
+[1msetting /run_id to 346071d0-630c-11ea-8dc8-24ee9a123176[0m
+[1mprocess[rosout-1]: started with pid [5808][0m
+started core service [/rosout]
+[rosout-1] killing on exit
+[master] killing on exit
+shutting down processing monitor...
+... shutting down processing monitor complete
+[1mdone[0m
+... logging to /home/rex/.ros/log/9cfbeb26-6379-11ea-888a-74e5f91b6aa2/roslaunch-rex-PC-12590.log
+Checking log directory for disk usage. This may take awhile.
+Press Ctrl-C to interrupt
+Done checking log file disk usage. Usage is <1GB.
+]2;roscore
+[1mstarted roslaunch server http://rex-PC:37359/[0m
+ros_comm version 1.12.14
+
+
+SUMMARY
+========
+
+PARAMETERS
+ * /rosdistro: kinetic
+ * /rosversion: 1.12.14
+
+NODES
+
+auto-starting new master
+[1mprocess[master]: started with pid [12601][0m
+[1mROS_MASTER_URI=http://rex-PC: 11311/[0m
+]2;roscore http://rex-PC: 11311/
+[1msetting /run_id to 9cfbeb26-6379-11ea-888a-74e5f91b6aa2[0m
+[1mprocess[rosout-1]: started with pid [12639][0m
+started core service [/rosout]
+[rosout-1] killing on exit
+[master] killing on exit
+shutting down processing monitor...
+... shutting down processing monitor complete
+[1mdone[0m
+... logging to /home/rex/.ros/log/7a945132-63b9-11ea-888a-74e5f91b6aa2/roslaunch-rex-PC-3056.log
+Checking log directory for disk usage. This may take awhile.
+Press Ctrl-C to interrupt
+Done checking log file disk usage. Usage is <1GB.
+]2;roscore
+[1mstarted roslaunch server http://rex-PC:34213/[0m
+ros_comm version 1.12.14
+
+
+SUMMARY
+========
+
+PARAMETERS
+ * /rosdistro: kinetic
+ * /rosversion: 1.12.14
+
+NODES
+
+auto-starting new master
+[1mprocess[master]: started with pid [3069][0m
+[1mROS_MASTER_URI=http://rex-PC: 11311/[0m
+]2;roscore http://rex-PC: 11311/
+[1msetting /run_id to 7a945132-63b9-11ea-888a-74e5f91b6aa2[0m
+[1mprocess[rosout-1]: started with pid [3092][0m
+started core service [/rosout]
+[rosout-1] killing on exit
+[master] killing on exit
+shutting down processing monitor...
+... shutting down processing monitor complete
+[1mdone[0m
+... logging to /home/rex/.ros/log/50679206-63ba-11ea-888a-74e5f91b6aa2/roslaunch-rex-PC-9723.log
+Checking log directory for disk usage. This may take awhile.
+Press Ctrl-C to interrupt
+Done checking log file disk usage. Usage is <1GB.
+]2;roscore
+[1mstarted roslaunch server http://rex-PC:38227/[0m
+ros_comm version 1.12.14
+
+
+SUMMARY
+========
+
+PARAMETERS
+ * /rosdistro: kinetic
+ * /rosversion: 1.12.14
+
+NODES
+
+auto-starting new master
+[1mprocess[master]: started with pid [9734][0m
+[1mROS_MASTER_URI=http://rex-PC: 11311/[0m
+]2;roscore http://rex-PC: 11311/
+[1msetting /run_id to 50679206-63ba-11ea-888a-74e5f91b6aa2[0m
+[1mprocess[rosout-1]: started with pid [9755][0m
+started core service [/rosout]
+[rosout-1] killing on exit
+[master] killing on exit
+shutting down processing monitor...
+... shutting down processing monitor complete
+[1mdone[0m
+... logging to /home/rex/.ros/log/7663003e-63bb-11ea-888a-74e5f91b6aa2/roslaunch-rex-PC-14783.log
+Checking log directory for disk usage. This may take awhile.
+Press Ctrl-C to interrupt
+Done checking log file disk usage. Usage is <1GB.
+]2;roscore
+[1mstarted roslaunch server http://rex-PC:43391/[0m
+ros_comm version 1.12.14
+
+
+SUMMARY
+========
+
+PARAMETERS
+ * /rosdistro: kinetic
+ * /rosversion: 1.12.14
+
+NODES
+
+auto-starting new master
+[1mprocess[master]: started with pid [14794][0m
+[1mROS_MASTER_URI=http://rex-PC: 11311/[0m
+]2;roscore http://rex-PC: 11311/
+[1msetting /run_id to 7663003e-63bb-11ea-888a-74e5f91b6aa2[0m
+[1mprocess[rosout-1]: started with pid [14848][0m
+started core service [/rosout]
+[rosout-1] killing on exit
+[master] killing on exit
+shutting down processing monitor...
+... shutting down processing monitor complete
+[1mdone[0m
+... logging to /home/rex/.ros/log/6d4a190a-63bc-11ea-888a-74e5f91b6aa2/roslaunch-rex-PC-21915.log
+Checking log directory for disk usage. This may take awhile.
+Press Ctrl-C to interrupt
+Done checking log file disk usage. Usage is <1GB.
+]2;roscore
+[1mstarted roslaunch server http://rex-PC:41433/[0m
+ros_comm version 1.12.14
+
+
+SUMMARY
+========
+
+PARAMETERS
+ * /rosdistro: kinetic
+ * /rosversion: 1.12.14
+
+NODES
+
+auto-starting new master
+[1mprocess[master]: started with pid [21929][0m
+[1mROS_MASTER_URI=http://rex-PC: 11311/[0m
+]2;roscore http://rex-PC: 11311/
+[1msetting /run_id to 6d4a190a-63bc-11ea-888a-74e5f91b6aa2[0m
+[1mprocess[rosout-1]: started with pid [21958][0m
+started core service [/rosout]
+[rosout-1] killing on exit
+[master] killing on exit
+shutting down processing monitor...
+... shutting down processing monitor complete
+[1mdone[0m
+... logging to /home/rex/.ros/log/ed4ca5dc-63bc-11ea-888a-74e5f91b6aa2/roslaunch-rex-PC-28446.log
+Checking log directory for disk usage. This may take awhile.
+Press Ctrl-C to interrupt
+Done checking log file disk usage. Usage is <1GB.
+]2;roscore
+[1mstarted roslaunch server http://rex-PC:43019/[0m
+ros_comm version 1.12.14
+
+
+SUMMARY
+========
+
+PARAMETERS
+ * /rosdistro: kinetic
+ * /rosversion: 1.12.14
+
+NODES
+
+auto-starting new master
+[1mprocess[master]: started with pid [28457][0m
+[1mROS_MASTER_URI=http://rex-PC: 11311/[0m
+]2;roscore http://rex-PC: 11311/
+[1msetting /run_id to ed4ca5dc-63bc-11ea-888a-74e5f91b6aa2[0m
+[1mprocess[rosout-1]: started with pid [28485][0m
+started core service [/rosout]
+[rosout-1] killing on exit
+[master] killing on exit
+shutting down processing monitor...
+... shutting down processing monitor complete
+[1mdone[0m
+... logging to /home/rex/.ros/log/bbefcb26-63bd-11ea-888a-74e5f91b6aa2/roslaunch-rex-PC-2024.log
+Checking log directory for disk usage. This may take awhile.
+Press Ctrl-C to interrupt
+Done checking log file disk usage. Usage is <1GB.
+]2;roscore
+[1mstarted roslaunch server http://rex-PC:41735/[0m
+ros_comm version 1.12.14
+
+
+SUMMARY
+========
+
+PARAMETERS
+ * /rosdistro: kinetic
+ * /rosversion: 1.12.14
+
+NODES
+
+auto-starting new master
+[1mprocess[master]: started with pid [2049][0m
+[1mROS_MASTER_URI=http://rex-PC: 11311/[0m
+]2;roscore http://rex-PC: 11311/
+[1msetting /run_id to bbefcb26-63bd-11ea-888a-74e5f91b6aa2[0m
+[1mprocess[rosout-1]: started with pid [2136][0m
+started core service [/rosout]
+[rosout-1] killing on exit
+[master] killing on exit
+shutting down processing monitor...
+... shutting down processing monitor complete
+[1mdone[0m
+... logging to /home/rex/.ros/log/ce2bb75e-63be-11ea-888a-74e5f91b6aa2/roslaunch-rex-PC-7627.log
+Checking log directory for disk usage. This may take awhile.
+Press Ctrl-C to interrupt
+Done checking log file disk usage. Usage is <1GB.
+]2;roscore
+[1mstarted roslaunch server http://rex-PC:45859/[0m
+ros_comm version 1.12.14
+
+
+SUMMARY
+========
+
+PARAMETERS
+ * /rosdistro: kinetic
+ * /rosversion: 1.12.14
+
+NODES
+
+auto-starting new master
+[1mprocess[master]: started with pid [7638][0m
+[1mROS_MASTER_URI=http://rex-PC: 11311/[0m
+]2;roscore http://rex-PC: 11311/
+[1msetting /run_id to ce2bb75e-63be-11ea-888a-74e5f91b6aa2[0m
+[1mprocess[rosout-1]: started with pid [7682][0m
+started core service [/rosout]
+[rosout-1] killing on exit
+[master] killing on exit
+shutting down processing monitor...
+... shutting down processing monitor complete
+[1mdone[0m
+... logging to /home/rex/.ros/log/2bdc6064-63c5-11ea-888a-74e5f91b6aa2/roslaunch-rex-PC-26978.log
+Checking log directory for disk usage. This may take awhile.
+Press Ctrl-C to interrupt
+Done checking log file disk usage. Usage is <1GB.
+]2;roscore
+[1mstarted roslaunch server http://rex-PC:45113/[0m
+ros_comm version 1.12.14
+
+
+SUMMARY
+========
+
+PARAMETERS
+ * /rosdistro: kinetic
+ * /rosversion: 1.12.14
+
+NODES
+
+auto-starting new master
+[1mprocess[master]: started with pid [26990][0m
+[1mROS_MASTER_URI=http://rex-PC: 11311/[0m
+]2;roscore http://rex-PC: 11311/
+[1msetting /run_id to 2bdc6064-63c5-11ea-888a-74e5f91b6aa2[0m
+[1mprocess[rosout-1]: started with pid [27033][0m
+started core service [/rosout]
+[rosout-1] killing on exit
+[master] killing on exit
+shutting down processing monitor...
+... shutting down processing monitor complete
+[1mdone[0m
+... logging to /home/rex/.ros/log/8f694c5c-63d2-11ea-888a-74e5f91b6aa2/roslaunch-rex-PC-4295.log
+Checking log directory for disk usage. This may take awhile.
+Press Ctrl-C to interrupt
+Done checking log file disk usage. Usage is <1GB.
+]2;roscore
+[1mstarted roslaunch server http://rex-PC:38277/[0m
+ros_comm version 1.12.14
+
+
+SUMMARY
+========
+
+PARAMETERS
+ * /rosdistro: kinetic
+ * /rosversion: 1.12.14
+
+NODES
+
+auto-starting new master
+[1mprocess[master]: started with pid [4306][0m
+[1mROS_MASTER_URI=http://rex-PC: 11311/[0m
+]2;roscore http://rex-PC: 11311/
+[1msetting /run_id to 8f694c5c-63d2-11ea-888a-74e5f91b6aa2[0m
+[1mprocess[rosout-1]: started with pid [4350][0m
+started core service [/rosout]
+[rosout-1] killing on exit
+[master] killing on exit
+shutting down processing monitor...
+... shutting down processing monitor complete
+[1mdone[0m
+... logging to /home/rex/.ros/log/7daab39c-63d3-11ea-888a-74e5f91b6aa2/roslaunch-rex-PC-10991.log
+Checking log directory for disk usage. This may take awhile.
+Press Ctrl-C to interrupt
+Done checking log file disk usage. Usage is <1GB.
+]2;roscore
+[1mstarted roslaunch server http://rex-PC:38161/[0m
+ros_comm version 1.12.14
+
+
+SUMMARY
+========
+
+PARAMETERS
+ * /rosdistro: kinetic
+ * /rosversion: 1.12.14
+
+NODES
+
+auto-starting new master
+[1mprocess[master]: started with pid [11002][0m
+[1mROS_MASTER_URI=http://rex-PC: 11311/[0m
+]2;roscore http://rex-PC: 11311/
+[1msetting /run_id to 7daab39c-63d3-11ea-888a-74e5f91b6aa2[0m
+[1mprocess[rosout-1]: started with pid [11031][0m
+started core service [/rosout]
+[rosout-1] killing on exit
+[master] killing on exit
+shutting down processing monitor...
+... shutting down processing monitor complete
+[1mdone[0m
+... logging to /home/rex/.ros/log/94f645b4-63d5-11ea-888a-74e5f91b6aa2/roslaunch-rex-PC-19838.log
+Checking log directory for disk usage. This may take awhile.
+Press Ctrl-C to interrupt
+Done checking log file disk usage. Usage is <1GB.
+]2;roscore
+[1mstarted roslaunch server http://rex-PC:43283/[0m
+ros_comm version 1.12.14
+
+
+SUMMARY
+========
+
+PARAMETERS
+ * /rosdistro: kinetic
+ * /rosversion: 1.12.14
+
+NODES
+
+auto-starting new master
+[1mprocess[master]: started with pid [19849][0m
+[1mROS_MASTER_URI=http://rex-PC: 11311/[0m
+]2;roscore http://rex-PC: 11311/
+[1msetting /run_id to 94f645b4-63d5-11ea-888a-74e5f91b6aa2[0m
+[1mprocess[rosout-1]: started with pid [19894][0m
+started core service [/rosout]
+[rosout-1] killing on exit
+[master] killing on exit
+shutting down processing monitor...
+... shutting down processing monitor complete
+[1mdone[0m
+... logging to /home/rex/.ros/log/a2f761e2-63d6-11ea-888a-74e5f91b6aa2/roslaunch-rex-PC-25394.log
+Checking log directory for disk usage. This may take awhile.
+Press Ctrl-C to interrupt
+Done checking log file disk usage. Usage is <1GB.
+]2;roscore
+[1mstarted roslaunch server http://rex-PC:42057/[0m
+ros_comm version 1.12.14
+
+
+SUMMARY
+========
+
+PARAMETERS
+ * /rosdistro: kinetic
+ * /rosversion: 1.12.14
+
+NODES
+
+auto-starting new master
+[1mprocess[master]: started with pid [25405][0m
+[1mROS_MASTER_URI=http://rex-PC: 11311/[0m
+]2;roscore http://rex-PC: 11311/
+[1msetting /run_id to a2f761e2-63d6-11ea-888a-74e5f91b6aa2[0m
+[1mprocess[rosout-1]: started with pid [25434][0m
+started core service [/rosout]
+[rosout-1] killing on exit
+[master] killing on exit
+shutting down processing monitor...
+... shutting down processing monitor complete
+[1mdone[0m
+Unhandled exception in thread started by 
+sys.excepthook is missing
+lost sys.stderr
+... logging to /home/rex/.ros/log/a0a0312c-63da-11ea-888a-74e5f91b6aa2/roslaunch-rex-PC-32601.log
+Checking log directory for disk usage. This may take awhile.
+Press Ctrl-C to interrupt
+Done checking log file disk usage. Usage is <1GB.
+]2;roscore
+[1mstarted roslaunch server http://rex-PC:38355/[0m
+ros_comm version 1.12.14
+
+
+SUMMARY
+========
+
+PARAMETERS
+ * /rosdistro: kinetic
+ * /rosversion: 1.12.14
+
+NODES
+
+auto-starting new master
+[1mprocess[master]: started with pid [32612][0m
+[1mROS_MASTER_URI=http://rex-PC: 11311/[0m
+]2;roscore http://rex-PC: 11311/
+[1msetting /run_id to a0a0312c-63da-11ea-888a-74e5f91b6aa2[0m
+[1mprocess[rosout-1]: started with pid [32646][0m
+started core service [/rosout]
+[rosout-1] killing on exit
+[master] killing on exit
+shutting down processing monitor...
+... shutting down processing monitor complete
+[1mdone[0m
+... logging to /home/rex/.ros/log/d59dee18-63db-11ea-888a-74e5f91b6aa2/roslaunch-rex-PC-7516.log
+Checking log directory for disk usage. This may take awhile.
+Press Ctrl-C to interrupt
+Done checking log file disk usage. Usage is <1GB.
+]2;roscore
+[1mstarted roslaunch server http://rex-PC:36889/[0m
+ros_comm version 1.12.14
+
+
+SUMMARY
+========
+
+PARAMETERS
+ * /rosdistro: kinetic
+ * /rosversion: 1.12.14
+
+NODES
+
+auto-starting new master
+[1mprocess[master]: started with pid [7527][0m
+[1mROS_MASTER_URI=http://rex-PC: 11311/[0m
+]2;roscore http://rex-PC: 11311/
+[1msetting /run_id to d59dee18-63db-11ea-888a-74e5f91b6aa2[0m
+[1mprocess[rosout-1]: started with pid [7558][0m
+started core service [/rosout]
+[rosout-1] killing on exit
+[master] killing on exit
+shutting down processing monitor...
+... shutting down processing monitor complete
+[1mdone[0m
+... logging to /home/rex/.ros/log/e820eb66-63e1-11ea-888a-74e5f91b6aa2/roslaunch-rex-PC-14719.log
+Checking log directory for disk usage. This may take awhile.
+Press Ctrl-C to interrupt
+Done checking log file disk usage. Usage is <1GB.
+]2;roscore
+[1mstarted roslaunch server http://rex-PC:38191/[0m
+ros_comm version 1.12.14
+
+
+SUMMARY
+========
+
+PARAMETERS
+ * /rosdistro: kinetic
+ * /rosversion: 1.12.14
+
+NODES
+
+auto-starting new master
+[1mprocess[master]: started with pid [14730][0m
+[1mROS_MASTER_URI=http://rex-PC: 11311/[0m
+]2;roscore http://rex-PC: 11311/
+[1msetting /run_id to e820eb66-63e1-11ea-888a-74e5f91b6aa2[0m
+[1mprocess[rosout-1]: started with pid [14759][0m
+started core service [/rosout]
+[rosout-1] killing on exit
+[master] killing on exit
+shutting down processing monitor...
+... shutting down processing monitor complete
+[1mdone[0m
+... logging to /home/rex/.ros/log/0879c098-63e4-11ea-888a-74e5f91b6aa2/roslaunch-rex-PC-25502.log
+Checking log directory for disk usage. This may take awhile.
+Press Ctrl-C to interrupt
+Done checking log file disk usage. Usage is <1GB.
+]2;roscore
+[1mstarted roslaunch server http://rex-PC:39403/[0m
+ros_comm version 1.12.14
+
+
+SUMMARY
+========
+
+PARAMETERS
+ * /rosdistro: kinetic
+ * /rosversion: 1.12.14
+
+NODES
+
+auto-starting new master
+[1mprocess[master]: started with pid [25513][0m
+[1mROS_MASTER_URI=http://rex-PC: 11311/[0m
+]2;roscore http://rex-PC: 11311/
+[1msetting /run_id to 0879c098-63e4-11ea-888a-74e5f91b6aa2[0m
+[1mprocess[rosout-1]: started with pid [25542][0m
+started core service [/rosout]
+[rosout-1] killing on exit
+[master] killing on exit
+shutting down processing monitor...
+... shutting down processing monitor complete
+[1mdone[0m
+... logging to /home/rex/.ros/log/607e3d68-63e5-11ea-888a-74e5f91b6aa2/roslaunch-rex-PC-338.log
+Checking log directory for disk usage. This may take awhile.
+Press Ctrl-C to interrupt
+Done checking log file disk usage. Usage is <1GB.
+]2;roscore
+[1mstarted roslaunch server http://rex-PC:44837/[0m
+ros_comm version 1.12.14
+
+
+SUMMARY
+========
+
+PARAMETERS
+ * /rosdistro: kinetic
+ * /rosversion: 1.12.14
+
+NODES
+
+auto-starting new master
+[1mprocess[master]: started with pid [349][0m
+[1mROS_MASTER_URI=http://rex-PC: 11311/[0m
+]2;roscore http://rex-PC: 11311/
+[1msetting /run_id to 607e3d68-63e5-11ea-888a-74e5f91b6aa2[0m
+[1mprocess[rosout-1]: started with pid [392][0m
+started core service [/rosout]
+[rosout-1] killing on exit
+[master] killing on exit
+shutting down processing monitor...
+... shutting down processing monitor complete
+[1mdone[0m
+Unhandled exception in thread started by 
+sys.excepthook is missing
+lost sys.stderr
+... logging to /home/rex/.ros/log/5611594a-63e6-11ea-888a-74e5f91b6aa2/roslaunch-rex-PC-7053.log
+Checking log directory for disk usage. This may take awhile.
+Press Ctrl-C to interrupt
+Done checking log file disk usage. Usage is <1GB.
+]2;roscore
+[1mstarted roslaunch server http://rex-PC:42815/[0m
+ros_comm version 1.12.14
+
+
+SUMMARY
+========
+
+PARAMETERS
+ * /rosdistro: kinetic
+ * /rosversion: 1.12.14
+
+NODES
+
+auto-starting new master
+[1mprocess[master]: started with pid [7064][0m
+[1mROS_MASTER_URI=http://rex-PC: 11311/[0m
+]2;roscore http://rex-PC: 11311/
+[1msetting /run_id to 5611594a-63e6-11ea-888a-74e5f91b6aa2[0m
+[1mprocess[rosout-1]: started with pid [7093][0m
+started core service [/rosout]
+[rosout-1] killing on exit
+[master] killing on exit
+shutting down processing monitor...
+... shutting down processing monitor complete
+[1mdone[0m
+... logging to /home/rex/.ros/log/fe314adc-6449-11ea-b6ed-74e5f91b6aa2/roslaunch-rex-PC-3188.log
+Checking log directory for disk usage. This may take awhile.
+Press Ctrl-C to interrupt
+Done checking log file disk usage. Usage is <1GB.
+]2;roscore
+[1mstarted roslaunch server http://rex-PC:35183/[0m
+ros_comm version 1.12.14
+
+
+SUMMARY
+========
+
+PARAMETERS
+ * /rosdistro: kinetic
+ * /rosversion: 1.12.14
+
+NODES
+
+auto-starting new master
+[1mprocess[master]: started with pid [3202][0m
+[1mROS_MASTER_URI=http://rex-PC: 11311/[0m
+]2;roscore http://rex-PC: 11311/
+[1msetting /run_id to fe314adc-6449-11ea-b6ed-74e5f91b6aa2[0m
+[1mprocess[rosout-1]: started with pid [3222][0m
+started core service [/rosout]
+[rosout-1] killing on exit
+[master] killing on exit
+shutting down processing monitor...
+... shutting down processing monitor complete
+[1mdone[0m
+... logging to /home/rex/.ros/log/abc03580-650a-11ea-98d8-74e5f91b6aa2/roslaunch-rex-PC-9974.log
+Checking log directory for disk usage. This may take awhile.
+Press Ctrl-C to interrupt
+Done checking log file disk usage. Usage is <1GB.
+]2;roscore
+[1mstarted roslaunch server http://rex-PC:43301/[0m
+ros_comm version 1.12.14
+
+
+SUMMARY
+========
+
+PARAMETERS
+ * /rosdistro: kinetic
+ * /rosversion: 1.12.14
+
+NODES
+
+auto-starting new master
+[1mprocess[master]: started with pid [9985][0m
+[1mROS_MASTER_URI=http://rex-PC: 11311/[0m
+]2;roscore http://rex-PC: 11311/
+[1msetting /run_id to abc03580-650a-11ea-98d8-74e5f91b6aa2[0m
+[1mprocess[rosout-1]: started with pid [10006][0m
+started core service [/rosout]
+[rosout-1] killing on exit
+[master] killing on exit
+shutting down processing monitor...
+... shutting down processing monitor complete
+[1mdone[0m
+... logging to /home/rex/.ros/log/171bbfc4-650c-11ea-98d8-74e5f91b6aa2/roslaunch-rex-PC-17484.log
+Checking log directory for disk usage. This may take awhile.
+Press Ctrl-C to interrupt
+Done checking log file disk usage. Usage is <1GB.
+]2;roscore
+[1mstarted roslaunch server http://rex-PC:45621/[0m
+ros_comm version 1.12.14
+
+
+SUMMARY
+========
+
+PARAMETERS
+ * /rosdistro: kinetic
+ * /rosversion: 1.12.14
+
+NODES
+
+auto-starting new master
+[1mprocess[master]: started with pid [17495][0m
+[1mROS_MASTER_URI=http://rex-PC: 11311/[0m
+]2;roscore http://rex-PC: 11311/
+[1msetting /run_id to 171bbfc4-650c-11ea-98d8-74e5f91b6aa2[0m
+[1mprocess[rosout-1]: started with pid [17548][0m
+started core service [/rosout]
+[rosout-1] killing on exit
+[master] killing on exit
+shutting down processing monitor...
+... shutting down processing monitor complete
+[1mdone[0m
+Unhandled exception in thread started by 
+sys.excepthook is missing
+lost sys.stderr
+... logging to /home/rex/.ros/log/150fcba4-6510-11ea-98d8-74e5f91b6aa2/roslaunch-rex-PC-23121.log
+Checking log directory for disk usage. This may take awhile.
+Press Ctrl-C to interrupt
+Done checking log file disk usage. Usage is <1GB.
+]2;roscore
+[1mstarted roslaunch server http://rex-PC:37401/[0m
+ros_comm version 1.12.14
+
+
+SUMMARY
+========
+
+PARAMETERS
+ * /rosdistro: kinetic
+ * /rosversion: 1.12.14
+
+NODES
+
+auto-starting new master
+[1mprocess[master]: started with pid [23132][0m
+[1mROS_MASTER_URI=http://rex-PC: 11311/[0m
+]2;roscore http://rex-PC: 11311/
+[1msetting /run_id to 150fcba4-6510-11ea-98d8-74e5f91b6aa2[0m
+[1mprocess[rosout-1]: started with pid [23160][0m
+started core service [/rosout]
+[rosout-1] killing on exit
+[master] killing on exit
+shutting down processing monitor...
+... shutting down processing monitor complete
+[1mdone[0m
+Unhandled exception in thread started by 
+sys.excepthook is missing
+lost sys.stderr
+... logging to /home/rex/.ros/log/100e9112-6515-11ea-98d8-74e5f91b6aa2/roslaunch-rex-PC-2883.log
+Checking log directory for disk usage. This may take awhile.
+Press Ctrl-C to interrupt
+Done checking log file disk usage. Usage is <1GB.
+]2;roscore
+[1mstarted roslaunch server http://rex-PC:44657/[0m
+ros_comm version 1.12.14
+
+
+SUMMARY
+========
+
+PARAMETERS
+ * /rosdistro: kinetic
+ * /rosversion: 1.12.14
+
+NODES
+
+auto-starting new master
+[1mprocess[master]: started with pid [2906][0m
+[1mROS_MASTER_URI=http://rex-PC: 11311/[0m
+]2;roscore http://rex-PC: 11311/
+[1msetting /run_id to 100e9112-6515-11ea-98d8-74e5f91b6aa2[0m
+[1mprocess[rosout-1]: started with pid [2935][0m
+started core service [/rosout]
+[rosout-1] killing on exit
+[master] killing on exit
+shutting down processing monitor...
+... shutting down processing monitor complete
+[1mdone[0m
+Unhandled exception in thread started by 
+sys.excepthook is missing
+lost sys.stderr
+... logging to /home/rex/.ros/log/37b418a6-6766-11ea-86d2-74e5f91b6aa2/roslaunch-rex-PC-7833.log
+Checking log directory for disk usage. This may take awhile.
+Press Ctrl-C to interrupt
+Done checking log file disk usage. Usage is <1GB.
+]2;roscore
+[1mstarted roslaunch server http://rex-PC:38639/[0m
+ros_comm version 1.12.14
+
+
+SUMMARY
+========
+
+PARAMETERS
+ * /rosdistro: kinetic
+ * /rosversion: 1.12.14
+
+NODES
+
+auto-starting new master
+[1mprocess[master]: started with pid [7850][0m
+[1mROS_MASTER_URI=http://rex-PC: 11311/[0m
+]2;roscore http://rex-PC: 11311/
+[1msetting /run_id to 37b418a6-6766-11ea-86d2-74e5f91b6aa2[0m
+[1mprocess[rosout-1]: started with pid [7877][0m
+started core service [/rosout]
+[rosout-1] killing on exit
+[master] killing on exit
+shutting down processing monitor...
+... shutting down processing monitor complete
+[1mdone[0m
+Unhandled exception in thread started by 
+sys.excepthook is missing
+lost sys.stderr
+... logging to /home/rex/.ros/log/d486422a-6767-11ea-86d2-74e5f91b6aa2/roslaunch-rex-PC-14416.log
+Checking log directory for disk usage. This may take awhile.
+Press Ctrl-C to interrupt
+Done checking log file disk usage. Usage is <1GB.
+]2;roscore
+[1mstarted roslaunch server http://rex-PC:33561/[0m
+ros_comm version 1.12.14
+
+
+SUMMARY
+========
+
+PARAMETERS
+ * /rosdistro: kinetic
+ * /rosversion: 1.12.14
+
+NODES
+
+auto-starting new master
+[1mprocess[master]: started with pid [14427][0m
+[1mROS_MASTER_URI=http://rex-PC: 11311/[0m
+]2;roscore http://rex-PC: 11311/
+[1msetting /run_id to d486422a-6767-11ea-86d2-74e5f91b6aa2[0m
+[1mprocess[rosout-1]: started with pid [14455][0m
+started core service [/rosout]
+[rosout-1] killing on exit
+[master] killing on exit
+shutting down processing monitor...
+... shutting down processing monitor complete
+[1mdone[0m
+... logging to /home/rex/.ros/log/6bb6b55e-676c-11ea-86d2-74e5f91b6aa2/roslaunch-rex-PC-21846.log
+Checking log directory for disk usage. This may take awhile.
+Press Ctrl-C to interrupt
+Done checking log file disk usage. Usage is <1GB.
+]2;roscore
+[1mstarted roslaunch server http://rex-PC:36273/[0m
+ros_comm version 1.12.14
+
+
+SUMMARY
+========
+
+PARAMETERS
+ * /rosdistro: kinetic
+ * /rosversion: 1.12.14
+
+NODES
+
+auto-starting new master
+[1mprocess[master]: started with pid [21857][0m
+[1mROS_MASTER_URI=http://rex-PC: 11311/[0m
+]2;roscore http://rex-PC: 11311/
+[1msetting /run_id to 6bb6b55e-676c-11ea-86d2-74e5f91b6aa2[0m
+[1mprocess[rosout-1]: started with pid [21886][0m
+started core service [/rosout]
+[rosout-1] killing on exit
+[master] killing on exit
+shutting down processing monitor...
+... shutting down processing monitor complete
+[1mdone[0m
+... logging to /home/rex/.ros/log/163b5e6e-6770-11ea-86d2-74e5f91b6aa2/roslaunch-rex-PC-28186.log
+Checking log directory for disk usage. This may take awhile.
+Press Ctrl-C to interrupt
+Done checking log file disk usage. Usage is <1GB.
+]2;roscore
+[1mstarted roslaunch server http://rex-PC:34593/[0m
+ros_comm version 1.12.14
+
+
+SUMMARY
+========
+
+PARAMETERS
+ * /rosdistro: kinetic
+ * /rosversion: 1.12.14
+
+NODES
+
+auto-starting new master
+[1mprocess[master]: started with pid [28197][0m
+[1mROS_MASTER_URI=http://rex-PC: 11311/[0m
+]2;roscore http://rex-PC: 11311/
+[1msetting /run_id to 163b5e6e-6770-11ea-86d2-74e5f91b6aa2[0m
+[1mprocess[rosout-1]: started with pid [28226][0m
+started core service [/rosout]
+[rosout-1] killing on exit
+[master] killing on exit
+shutting down processing monitor...
+... shutting down processing monitor complete
+[1mdone[0m
+... logging to /home/rex/.ros/log/7112dc7e-6787-11ea-86d2-74e5f91b6aa2/roslaunch-rex-PC-10047.log
+Checking log directory for disk usage. This may take awhile.
+Press Ctrl-C to interrupt
+Done checking log file disk usage. Usage is <1GB.
+]2;roscore
+[1mstarted roslaunch server http://rex-PC:38579/[0m
+ros_comm version 1.12.14
+
+
+SUMMARY
+========
+
+PARAMETERS
+ * /rosdistro: kinetic
+ * /rosversion: 1.12.14
+
+NODES
+
+auto-starting new master
+[1mprocess[master]: started with pid [10063][0m
+[1mROS_MASTER_URI=http://rex-PC: 11311/[0m
+]2;roscore http://rex-PC: 11311/
+[1msetting /run_id to 7112dc7e-6787-11ea-86d2-74e5f91b6aa2[0m
+[1mprocess[rosout-1]: started with pid [10096][0m
+started core service [/rosout]
+[rosout-1] killing on exit
+[master] killing on exit
+shutting down processing monitor...
+... shutting down processing monitor complete
+[1mdone[0m
+Unhandled exception in thread started by 
+sys.excepthook is missing
+lost sys.stderr
+... logging to /home/rex/.ros/log/7dd5a034-679d-11ea-86d2-74e5f91b6aa2/roslaunch-rex-PC-21165.log
+Checking log directory for disk usage. This may take awhile.
+Press Ctrl-C to interrupt
+Done checking log file disk usage. Usage is <1GB.
+]2;roscore
+[1mstarted roslaunch server http://rex-PC:46159/[0m
+ros_comm version 1.12.14
+
+
+SUMMARY
+========
+
+PARAMETERS
+ * /rosdistro: kinetic
+ * /rosversion: 1.12.14
+
+NODES
+
+auto-starting new master
+[1mprocess[master]: started with pid [21178][0m
+[1mROS_MASTER_URI=http://rex-PC: 11311/[0m
+]2;roscore http://rex-PC: 11311/
+[1msetting /run_id to 7dd5a034-679d-11ea-86d2-74e5f91b6aa2[0m
+[1mprocess[rosout-1]: started with pid [21206][0m
+started core service [/rosout]
+[rosout-1] killing on exit
+[master] killing on exit
+shutting down processing monitor...
+... shutting down processing monitor complete
+[1mdone[0m
+Unhandled exception in thread started by 
+sys.excepthook is missing
+lost sys.stderr
+... logging to /home/rex/.ros/log/4f929f7a-69bd-11ea-9188-5268f760c157/roslaunch-rex-PC-4980.log
+Checking log directory for disk usage. This may take awhile.
+Press Ctrl-C to interrupt
+Done checking log file disk usage. Usage is <1GB.
+]2;roscore
+[1mstarted roslaunch server http://rex-PC:36863/[0m
+ros_comm version 1.12.14
+
+
+SUMMARY
+========
+
+PARAMETERS
+ * /rosdistro: kinetic
+ * /rosversion: 1.12.14
+
+NODES
+
+auto-starting new master
+[1mprocess[master]: started with pid [4996][0m
+[1mROS_MASTER_URI=http://rex-PC: 11311/[0m
+]2;roscore http://rex-PC: 11311/
+[1msetting /run_id to 4f929f7a-69bd-11ea-9188-5268f760c157[0m
+[1mprocess[rosout-1]: started with pid [5014][0m
+started core service [/rosout]
+[rosout-1] killing on exit
+[master] killing on exit
+shutting down processing monitor...
+... shutting down processing monitor complete
+[1mdone[0m
+... logging to /home/rex/.ros/log/967641ee-69cc-11ea-9188-5268f760c157/roslaunch-rex-PC-14901.log
+Checking log directory for disk usage. This may take awhile.
+Press Ctrl-C to interrupt
+Done checking log file disk usage. Usage is <1GB.
+]2;roscore
+[1mstarted roslaunch server http://rex-PC:46595/[0m
+ros_comm version 1.12.14
+
+
+SUMMARY
+========
+
+PARAMETERS
+ * /rosdistro: kinetic
+ * /rosversion: 1.12.14
+
+NODES
+
+auto-starting new master
+[1mprocess[master]: started with pid [14912][0m
+[1mROS_MASTER_URI=http://rex-PC: 11311/[0m
+]2;roscore http://rex-PC: 11311/
+[1msetting /run_id to 967641ee-69cc-11ea-9188-5268f760c157[0m
+[1mprocess[rosout-1]: started with pid [14948][0m
+started core service [/rosout]
+[rosout-1] killing on exit
+[master] killing on exit
+shutting down processing monitor...
+... shutting down processing monitor complete
+[1mdone[0m
+... logging to /home/rex/.ros/log/3c0647c2-69e0-11ea-9188-5268f760c157/roslaunch-rex-PC-7736.log
+Checking log directory for disk usage. This may take awhile.
+Press Ctrl-C to interrupt
+Done checking log file disk usage. Usage is <1GB.
+]2;roscore
+[1mstarted roslaunch server http://rex-PC:35781/[0m
+ros_comm version 1.12.14
+
+
+SUMMARY
+========
+
+PARAMETERS
+ * /rosdistro: kinetic
+ * /rosversion: 1.12.14
+
+NODES
+
+auto-starting new master
+[1mprocess[master]: started with pid [7747][0m
+[1mROS_MASTER_URI=http://rex-PC: 11311/[0m
+]2;roscore http://rex-PC: 11311/
+[1msetting /run_id to 3c0647c2-69e0-11ea-9188-5268f760c157[0m
+[1mprocess[rosout-1]: started with pid [7776][0m
+started core service [/rosout]
+[rosout-1] killing on exit
+[master] killing on exit
+shutting down processing monitor...
+... shutting down processing monitor complete
+[1mdone[0m
+... logging to /home/rex/.ros/log/0ab74b42-69f6-11ea-9188-5268f760c157/roslaunch-rex-PC-23127.log
+Checking log directory for disk usage. This may take awhile.
+Press Ctrl-C to interrupt
+Done checking log file disk usage. Usage is <1GB.
+]2;roscore
+[1mstarted roslaunch server http://rex-PC:38873/[0m
+ros_comm version 1.12.14
+
+
+SUMMARY
+========
+
+PARAMETERS
+ * /rosdistro: kinetic
+ * /rosversion: 1.12.14
+
+NODES
+
+auto-starting new master
+[1mprocess[master]: started with pid [23138][0m
+[1mROS_MASTER_URI=http://rex-PC: 11311/[0m
+]2;roscore http://rex-PC: 11311/
+[1msetting /run_id to 0ab74b42-69f6-11ea-9188-5268f760c157[0m
+[1mprocess[rosout-1]: started with pid [23169][0m
+started core service [/rosout]
+[rosout-1] killing on exit
+[master] killing on exit
+shutting down processing monitor...
+... shutting down processing monitor complete
+[1mdone[0m
+Unhandled exception in thread started by 
+sys.excepthook is missing
+lost sys.stderr
+... logging to /home/rex/.ros/log/c4f6aa8e-6a00-11ea-9188-5268f760c157/roslaunch-rex-PC-6682.log
+Checking log directory for disk usage. This may take awhile.
+Press Ctrl-C to interrupt
+Done checking log file disk usage. Usage is <1GB.
+]2;roscore
+[1mstarted roslaunch server http://rex-PC:44743/[0m
+ros_comm version 1.12.14
+
+
+SUMMARY
+========
+
+PARAMETERS
+ * /rosdistro: kinetic
+ * /rosversion: 1.12.14
+
+NODES
+
+auto-starting new master
+[1mprocess[master]: started with pid [6693][0m
+[1mROS_MASTER_URI=http://rex-PC: 11311/[0m
+]2;roscore http://rex-PC: 11311/
+[1msetting /run_id to c4f6aa8e-6a00-11ea-9188-5268f760c157[0m
+[1mprocess[rosout-1]: started with pid [6731][0m
+started core service [/rosout]
+[rosout-1] killing on exit
+[master] killing on exit
+shutting down processing monitor...
+... shutting down processing monitor complete
+[1mdone[0m
+... logging to /home/rex/.ros/log/03b811d2-6a0f-11ea-9188-5268f760c157/roslaunch-rex-PC-23877.log
+Checking log directory for disk usage. This may take awhile.
+Press Ctrl-C to interrupt
+Done checking log file disk usage. Usage is <1GB.
+]2;roscore
+[1mstarted roslaunch server http://rex-PC:44871/[0m
+ros_comm version 1.12.14
+
+
+SUMMARY
+========
+
+PARAMETERS
+ * /rosdistro: kinetic
+ * /rosversion: 1.12.14
+
+NODES
+
+auto-starting new master
+[1mprocess[master]: started with pid [23888][0m
+[1mROS_MASTER_URI=http://rex-PC: 11311/[0m
+]2;roscore http://rex-PC: 11311/
+[1msetting /run_id to 03b811d2-6a0f-11ea-9188-5268f760c157[0m
+[1mprocess[rosout-1]: started with pid [23921][0m
+started core service [/rosout]
+[rosout-1] killing on exit
+[master] killing on exit
+shutting down processing monitor...
+... shutting down processing monitor complete
+[1mdone[0m
+Unhandled exception in thread started by 
+sys.excepthook is missing
+lost sys.stderr
+... logging to /home/rex/.ros/log/7e91d196-6a13-11ea-9188-5268f760c157/roslaunch-rex-PC-31788.log
+Checking log directory for disk usage. This may take awhile.
+Press Ctrl-C to interrupt
+Done checking log file disk usage. Usage is <1GB.
+]2;roscore
+[1mstarted roslaunch server http://rex-PC:38663/[0m
+ros_comm version 1.12.14
+
+
+SUMMARY
+========
+
+PARAMETERS
+ * /rosdistro: kinetic
+ * /rosversion: 1.12.14
+
+NODES
+
+auto-starting new master
+[1mprocess[master]: started with pid [31808][0m
+[1mROS_MASTER_URI=http://rex-PC: 11311/[0m
+]2;roscore http://rex-PC: 11311/
+[1msetting /run_id to 7e91d196-6a13-11ea-9188-5268f760c157[0m
+[1mprocess[rosout-1]: started with pid [31848][0m
+started core service [/rosout]
+[rosout-1] killing on exit
+[master] killing on exit
+shutting down processing monitor...
+... shutting down processing monitor complete
+[1mdone[0m

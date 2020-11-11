@@ -30,11 +30,7 @@ Help-> Eclipse Markerplace-> search 'Bndtools'-> Installed->Restart Eclipse.
 
 ## Run it in a physical robot
 
-Follow below `Import the project into Eclipse for Developers` section to import it in Eclipse which will automatically build all projects.
-
-#### Change the configuration to the robot IP
-
-Enter the **be.iminds.iot.ros.core** sun-project, open **config.properties** file, and replace the `localhost` part of `ros.master.uri` property with the real robot IP, save it.
+Clone this repository
 
 #### Configure Warehouse Map
 
@@ -106,14 +102,14 @@ This table will be refined according to the updated robotic use case, and multip
 
 Enter **eu.brain.iot.robot.config** project and open **resources/OSGI-INF/configurator/configuration.json**:
 
-```
+```json
 {
     ":configurator:resource-version" : 1,
     ":configurator:symbolic-name" : "eu.brain.iot.service.robotic.robot.config",
     ":configurator:version" : "0.0.1-SNAPSHOT",
 
     "eu.brain.iot.example.robot.Door": {
-    	"host": "192.168.2.202", 
+    	"host": "localhost", 
         "port": "8080",
         "id": "ExampleDoor"
     },
@@ -131,13 +127,14 @@ In addition, if you're using a robot whose name is different with **rb1\_base\_a
 
 #### Run in a robot
 
-Enter the **eu.brain.iot.robot.service** project, package the **test.bndrun** as an executable jar:
+Enter the **eu.brain.iot.robot.service** project, open **test.bndrun** and change the **ros.master.uri=http://localhost:11311** to your robot IP, save it. Then package the **test.bndrun** as an executable jar using Gradle build tool:
 
 ```bash
-$ cd eu.brain.iot.robot.service
-$ bnd package test.bndrun
+$ cd ros-edge-node
+$ ./gradlew clean build resolve export
+$ cd eu.brain.iot.robot.service/generated/distributions/executable
 $ ls
-test.jar
+  test.jar launch.jar
 ```
 Finally, start up the robot, then run the executable jar everywhere, not limited to the robot, maybe on your laptop, because the ROS Edge Node will (remotely) connect to the robot through its IP. 
 ```bash

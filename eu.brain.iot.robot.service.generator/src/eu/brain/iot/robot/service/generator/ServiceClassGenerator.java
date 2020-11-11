@@ -32,10 +32,21 @@ import com.helger.jcodemodel.JPackage;
 import com.helger.jcodemodel.JTryBlock;
 import com.helger.jcodemodel.JTypeVar;
 import com.helger.jcodemodel.JVar;
+
+
 import eu.brain.iot.robot.service.config.*;
 
+import org.ros.message.MessageFactory;
+import org.ros.message.Time;
+import org.ros.node.ConnectedNode;
+import geometry_msgs.Pose2D;
+import procedures_msgs.ProcedureHeader;
+import procedures_msgs.ProcedureQueryRequest;
+import procedures_msgs.ProcedureQueryResponse;
+import robot_local_control_msgs.GoTo;
 
 @Component(
+
 		immediate=true,
 		properties = "OSGI-INF/config.properties"
 	)
@@ -61,6 +72,7 @@ public class ServiceClassGenerator {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 		
 		try {
 			for (RosClass singleClass : serviceConfig.getRosClasses())

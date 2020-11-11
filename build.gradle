@@ -1,4 +1,78 @@
 // Available to customize the build
+// build.gradle - Configures the Gradle build for the workspace.
+
+
+/*
+ * Master Gradle build script
+ *
+ * Depends on bndPlugin property set by settings.gradle.  ==> biz.aQute.bnd.gradle:4.3.1
+ * and bnd_* values from gradle.properties.
+ */
+
+import aQute.bnd.build.Workspace
+import aQute.bnd.osgi.Constants
+
 wrapper {
   jarFile = rootProject.file('.gradle-wrapper/gradle-wrapper.jar')
 }
+/* Add bnd gradle plugin as a script dependency */
+buildscript {
+  dependencies {
+    classpath bndPlugin
+  }
+}
+
+/* Initialize the bnd workspace */
+Workspace.setDriver(Constants.BNDDRIVER_GRADLE)
+Workspace.addGestalt(Constants.GESTALT_BATCH, null)
+ext.bndWorkspace = new Workspace(rootDir, bnd_cnf)
+if (bndWorkspace == null) {
+  throw new GradleException("Unable to load workspace ${rootDir}/${bnd_cnf}")
+}
+
+/*Adding extra properties */
+ext.cnf = rootProject.project(bnd_cnf) 
+
+
+def runCommand(String[] args) {
+ new ByteArrayOutputStream().withStream { os ->
+  def result = exec {
+   commandLine = args
+   standardOutput = os
+  }
+  return os.toString().trim()
+ }
+}
+
+ext {
+	cnf = rootProject.project(bnd_cnf)
+	os = System.env.OS ?: runCommand('uname', '-s')
+
+}
+
+/* Configure the subprojects */
+subprojects {
+  def bndProject = bndWorkspace.getProject(name)
+  if (bndProject != null) {
+    plugins.apply 'biz.aQute.bnd'
+  
+  
+    task("cleanAll", description: "Clean all code including all (sub)native libraries.", group: 'build') {}
+	 cleanAll.dependsOn(clean)
+
+ //   task("resolve", description: "resolve all code including all (sub)native libraries.", group: 'export') {}
+
+  }     
+}
+
+task clean {
+    doLast {
+        println 'Default Cleaning!'
+    }
+}
+
+
+
+
+
+    

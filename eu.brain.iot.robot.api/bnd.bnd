@@ -1,15 +1,11 @@
 -buildpath: \
-	osgi.annotation;version=6.0.1,\
 	com.paremus.brain.iot.eventing.api,\
-	osgi.core,\
-	osgi.cmpn;version=6.0,\
 	org.apache.commons.io,\
 	json,\
-	org.osgi.dto
-
--baseline: *
-javac.source: 1.8
-javac.target: 1.8
+	org.osgi.dto,\
+	osgi.core;version=7.0,\
+	osgi.cmpn;version=7.0,\
+	osgi.annotation;version=7.0
 
 -includeresource: resources
 

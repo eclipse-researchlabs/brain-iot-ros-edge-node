@@ -9,7 +9,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
-
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.component.annotations.Activate;
@@ -34,7 +33,6 @@ import eu.brain.iot.eventing.api.EventBus;
 import eu.brain.iot.eventing.api.SmartBehaviour;
 import eu.brain.iot.robot.database.TaskInfo;
 import eu.brain.iot.robot.database.DBAccessor;
-import eu.brain.iot.robot.events.Cancel;
 import eu.brain.iot.robot.events.CheckMarker;
 import eu.brain.iot.robot.events.CheckValueReturn;
 import eu.brain.iot.robot.events.DoorFound;

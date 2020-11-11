@@ -23,7 +23,6 @@
 package be.iminds.iot.ros.core;
 
 import java.io.File;
-import java.lang.ProcessBuilder.Redirect;
 import java.net.Socket;
 import java.net.URI;
 import java.util.ArrayList;
@@ -38,8 +37,6 @@ import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
-
-import org.osgi.framework.BundleContext;
 import org.osgi.service.component.ComponentContext;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
@@ -72,8 +69,8 @@ import be.iminds.iot.ros.api.Ros;
 		"osgi.command.function=publishers",
 		"osgi.command.function=subscribers",
 		"osgi.command.function=services",
-		"osgi.command.function=providers"},
-	properties = "OSGI-INF/config.properties")
+		"osgi.command.function=providers"}/*,
+	properties = "OSGI-INF/config.properties"*/)
 public class RosImpl extends AbstractNodeMain implements Ros {
 
 	// ROS environment variables
@@ -108,7 +105,8 @@ public class RosImpl extends AbstractNodeMain implements Ros {
 			if(uri==null){
 				throw new Exception("No master URI configured!");
 			}
-			masterURI = new URI(uri); // http://192.168.2.202:11311
+			masterURI = new URI(uri);//uri
+			System.out.println("\n masterURI = "+masterURI);
 			distro = getVariable("ROS_DISTRO", "ros.distro", properties);
 			namespace = getVariable("ROS_NAMESPACE", "ros.namespace", properties);
 			root = getVariable("ROS_ROOT", "ros.root", properties);

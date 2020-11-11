@@ -22,5 +22,3 @@ Bundle-Version: 1.0.0
 Private-Package:	eu.brain.iot.robot.service.config,\
 					eu.brain.iot.robot.service.generator,\
 					eu.brain.iot.robot.topic.config
-
-					
