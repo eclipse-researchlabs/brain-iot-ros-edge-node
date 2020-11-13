@@ -3,8 +3,6 @@ package eu.brain.iot.robot.service;
 import org.ros.message.MessageFactory;
 import org.ros.message.Time;
 import org.ros.node.ConnectedNode;
-
-import eu.brain.iot.robot.api.CallResponse;
 import procedures_msgs.ProcedureHeader;
 import procedures_msgs.ProcedureQueryRequest;
 import procedures_msgs.ProcedureQueryResponse;
@@ -12,6 +10,7 @@ import procedures_msgs.ProcedureResult;
 import procedures_msgs.ProcedureState;
 import robot_local_control_msgs.GoToPetitionRequest;
 import robot_local_control_msgs.GoToPetitionResponse;
+import robot_local_control_msgs.PickPetitionResponse;
 
 
 /**
@@ -44,88 +43,41 @@ public abstract class GoToComponent {
 
     /**
      * @return
-     *     returnVal[0] is the check result of response result,returnVal[1] is the check result of response state
+     *     check if the request is successfully sent to the ROS service, the possible result are: ok/error
      */
-    public Integer[] call_gotoRun(GoToPetitionRequest request) {
-        String result;
-        String state;
-        GoToPetitionResponse responseVal;
-        ProcedureResult pr;
-        Integer[] returnVal = new Integer[] { 0, 0 };
-        responseVal = gotoRun.call(request);
+    public String call_gotoRun(GoToPetitionRequest request) {
+        
+        String result = null;
+
+        GoToPetitionResponse responseVal = gotoRun.call(request);
         if (responseVal!= null) {
             result = responseVal.getResult().getResult();
-            state = responseVal.getState().getCurrentState();
         } else {
         	System.out.println(robotName+" GoToComponent GoTo Response timeout! return null");
-            return returnVal;
         }
-        CallResponse cr = new CallResponse();
-        cr.result = responseVal.getResult().getResult();
-        cr.current_state = responseVal.getState().getCurrentState();
-        
-        if (result.compareTo("ok") == 0) {
-            returnVal[ 0 ] = 1;
-        }
-        if (state.compareTo("finished") == 0) {
-            returnVal[ 1 ] = 1;
-        }
-        if (state.compareTo("queued") == 0) {
-            returnVal[ 1 ] = 2;
-        }
-        if (state.compareTo("running") == 0) {
-            returnVal[ 1 ] = 3;
-        }
-        if (state.compareTo("paused") == 0) {
-            returnVal[ 1 ] = 4;
-        }
-        if (state.compareTo("unknown") == 0) {
-            returnVal[ 1 ] = 5;
-        }
-        return returnVal;
+        return result;
     }
 
     /**
-     * This abstract method need to be overrided when instantiate the class
+     * This abstract method need to be override when instantiate the class
      */
     public abstract GoToPetitionRequest constructMsg_gotoRun();
 
     /**
      * @return
-     *     returnVal[0] is the check result of response result,returnVal[1] is the check result of response state
+     *     check if the request is successfully sent to the ROS service, the possible result are: ok/error
      */
-    public Integer[] call_gotoCancle(ProcedureQueryRequest request) {
-        String result;
-        String state;
-        ProcedureQueryResponse responseVal;
-        Integer[] returnVal = new Integer[] { 0, 0 };
-        responseVal = gotoCancle.call(request);
+    public String call_gotoCancle(ProcedureQueryRequest request) {
+        
+        String result = null;
+
+        ProcedureQueryResponse responseVal = gotoCancle.call(request);
         if (responseVal!= null) {
             result = responseVal.getResult().getResult();
-            state = responseVal.getState().getCurrentState();
         } else {
         	System.out.println(robotName+" GoToComponent Cancel Response timeout! return null");
-            return returnVal;
         }
-        if (result.compareTo("ok") == 0) {
-            returnVal[ 0 ] = 1;
-        }
-        if (state.compareTo("finished") == 0) {
-            returnVal[ 1 ] = 1;
-        }
-        if (state.compareTo("queued") == 0) {
-            returnVal[ 1 ] = 2;
-        }
-        if (state.compareTo("running") == 0) {
-            returnVal[ 1 ] = 3;
-        }
-        if (state.compareTo("paused") == 0) {
-            returnVal[ 1 ] = 4;
-        }
-        if (state.compareTo("unknown") == 0) {
-            returnVal[ 1 ] = 5;
-        }
-        return returnVal;
+        return result;
     }
 
     /**

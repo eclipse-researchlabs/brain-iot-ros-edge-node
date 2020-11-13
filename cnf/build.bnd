@@ -28,6 +28,10 @@ mockito-deps: org.objenesis; version=2.6.0,\
   net.bytebuddy.byte-buddy; version=1.7.9,\
   net.bytebuddy.byte-buddy-agent; version=1.7.9 
 
+# -buildrepo: 			BrainIot
+
+-pom: 					groupid	=	eu.brain.iot.service.robotic,\
+						version =	${versionmask;===;${@version}}-SNAPSHOT
  
  
 	 

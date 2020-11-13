@@ -3,8 +3,6 @@ package eu.brain.iot.robot.service;
 import org.ros.message.MessageFactory;
 import org.ros.message.Time;
 import org.ros.node.ConnectedNode;
-
-import eu.brain.iot.robot.api.CallResponse;
 import procedures_msgs.ProcedureHeader;
 import procedures_msgs.ProcedureQueryRequest;
 import procedures_msgs.ProcedureQueryResponse;
@@ -44,39 +42,19 @@ public abstract class PlaceComponent {
 
     /**
      * @return
-     *     returnVal[0] is the check result of response result,returnVal[1] is the check result of response state
+     *     check if the request is successfully sent to the ROS service, the possible result are: ok/error
      */
-    public Integer[] call_placeRun(PlacePetitionRequest request) {
-        String result;
-        String state;
-        PlacePetitionResponse responseVal;
-        Integer[] returnVal = new Integer[] { 0, 0 };
-        responseVal = placeRun.call(request);
+    public String call_placeRun(PlacePetitionRequest request) {
+    
+        String result = null;
+
+        PlacePetitionResponse responseVal = placeRun.call(request);
         if (responseVal!= null) {
             result = responseVal.getResult().getResult();
-            state = responseVal.getState().getCurrentState();
         } else {
-            return returnVal;
+        	System.out.println(robotName+" PlaceComponent Place Response timeout! return null");
         }
-        if (result.compareTo("ok") == 0) {
-            returnVal[ 0 ] = 1;
-        }
-        if (state.compareTo("finished") == 0) {
-            returnVal[ 1 ] = 1;
-        }
-        if (state.compareTo("queued") == 0) {
-            returnVal[ 1 ] = 2;
-        }
-        if (state.compareTo("running") == 0) {
-            returnVal[ 1 ] = 3;
-        }
-        if (state.compareTo("paused") == 0) {
-            returnVal[ 1 ] = 4;
-        }
-        if (state.compareTo("unknown") == 0) {
-            returnVal[ 1 ] = 5;
-        }
-        return returnVal;
+        return result;
     }
 
     /**
@@ -86,39 +64,19 @@ public abstract class PlaceComponent {
 
     /**
      * @return
-     *     returnVal[0] is the check result of response result,returnVal[1] is the check result of response state
+     *    check if the request is successfully sent to the ROS service, the possible result are: ok/error
      */
-    public Integer[] call_placeCancle(ProcedureQueryRequest request) {
-        String result;
-        String state;
-        ProcedureQueryResponse responseVal;
-        Integer[] returnVal = new Integer[] { 0, 0 };
-        responseVal = placeCancle.call(request);
+    public String call_placeCancle(ProcedureQueryRequest request) {
+
+    	String result = null;
+    	
+        ProcedureQueryResponse responseVal = placeCancle.call(request);
         if (responseVal!= null) {
             result = responseVal.getResult().getResult();
-            state = responseVal.getState().getCurrentState();
         } else {
-            return returnVal;
+        	System.out.println(robotName+" PlaceComponent Cancel Response timeout! return null");
         }
-        if (result.compareTo("ok") == 0) {
-            returnVal[ 0 ] = 1;
-        }
-        if (state.compareTo("finished") == 0) {
-            returnVal[ 1 ] = 1;
-        }
-        if (state.compareTo("queued") == 0) {
-            returnVal[ 1 ] = 2;
-        }
-        if (state.compareTo("running") == 0) {
-            returnVal[ 1 ] = 3;
-        }
-        if (state.compareTo("paused") == 0) {
-            returnVal[ 1 ] = 4;
-        }
-        if (state.compareTo("unknown") == 0) {
-            returnVal[ 1 ] = 5;
-        }
-        return returnVal;
+        return result;
     }
 
     /**

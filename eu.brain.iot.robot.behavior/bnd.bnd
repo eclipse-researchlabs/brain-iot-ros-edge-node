@@ -1,0 +1,16 @@
+-buildpath: \
+	eu.brain.iot.robot.api;version=latest,\
+	eu.brain.iot.robot.msgs;version=latest,\
+	be.iminds.iot.ros.api;version=latest,\
+	com.paremus.brain.iot.eventing.api,\
+	org.osgi.service.configurator,\
+	eu.brain.iot.service.robotic.door.api,\
+	osgi.core;version=7.0,\
+	osgi.cmpn;version=7.0,\
+	osgi.annotation;version=7.0
+
+
+Bundle-Version: 0.0.2
+Private-Package: eu.brain.iot.robot.behavior
+
+				

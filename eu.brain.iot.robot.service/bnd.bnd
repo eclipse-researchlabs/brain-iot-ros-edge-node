@@ -10,12 +10,11 @@
 	eu.brain.iot.service.robotic.door.api,\
 	osgi.core;version=7.0,\
 	osgi.cmpn;version=7.0,\
-	org.ros.rosjava;version=0.2
+	org.ros.rosjava;version=0.2,\
+	json;version=20190722.0
 
 
-Bundle-Version: 1.0.0
-Private-Package: eu.brain.iot.robot.service,\
-				eu.brain.iot.robot.behavior,\
-				eu.brain.iot.robot.database
+Bundle-Version: 0.0.2
+Private-Package: eu.brain.iot.robot.service
 
 				
