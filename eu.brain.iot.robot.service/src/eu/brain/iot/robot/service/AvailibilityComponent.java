@@ -20,7 +20,7 @@ public abstract class AvailibilityComponent {
         availiblity.register((("/"+ robotName)+"/robot_local_control/state"), "robot_local_control_msgs/Status");
     }
 
-    public Status get_availiblity_value() {      
+    public Status get_availiblity_value() {
         status = availiblity.getCurrentValue();
         while (status == null) {
         	try {

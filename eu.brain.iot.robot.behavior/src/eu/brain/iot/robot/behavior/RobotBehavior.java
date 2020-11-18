@@ -18,50 +18,55 @@ import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.metatype.annotations.AttributeDefinition;
 import org.osgi.service.metatype.annotations.ObjectClassDefinition;
-import org.ros.namespace.GraphName;
-import org.ros.node.AbstractNodeMain;
-import org.ros.node.ConnectedNode;
-import org.ros.node.NodeMain;
-
 import com.paremus.brain.iot.example.door.api.DoorStatus;
 import com.paremus.brain.iot.example.door.api.DoorStatus.State;
 import com.paremus.brain.iot.example.door.api.DoorStatusResponse;
-
 import eu.brain.iot.eventing.annotation.SmartBehaviourDefinition;
 import eu.brain.iot.eventing.api.BrainIoTEvent;
 import eu.brain.iot.eventing.api.EventBus;
 import eu.brain.iot.eventing.api.SmartBehaviour;
+import eu.brain.iot.robot.api.Command;
+import eu.brain.iot.robot.api.Coordinate;
 import eu.brain.iot.robot.events.*;
+import eu.brain.iot.robot.events.QueryStateValueReturn.CurrentState;
 import eu.brain.iot.robot.events.RobotCommand;
+import eu.brain.iot.warehouse.events.CartMovedNotice;
+import eu.brain.iot.warehouse.events.CartNoticeResponse;
+import eu.brain.iot.warehouse.events.DockingResponse;
+import eu.brain.iot.warehouse.events.NewPickPointRequest;
+import eu.brain.iot.warehouse.events.NewPickPointResponse;
+import eu.brain.iot.warehouse.events.NewStoragePointRequest;
+import eu.brain.iot.warehouse.events.NewStoragePointResponse;
+import eu.brain.iot.warehouse.events.NoCartNotice;
 
 
 @Component(
 		configurationPid= "eu.brain.iot.example.robot.Robot",
 		configurationPolicy=ConfigurationPolicy.REQUIRE,
-		service = {NodeMain.class})
+		service = {SmartBehaviour.class})
 @SmartBehaviourDefinition(
-		consumed = {CheckValueReturn.class, QueryStateValueReturn.class,RobotReady.class,DoorFound.class},    
+		consumed = {MarkerReturn.class, QueryStateValueReturn.class, RobotReady.class, DoorStatusResponse.class},    
 		author = "LINKS", name = "Robot Behavior",
 		description = "Implements a Robot Behavior.")
-public class RobotBehavior extends AbstractNodeMain implements SmartBehaviour<BrainIoTEvent> {
+public class RobotBehavior implements SmartBehaviour<BrainIoTEvent> {
 
-    private int robotId;
+    private int robotID;
 	private boolean robotReady=false;
-	private QueryStateValueReturn feedback;
+	private QueryStateValueReturn queryReturn;
 	private int markerID = 0;
 	private int newMarkerCounter = 0;
 	private int currentMarkerCounter = 0;
 	private boolean isDoorOpen = false;
+	private NewPickPointResponse pickResponse = null;
+	private NewStoragePointResponse storageResponse = null;
+	private DockingResponse dockingResponse = null;
+	private CartNoticeResponse cartNoticeResponse = null;
+
 
 	
 	@ObjectClassDefinition
 	public static @interface Config {
-/*		@AttributeDefinition(description = "The IP of the robot")
-		String host();
-
-		@AttributeDefinition(description = "The Port of the robot")
-		int port();
-*/
+		
 		@AttributeDefinition(description = "The name of the robot")
 		String name();
 
@@ -73,21 +78,17 @@ public class RobotBehavior extends AbstractNodeMain implements SmartBehaviour<Br
 	private Config config;
 	private ExecutorService worker;
 	private ServiceRegistration<?> reg;
-	private TaskInfo taskInfo = null;
 
 	@Reference
 	private EventBus eventBus;
 	
-	@Reference
-	private DBAccessor DBAccessor;
-
     @Activate
 	void activate(BundleContext context, Config config, Map<String,Object> props){
 	    this.config=config;
 	    System.out.println("\nHello!  I am robotBehavior : "+config.id()+ "  name = "+config.name());
 	    
 	    worker = Executors.newFixedThreadPool(10);
-//	    worker = Executors.newSingleThreadExecutor();
+
 	    Dictionary<String, Object> serviceProps = new Hashtable<>(props.entrySet().stream()
 				.filter(e -> !e.getKey().startsWith("."))
 				.collect(Collectors.toMap(Entry::getKey, Entry::getValue)));
@@ -98,7 +99,7 @@ public class RobotBehavior extends AbstractNodeMain implements SmartBehaviour<Br
 			System.out.println("+++++++++ filter = "+serviceProps.get(SmartBehaviourDefinition.PREFIX_ + "filter"));
 			reg = context.registerService(SmartBehaviour.class, this, serviceProps);
 
-		this.robotId=config.id();
+		this.robotID=config.id();
 		
 	//	onStart();
 	}
@@ -113,144 +114,196 @@ public class RobotBehavior extends AbstractNodeMain implements SmartBehaviour<Br
 			Thread.currentThread().interrupt();
 		}
 	}
-
-    @Override
-	public GraphName getDefaultNodeName() {
-		return GraphName.of("rb1_base_"+config.id()+"/behaviorController");
-	}
     
-    @Override
-	public void onStart(ConnectedNode connectedNode) {
+   
+	public void onStart() {
+		worker.execute(() -> {
+		boolean nextIteration = true;
 		
-		boolean flag = true;
 	//	worker.execute(() -> {
-		while (flag) {
+		
+		while (nextIteration) {
 
 			if (robotReady) {
-				this.taskInfo = DBAccessor.getTask();
+				
+				boolean query = true;
+				Coordinate pickPoint = null;
+				
+   //--------------------------- Query Pick point --------------------------------------
+				
+					while (query) {
 
-				if (taskInfo != null) {
+						NewPickPointRequest pickRequest = new NewPickPointRequest();
+						pickRequest.robotID = this.robotID;
+						pickResponse = null;
+						eventBus.deliver(pickRequest);
+
+						waitPickResponse();
+
+						if (pickResponse.hasNewPoint) {
+							System.out.println("-----------new Pick Point-------------");
+							pickPoint = pickResponse.pickPoint;
+							System.out.println("RB" + robotID + " get new Pick Point: " + pickPoint.getX() + ", "+ pickPoint.getY() + ", " + pickPoint.getZ());
+							System.out.println("------------------------");
+							
+						} else {
+							System.out.println("RB" + robotID + " doesn't get any Pick Point, continue to query after 10s");
+							// TODO continue to query new pick point
+							try {
+								TimeUnit.SECONDS.sleep(10);
+							} catch (InterruptedException e) {
+								e.printStackTrace();
+							}
+							continue;
+						}
+					} // while
 					
-					System.out.println("-----------new task-------------");
-					System.out.println("robot" + robotId + " get TaskInfo: taskId: " + taskInfo.taskId
-							+ ",  pickPoseID: " + taskInfo.pickPoseID + ", placePose: " + taskInfo.placePose);
-					System.out.println("------------------------");
-
-					WriteGOTO writeGOTO = createWriteGOTO("UNLOAD");  // writeGOTO
-					eventBus.deliver(writeGOTO);
-					System.out.println("-->RB" + robotId + " sending goto cmd");
-					if (waitFeedback(writeGOTO.mission) == 0) { // UNLOAD, state=finished
-						robotReady = false;
-						System.out.println("-->Robot " + robotId + " execute GOTO action failed, Robot Behavior stops !!!!");
-						break;
-					} else {
-						System.out.println("-->Robot " + robotId + " GOTO unload area successfully");
+	//--------------------------- Go to Picking point --------------------------------------
+					
+					if(!executeGoTo(pickPoint, "Picking point")) {
+						break; // execution failed
 					}
+	 //--------------------------- check Cart Marker --------------------------------------			
 
-					CheckMarker checkMarker = createCheckMarker();  // CheckMarker
+					CheckMarker checkMarker = createCheckMarker();            // CheckMarker
 					eventBus.deliver(checkMarker);
-					System.out.println("-->RB" + robotId + " sending CheckMarker");
+					System.out.println("-->RB" + robotID + " sending CheckMarker");
 					
 					int newMarkerID = waitMarker();
-					System.out.println("-->RB" + robotId + " got new MarkerID = "+newMarkerID);
+					System.out.println("-->RB" + robotID + " got new MarkerID = "+newMarkerID);
 					
-					PickCart pickCart = createPickCart(newMarkerID);  // PickCart
+	//---------------------------TODO: No Cart Notice----------THEN Cancel current mission? how?--how to handle no marker found on topic in ros node.---can't always wait.-----------------------
+			
+					//1. how to know no cart here, then run:
+					
+				/*	NoCartNotice noCartNotice = createNoCartNotice();
+					cartNoticeResponse = null;
+					eventBus.deliver(noCartNotice);
+					System.out.println("-->RB" + robotID + " sending NoCartNotice");
+					
+					waitCartNoticeResponse();  // noticeStatus = "OK"
+					continue;
+					*/
+	//---------------------------TODO: Cancel current action after detecting Anomaly--------------------------------------
+					
+	//--------------------------- Pick Cart --------------------------------------
+					
+					PickCart pickCart = createPickCart(newMarkerID);          // PickCart
+					queryReturn = null;
 					eventBus.deliver(pickCart);
-					System.out.println("-->RB" + robotId + " sending pick");
-					if (waitFeedback(pickCart.mission) == 0) {
-						robotReady = false;
-						System.out.println("-->Robot " + robotId + " execute PickCart action failed, so Robot Behavior stops !!!!");
-						break;
-					} else {
-						System.out.println("-->Robot " + robotId + " PickCart successfully");
-					}
-
-					writeGOTO = createWriteGOTO(taskInfo.placePose); // writeGOTO  PLACE_C, PLACE_L, PLACE_R
-					eventBus.deliver(writeGOTO);
-					System.out.println("-->RB" + robotId + " sending goto");
+					System.out.println("-->RB" + robotID + " sending pick");
 					
-			/*		int time = 15;
-					try {
-						System.out.println("-->Robot " + robotId + " is waiting for "+time +" s ~~~~~~~~~~~~~~~~~~~~~~~~~");
-						// wait for robot stop in front of door, or pass through the door, indicated by the isDoorOpen
-						TimeUnit.SECONDS.sleep(time);  // TODO SHOULD check the current position of robot in waitFeedback()
-					} catch (InterruptedException e) {
-						e.printStackTrace();
+					if (waitQueryReturn(pickCart.command)) {  // always true.
+						CurrentState currentState = queryReturn.currentState;
+						
+						if(currentState.equals(CurrentState.unknown)) {
+							robotReady = false;
+							System.out.println("-->RB" + robotID + " execute PickCart action failed, Robot Behavior stops !!!!");
+							break;
+						} else { // FINISHED
+							System.out.println("-->RB " + robotID + " Pick Cart successfully");
+						}
 					}
-					if(isDoorOpen) {  // robot ever stopped in front of door, need to send GOTO again.
-						eventBus.deliver(writeGOTO);
-						System.out.println("\n -->RB" + robotId + " sending goto again.....after door is open");
-					}
-			*/		
-					
-					if (waitFeedback(taskInfo.placePose) == 0) {
-						robotReady = false;
-						System.out.println("-->Robot " + robotId + " execute GOTO action failed, Robot Behavior stops !!!!");
-						break;
-					} else {
-						System.out.println("-->Robot " + robotId + " GOTO storage area successfully");
-					}
-
-					PlaceCART placeCart = createPlaceCART();  // PlaceCART
-					eventBus.deliver(placeCart);
-					System.out.println("-->RB" + robotId + " sending PlaceCART");
-
-					if (waitFeedback(placeCart.mission) == 0) {
-						robotReady = false;
-						System.out.println("-->Robot " + robotId + " execute PlaceCART action failed, Robot Behavior stops !!!!");
-						break;
-					} else {
-						System.out.println("-->Robot " + robotId + " place cart successfully");
-					}
-					
-
-				} else {
-					flag = false; // break, all tasks are done
-				}
 				
-			} else {
+      //--------------------------- Query Storage point --------------------------------------
+					
+					while (query) {
+
+						NewStoragePointRequest storageRequest = new NewStoragePointRequest();
+						storageRequest.robotID = this.robotID;
+						storageRequest.markerID = markerID;
+						storageResponse = null;
+						eventBus.deliver(storageRequest);
+
+						waitStorageResponse();
+
+						if (storageResponse.hasNewPoint) {
+							System.out.println("-----------new Storage Point-------------");
+							System.out.println("------------------------");
+							
+						} else {
+							System.out.println("RB" + robotID + " doesn't get any Storage Point, continue to query after 10s");
+							// TODO continue to query new pick point
+							try {
+								TimeUnit.SECONDS.sleep(10);
+							} catch (InterruptedException e) {
+								e.printStackTrace();
+							}
+							continue;
+						}
+					} // while
+					
+	//--------------------------- Go to Storage AUX -------------------------------------
+					
+					if(!executeGoTo(storageResponse.storageAuxliaryPoint, "storage AUX")) {
+						break; // execution failed
+					}
+	 //--------------------------- check Door Marker --------------------------------------			
+
+					CheckMarker checkDoorMarker = createCheckMarker();            // CheckMarker
+					eventBus.deliver(checkDoorMarker);
+					System.out.println("-->RB" + robotID + " sending check Door Marker");
+					
+					int DoorID = waitMarker();
+					System.out.println("-->RB" + robotID + " got DoorID = "+DoorID);
+
+	//--------------------------- Go to Storage Point--------------------------------------
+					
+					if(!executeGoTo(storageResponse.storagePoint, "storage Point")) {
+						break; // execution failed
+					}
+					
+	//--------------------------- Place Cart--------------------------------------
+					
+					PlaceCart placeCart = createPlaceCart();          // PickCart
+					queryReturn = null;
+					eventBus.deliver(placeCart);
+					System.out.println("-->RB" + robotID + " sending placeCart");
+					
+					if (waitQueryReturn(placeCart.command)) {  // always true. otherwise it always query
+						CurrentState currentState = queryReturn.currentState;
+						
+						if(currentState.equals(CurrentState.unknown)) {
+							robotReady = false;
+							System.out.println("-->RB" + robotID + " execute PickCart action failed, Robot Behavior stops !!!!");
+							break;
+						} else { // FINISHED
+							System.out.println("-->RB " + robotID + " Place Cart successfully");
+						}
+					}
+					
+	//--------------------------- Cart Moved Notice--------------------------------------		
+					CartMovedNotice cartMovedNotice = createCartMovedNotice();
+					cartNoticeResponse = null;
+					eventBus.deliver(cartMovedNotice);
+					System.out.println("-->RB" + robotID + " sending cartMovedNotice");
+					
+					waitCartNoticeResponse();  // noticeStatus = "OK"
+					
+					
+					
+
+			} else {  // robotReady = false
 				try {
 					TimeUnit.SECONDS.sleep(2);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
 			}
-		}
-	//	});
+		}  // end of ==> while (nextIteration) 
 		
-		if(flag == false) {
-			System.out.println("-->Tasks are done. Robot Behavior " + robotId + " exit !!!"); 
+		if(nextIteration == false) {  // only when normal exit(no pick, no storage after querying for a long time)
+			System.out.println("-->Tasks are done. Robot Behavior " + robotID + " exit !!!"); 
 		} else {
-			System.out.println("-->RB " + robotId+"  exit because of failure in robot!!!"); 
+			System.out.println("-->RB " + robotID+"  exit because of failure in robot!!!"); 
 		}
+		}
+		
+		);
+
 	}
    
-	private WriteGOTO createWriteGOTO(String mission) {
-		WriteGOTO writeGOTO = new WriteGOTO();
-		writeGOTO.robotId=robotId;
-		writeGOTO.mission=mission;  //UNLOAD, PLACE_C, PLACE_L, PLACE_R
-		writeGOTO.pickPoseID=taskInfo.pickPoseID;
-		return writeGOTO;
-	}
 	
-	private PickCart createPickCart(int markerID) {
-		PickCart pc= new PickCart();
-		pc.robotId=robotId;
-		pc.markerID=markerID;
-		return pc;
-	}
-	
-	private PlaceCART createPlaceCART() {
-		PlaceCART placeCart=new PlaceCART();
-		placeCart.robotId=robotId;
-		return placeCart;
-	}
-	
-	private CheckMarker createCheckMarker() {
-		CheckMarker checkMarker=new CheckMarker();
-		checkMarker.robotId=robotId;
-		return checkMarker;
-	}
 
 	
 	@Override
@@ -259,55 +312,97 @@ public class RobotBehavior extends AbstractNodeMain implements SmartBehaviour<Br
 		if (event instanceof RobotReady) {
 			RobotReady rbc = (RobotReady) event;
 			worker.execute(() -> {
-				System.out.println("-->RB" + robotId + " received RobotReady event");
+				System.out.println("-->RB" + robotID + " received RobotReady event");
 				robotReady = rbc.isReady;
+			});
+
+		} else if (event instanceof NewPickPointResponse) {
+			this.pickResponse = (NewPickPointResponse) event;
+		//	System.out.println("-->RB" + robotID + " receive NewPickPointResponse ");
+			worker.execute(() -> {
+				System.out.println("-->RB" + robotID + " receive NewPickPointResponse ");
+			});
+
+		} else if (event instanceof NewStoragePointResponse) {
+			this.storageResponse = (NewStoragePointResponse) event;
+			worker.execute(() -> {
+				System.out.println("-->RB" + robotID + " receive NewStoragePointResponse ");
+			});
+
+		} else if (event instanceof DockingResponse) {
+			this.dockingResponse = (DockingResponse) event;
+			worker.execute(() -> {
+				System.out.println("-->RB" + robotID + " receive DockingResponse ");
+			});
+
+		} else if (event instanceof CartNoticeResponse) {
+			this.cartNoticeResponse = (CartNoticeResponse) event;
+			worker.execute(() -> {
+				System.out.println("-->RB" + robotID + " receive CartNoticeResponse ");
 			});
 
 		} else if (event instanceof QueryStateValueReturn) {
 			QueryStateValueReturn qs = (QueryStateValueReturn) event;
 			worker.execute(() -> {
-				System.out.println("-->RB" + robotId + " receive query return value = "+qs.value);
-				this.feedback = qs;
+				System.out.println("-->RB" + robotID + " receive query return value");
+				this.queryReturn = qs;
 			});
 
-		}  else if (event instanceof CheckValueReturn) {
-			CheckValueReturn cvr = (CheckValueReturn) event;
+		} else if (event instanceof MarkerReturn) {
+			MarkerReturn cvr = (MarkerReturn) event;
 			worker.execute(() -> {
-				System.out.println("-->RB" + robotId + " receive Check Marker return, marker ID = "+cvr.value);
-				this.markerID = cvr.value;
+				System.out.println("-->RB" + robotID + " receive Check Marker return, marker ID = "+cvr.markerID);
+				this.markerID = cvr.markerID;
 				this.newMarkerCounter += 1;
 			});
 
-		} else if (event instanceof DoorFound) {
-			worker.execute(() -> {
-				DoorStatus status = new DoorStatus();
-				status.doorId = DoorStatus.ALL_DOORS;
-				status.targetState = State.OPEN;
-				
-				System.out.println("-->RB" + robotId + " SENDing DoorStatus = OPEN");
-				eventBus.deliver(status);
-			});
 		} else if (event instanceof DoorStatusResponse) {
 			worker.execute(() -> {
 				DoorStatusResponse response = (DoorStatusResponse) event;
 				if(response.state == State.OPEN) {
 					isDoorOpen = true;
-					System.out.println("-->RB" + robotId + " door is opened successfully!!!!");
+					System.out.println("-->RB" + robotID + " door is opened successfully!!!!");
 				}
 			});
 		}
 		
 	}
 	
-	public int waitFeedback(String mission) {
-		System.out.println("-->RB" + robotId + " in waiting feedback");
+	public boolean executeGoTo(Coordinate coordinate, String targetPoint) {
+		WriteGoTo writeGoTo = createWriteGoTo(coordinate); // writeGOTO
+		queryReturn = null;
+		eventBus.deliver(writeGoTo);
+		System.out.println("-->RB" + robotID + " sending goto cmd");
+
+		if (waitQueryReturn(writeGoTo.command)) { // always true.
+			CurrentState currentState = queryReturn.currentState;
+
+			if (currentState.equals(CurrentState.unknown)) {
+				robotReady = false;
+				System.out.println("-->RB" + robotID + " execute GoTo "+targetPoint +" action failed, Robot Behavior stops !!!!");
+		//		break;
+				return false;
+			} else { // FINISHED
+				System.out.println("-->RB " + robotID + " GoTo "+targetPoint +" successfully");
+			}
+		}
+		return true;
+	}
+	
+	public boolean waitQueryReturn(Command command) {
+		System.out.println("-->RB" + robotID + " in waiting queryReturn");
 		while (true) {
-			if (feedback != null) {
-				if (feedback.mission.equals(mission) && feedback.value == 1) {
-					feedback = null;
-					return 1;
-				} else
-					return 0;
+			if (queryReturn != null) {
+				if (queryReturn.command.equals(command)/* && queryReturn.currentState*/) {
+					return true;
+				} else {
+					System.out.println("-->RB" + robotID + " get queryReturn, but the command is not the same, wait......");
+					try {
+						TimeUnit.SECONDS.sleep(2);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
 			} else {
 				try {
 					TimeUnit.SECONDS.sleep(2);
@@ -317,6 +412,64 @@ public class RobotBehavior extends AbstractNodeMain implements SmartBehaviour<Br
 			}
 		}
 	}
+	
+	public boolean waitPickResponse() {
+		System.out.println("-->RB" + robotID + " in waiting PickResponse");
+		while (true) {
+			if (this.pickResponse != null) {
+				return true;
+			} else {
+				try {
+					TimeUnit.SECONDS.sleep(2);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+	public boolean waitStorageResponse() {
+		System.out.println("-->RB" + robotID + " in waiting storageResponse");
+		while (true) {
+			if (this.storageResponse != null) {
+				return true;
+			} else {
+				try {
+					TimeUnit.SECONDS.sleep(2);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+	public boolean waitCartNoticeResponse() {
+		System.out.println("-->RB" + robotID + " in waiting CartNoticeResponse");
+		while (true) {
+			if (this.cartNoticeResponse != null) {
+				return true;
+			} else {
+				try {
+					TimeUnit.SECONDS.sleep(2);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+	public boolean waitDockingResponse() {
+		System.out.println("-->RB" + robotID + " in waiting dockingResponse");
+		while (true) {
+			if (this.dockingResponse != null) {
+				return true;
+			} else {
+				try {
+					TimeUnit.SECONDS.sleep(2);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+	
 
 /*	public int waitMarker() {
 		System.out.println("-->RB" + robotId + " is waiting for pose Marker");
@@ -335,7 +488,7 @@ public class RobotBehavior extends AbstractNodeMain implements SmartBehaviour<Br
 	}*/
 	
 	public int waitMarker() {
-		System.out.println("-->RB" + robotId + " is waiting for pose Marker");
+		System.out.println("-->RB" + robotID + " is waiting for pose Marker");
 		while (true) {
 			if (this.currentMarkerCounter != this.newMarkerCounter) {
 				this.currentMarkerCounter = this.newMarkerCounter;
@@ -349,5 +502,46 @@ public class RobotBehavior extends AbstractNodeMain implements SmartBehaviour<Br
 			}
 		}
 	}
+	
+	private WriteGoTo createWriteGoTo(Coordinate coordinate) {
+		WriteGoTo writeGoTo = new WriteGoTo();
+		writeGoTo.robotID=robotID;
+		writeGoTo.coordinate = coordinate;
+		return writeGoTo;
+	}
+	
+	private PickCart createPickCart(int markerID) {
+		PickCart pc= new PickCart();
+		pc.robotID=robotID;
+		pc.markerID=markerID;
+		return pc;
+	}
+	
+	private PlaceCart createPlaceCart() {
+		PlaceCart placeCart=new PlaceCart();
+		placeCart.robotID=robotID;
+		return placeCart;
+	}
+	
+	private CheckMarker createCheckMarker() {
+		CheckMarker checkMarker=new CheckMarker();
+		checkMarker.robotID=robotID;
+		return checkMarker;
+	}
+	
+	private CartMovedNotice createCartMovedNotice() {
+		CartMovedNotice cartMovedNotice=new CartMovedNotice();
+		cartMovedNotice.robotID=robotID;
+		cartMovedNotice.pickPoint = pickResponse.pickPoint;
+		return cartMovedNotice;
+	}
+	
+	private NoCartNotice createNoCartNotice() {
+		NoCartNotice noCartNotice=new NoCartNotice();
+		noCartNotice.robotID=robotID;
+		noCartNotice.pickPoint = pickResponse.pickPoint;
+		return noCartNotice;
+	}
+	
 
 }

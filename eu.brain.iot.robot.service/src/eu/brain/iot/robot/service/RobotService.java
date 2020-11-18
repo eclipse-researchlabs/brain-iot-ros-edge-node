@@ -61,7 +61,7 @@ public class RobotService extends AbstractNodeMain implements SmartBehaviour<Rob
     private String robotName;
     private int robotID;
     private AvailibilityComponent availibility;
-    private Ar_pose_markerComponent ar_pose_marker;
+    private PoseMarkerComponent ar_pose_marker;
     private GoToComponent  goToComponent;
     private PickComponent pickComponent;
     private PlaceComponent placeComponent;
@@ -79,9 +79,6 @@ public class RobotService extends AbstractNodeMain implements SmartBehaviour<Rob
 
 	}
 	
-	public static enum CommandSendResult {
-		ok, error;
-	}
 
 	private Config config;
 	private ExecutorService worker;
@@ -146,7 +143,7 @@ public class RobotService extends AbstractNodeMain implements SmartBehaviour<Rob
 		availibility =new AvailibilityComponent(connectedNode,robotName) {};
 		availibility.register();
 		System.out.println("availibility registered.");
-		ar_pose_marker=new Ar_pose_markerComponent(connectedNode,robotName) {};
+		ar_pose_marker=new PoseMarkerComponent(connectedNode,robotName) {};
 		ar_pose_marker.register();
 		System.out.println("ar_pose_marker registered."); 
 		goToComponent=new GoToComponent(connectedNode,msgfactory,robotName) {
