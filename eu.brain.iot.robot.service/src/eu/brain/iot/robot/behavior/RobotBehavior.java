@@ -149,10 +149,10 @@ public class RobotBehavior extends AbstractNodeMain implements SmartBehaviour<Br
 					System.out.println("-->RB" + robotId + " sending goto cmd");
 					if (waitFeedback(writeGOTO.mission) == 0) { // UNLOAD, state=finished
 						robotReady = false;
-						System.out.println("-->Robot " + robotId + " execute GOTO action failed, Robot Behavior stops !!!!");
+						System.out.println("-->RB " + robotId + " execute GOTO action failed, Robot Behavior stops !!!!");
 						break;
 					} else {
-						System.out.println("-->Robot " + robotId + " GOTO unload area successfully");
+						System.out.println("-->RB " + robotId + " GOTO unload area successfully");
 					}
 
 					CheckMarker checkMarker = createCheckMarker();  // CheckMarker
@@ -167,10 +167,10 @@ public class RobotBehavior extends AbstractNodeMain implements SmartBehaviour<Br
 					System.out.println("-->RB" + robotId + " sending pick");
 					if (waitFeedback(pickCart.mission) == 0) {
 						robotReady = false;
-						System.out.println("-->Robot " + robotId + " execute PickCart action failed, so Robot Behavior stops !!!!");
+						System.out.println("-->RB " + robotId + " execute PickCart action failed, so Robot Behavior stops !!!!");
 						break;
 					} else {
-						System.out.println("-->Robot " + robotId + " PickCart successfully");
+						System.out.println("-->RB " + robotId + " PickCart successfully");
 					}
 
 					writeGOTO = createWriteGOTO(taskInfo.placePose); // writeGOTO  PLACE_C, PLACE_L, PLACE_R
@@ -193,10 +193,10 @@ public class RobotBehavior extends AbstractNodeMain implements SmartBehaviour<Br
 					
 					if (waitFeedback(taskInfo.placePose) == 0) {
 						robotReady = false;
-						System.out.println("-->Robot " + robotId + " execute GOTO action failed, Robot Behavior stops !!!!");
+						System.out.println("-->RB " + robotId + " execute GOTO action failed, Robot Behavior stops !!!!");
 						break;
 					} else {
-						System.out.println("-->Robot " + robotId + " GOTO storage area successfully");
+						System.out.println("-->RB " + robotId + " GOTO storage area successfully");
 					}
 
 					PlaceCART placeCart = createPlaceCART();  // PlaceCART
@@ -205,10 +205,10 @@ public class RobotBehavior extends AbstractNodeMain implements SmartBehaviour<Br
 
 					if (waitFeedback(placeCart.mission) == 0) {
 						robotReady = false;
-						System.out.println("-->Robot " + robotId + " execute PlaceCART action failed, Robot Behavior stops !!!!");
+						System.out.println("-->RB " + robotId + " execute PlaceCART action failed, Robot Behavior stops !!!!");
 						break;
 					} else {
-						System.out.println("-->Robot " + robotId + " place cart successfully");
+						System.out.println("-->RB " + robotId + " place cart successfully");
 					}
 					
 
@@ -274,7 +274,7 @@ public class RobotBehavior extends AbstractNodeMain implements SmartBehaviour<Br
 		} else if (event instanceof QueryStateValueReturn) {
 			QueryStateValueReturn qs = (QueryStateValueReturn) event;
 			worker.execute(() -> {
-				System.out.println("-->RB" + robotId + " receive query return value = "+qs.value);
+				System.out.println("-->RB" + robotId + " receive QueryStateValueReturn = Finished");
 				this.feedback = qs;
 			});
 

@@ -7,7 +7,7 @@
 
     
     "eu.brain.iot.example.robot.Door": {
-    	"host": "192.168.1.50", 
+    	"host": "localhost", 
         "port": "8080",
         "id": "ExampleDoor"
     },

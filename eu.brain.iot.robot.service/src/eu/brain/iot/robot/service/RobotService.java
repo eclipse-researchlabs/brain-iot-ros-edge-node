@@ -231,12 +231,12 @@ public class RobotService extends AbstractNodeMain implements SmartBehaviour<Rob
 			autoDetectDoor();  // when it returns, means the robot has past the door, no need to detect 
 		}*/
 		
-		while(!isWorkDone) {
+	/*	while(!isWorkDone) {
 			wait(10);
 		}
 		
 		System.out.println("ROBOT "+robotId +" exit onStart()......... ");
-		
+	*/	
 	}
 	
 	
@@ -373,7 +373,7 @@ public class RobotService extends AbstractNodeMain implements SmartBehaviour<Rob
 				}
 				eventBus.deliver(queryreturnedvalue);
 			//	checkDoorStatus = false;
-				isWorkDone = true;  // TODO
+			//	isWorkDone = true;  // TODO
 				System.out.println("ROBOT "+robotId +" finishs this iteration......... ");
 				});
 						
