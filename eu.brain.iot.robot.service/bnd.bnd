@@ -13,7 +13,7 @@
 	org.ros.rosjava;version=0.2,\
 	json;version=20190722.0
 
-
+-includeresource: resources
 Bundle-Version: 0.0.2
 Private-Package: eu.brain.iot.robot.service
 

@@ -3,6 +3,7 @@ package eu.brain.iot.robot.service;
 import java.util.HashMap;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -17,6 +18,7 @@ public class CartMapper {
 
 	private HashMap<Integer,String> Cart=new HashMap<Integer,String>();
 
+	@Activate
 	public CartMapper() throws IOException
 	{
 		loadCart();

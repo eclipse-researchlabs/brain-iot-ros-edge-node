@@ -1,6 +1,7 @@
 package eu.brain.iot.robot.events;
 
 import eu.brain.iot.robot.api.Coordinate;
+import eu.brain.iot.robot.api.RobotCommand;
 import eu.brain.iot.robot.api.Command;
 
 public class WriteGoTo extends RobotCommand {

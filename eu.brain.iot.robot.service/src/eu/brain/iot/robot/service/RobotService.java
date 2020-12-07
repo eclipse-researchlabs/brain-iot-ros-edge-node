@@ -35,6 +35,7 @@ import eu.brain.iot.robot.events.*;
 import eu.brain.iot.robot.events.QueryStateValueReturn.CurrentState;
 import eu.brain.iot.robot.api.Command;
 import eu.brain.iot.robot.api.Coordinate;
+import eu.brain.iot.robot.api.RobotCommand;
 import geometry_msgs.Pose2D;
 import procedures_msgs.ProcedureQueryRequest;
 import robot_local_control_msgs.GoTo;
@@ -60,6 +61,7 @@ public class RobotService extends AbstractNodeMain implements SmartBehaviour<Rob
 	
     private String robotName;
     private int robotID;
+    private String robotIP;
     private AvailibilityComponent availibility;
     private PoseMarkerComponent ar_pose_marker;
     private GoToComponent  goToComponent;
@@ -70,6 +72,9 @@ public class RobotService extends AbstractNodeMain implements SmartBehaviour<Rob
 	
 	@ObjectClassDefinition
 	public static @interface Config {
+		
+		@AttributeDefinition(description = "The IP of the robot")
+		String robotIP();  // ros edge node will get this info from ros, and send to RB for querying the docking point 
 		
 		@AttributeDefinition(description = "The name of the robot")
 		String name();
@@ -107,13 +112,14 @@ public class RobotService extends AbstractNodeMain implements SmartBehaviour<Rob
 				.collect(Collectors.toMap(Entry::getKey, Entry::getValue)));
 			
 			serviceProps.put(SmartBehaviourDefinition.PREFIX_ + "filter", 
-		    String.format("(|(robotId=%s)(robotId=%s))", config.id(), RobotCommand.ALL_ROBOTS));
+		    String.format("(|(robotID=%s)(robotID=%s))", config.id(), RobotCommand.ALL_ROBOTS));
 			
 			System.out.println("+++++++++ filter = "+serviceProps.get(SmartBehaviourDefinition.PREFIX_ + "filter"));
 			reg = context.registerService(SmartBehaviour.class, this, serviceProps);
             
 		this.robotName=config.name();
 		this.robotID=config.id();
+		this.robotIP=config.robotIP();
 	}
     
     @Deactivate
@@ -223,9 +229,10 @@ public class RobotService extends AbstractNodeMain implements SmartBehaviour<Rob
 	
 	public void broadCastReady()
 	{
-		RobotReady rbc=new RobotReady();  // TODO  RobotReady not exist in real robot, now only for local test
-		rbc.robotID=robotID;
-		rbc.isReady=true;
+		RobotReadyBroadcast rbc=new RobotReadyBroadcast();  // TODO  RobotReady not exist in real robot, now only for local test
+		rbc.robotID = robotID;
+		rbc.robotIP = robotIP;
+		rbc.isReady = true;
 		eventBus.deliver(rbc);
 		
 	}
