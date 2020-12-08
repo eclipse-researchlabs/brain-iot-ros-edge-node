@@ -14,8 +14,35 @@ buildscript {
   repositories {
     jcenter()
 	 mavenCentral()
-
+    //mavenLocal()
+	 maven {
+        url "https://repository.apache.org/content/groups/snapshots/"
+        name "Apache Snapshots"
+    }
+    maven {
+        url "https://oss.sonatype.org/content/groups/osgi"
+        name "OSGi public binaries"
+    }
   }
+
+/*	 maven {
+        url "https://nexus.repository-pert.ismb.it/repository/maven-releases/"
+        credentials {
+            username "${System.env.NEXUS_USER ?: NexusUser }"
+            password "${System.env.NEXUS_PASSWORD  ?: NexusPassword }"
+        }
+    }
+    maven {
+        url "https://nexus.repository-pert.ismb.it/repository/maven-snapshots/"
+        credentials {
+            username "${System.env.NEXUS_USER ?: NexusUser }"
+            password "${System.env.NEXUS_PASSWORD  ?: NexusPassword }"
+        }
+    }
+
+*/
+
+  
 
 /* https://docs.gradle.org/current/userguide/declaring_repositories.html
 repositories {
@@ -28,16 +55,28 @@ repositories {
     }
 }
 
-repositories {
-    mavenLocal()
-}
 
 plugins {
     id 'java'   #旧版本  apply plugin: 'java' 应用插件, use id  // apply plugin: JavaPlugin  use plugin type
 }
 
-
 */
+
+
+
+/*uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: "https://nexus.repository-pert.ismb.it/repository/maven-snapshots/"){
+                 authentication(userName: ${env.NEXUS_USER}, password: ${env.NEXUS_PASSWORD})
+            }
+        }
+    }
+}*/
+
+
+
+
 
   dependencies {
     classpath bnd_plugin
@@ -45,10 +84,19 @@ plugins {
   /* Pass bnd gradle plugin classpath to rootProject once created */
   def bndPlugin = files(configurations.classpath.files)
 
-  gradle.rootProject { rootProject ->
-    rootProject.ext.bndPlugin = bndPlugin
+  gradle.rootProject { 
+      rootProject -> rootProject.ext.bndPlugin = bndPlugin
   }
+
+/*plugins {
+    id 'maven'
+}*/
+
+
+
 }
+
+
 
 /* Initialize the bnd workspace */
 Workspace.setDriver(Constants.BNDDRIVER_GRADLE)
@@ -67,6 +115,7 @@ def defaultProjectName = bnd_build
 /* If in a subproject, use the subproject name */
 for (def currentDir = startParameter.currentDir; currentDir != rootDir; currentDir = currentDir.parentFile) {
   defaultProjectName = currentDir.name
+//println defaultProjectName
 }
 
 /* Build a set of project names we need to include from the specified tasks */
@@ -91,18 +140,32 @@ if ((startParameter.currentDir != rootDir) || projectNames.empty) {
 if (projectNames.remove('')) {
   rootDir.eachDir {
     def projectName = it.name
+//println projectName
     if (!projectName.startsWith('.')) {
       projectNames += projectName
     }
   }
 }
 
+/* Add each project and its dependencies to the graph 
+projectNames.each { projectName ->
+  include projectName
+  def project = getBndProject(workspace, projectName)
+//println project
+  project?.getDependson()*.getName().each {
+    include it
+//println projectName
+  }
+}*/
+
 /* Add each project and its dependencies to the graph */
 projectNames.each { projectName ->
   include projectName
   def project = getBndProject(workspace, projectName)
+
   project?.getDependson()*.getName().each {
     include it
+//println projectName
   }
 }
 
@@ -137,3 +200,4 @@ def getBndProject(Workspace workspace, String projectName) {
   }
   throw new GradleException("Project ${rootDir}/${projectName} is not a valid bnd project")
 }
+
