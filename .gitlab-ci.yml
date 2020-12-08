@@ -22,6 +22,17 @@ sfi-build:
     - ./gradlew clean build
 
 
+bus-test:
+  stage: test
+  script:
+    - ./gradlew clean build resolve export
+    - ls eu.brain.iot.robot.service/generated/distributions/executable
+
+
+sfi-deploy:
+    stage: deploy
+    script:
+        - ./gradlew clean build
 
 #uploadArchives
 

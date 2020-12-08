@@ -58,7 +58,8 @@ uploadArchives {
 
 description = """Bill of Materials"""
 
-//sourceCompatibility = 1.8 targetCompatibility = 1.8
+//sourceCompatibility = 1.8
+//targetCompatibility = "1.8"
 
 
 
@@ -106,6 +107,9 @@ subprojects {
   if (bndProject != null) {
     plugins.apply 'biz.aQute.bnd'
     plugins.apply 'maven'
+//apply plugin: 'maven-publish'
+//apply plugin: 'java-library'
+//apply plugin: 'java'
 
     group = project.properties['groupId'] 
     version = project.properties['version'].toString()
@@ -129,6 +133,46 @@ uploadArchives {
         }
     } 
 }
+/*java {
+    withJavadocJar()
+    withSourcesJar()
+}*/
+/*
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+
+artifact("build/libs/bndProject-$version"+".jar") {
+extension 'jar'
+}
+
+				versionMapping {
+                usage('java-api') {
+                    fromResolutionOf('runtimeClasspath')
+                }
+                usage('java-runtime') {
+                    fromResolutionResult()
+                }
+            }
+            pom {
+                packaging = 'bundle'
+        
+            }
+        }
+    }
+
+    repositories {
+        maven {
+            name = "nexus"
+            // change to point to your repo, e.g. http://my.org/repo
+            url = "https://nexus.repository-pert.ismb.it/repository/maven-snapshots/"
+          credentials {
+            username NexusUser
+            password NexusPassword
+           }
+        }
+    }
+}*/
   
     task("cleanAll", description: "Clean all code including all (sub)native libraries.", group: 'build') {}
 	 cleanAll.dependsOn(clean)
