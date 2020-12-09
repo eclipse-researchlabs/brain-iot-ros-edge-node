@@ -20,7 +20,6 @@ cache:
     - $HOME/.m2/repository
 
 
-
 install:
     - ./gradlew clean build
 
@@ -29,7 +28,7 @@ script:
 
 
 after_success:
-     - ./gradlew clean build uploadArchives
+     - ./gradlew build uploadArchives
 
 
 #end

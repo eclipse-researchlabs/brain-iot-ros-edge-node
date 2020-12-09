@@ -29,6 +29,7 @@ mockito-deps: org.objenesis; version=2.6.0,\
   net.bytebuddy.byte-buddy-agent; version=1.7.9 
 
  
- 
+-pom: 					groupid	=	eu.brain.iot.service.robotic,\
+						version =	1.0.0-SNAPSHOT
 	 
 
