@@ -1,5 +1,4 @@
 .DS_Store
-.gradle/
 .metadata
 .recommenders/
 RemoteSystemsTempFiles/
@@ -8,4 +7,4 @@ RemoteSystemsTempFiles/
 **/bin/
 git.sh
 **/mytest-service
-**/*.jar
+
