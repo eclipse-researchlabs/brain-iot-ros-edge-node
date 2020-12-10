@@ -128,7 +128,7 @@ uploadArchives {
     repositories {
         mavenDeployer {
             snapshotRepository(url: "https://nexus.repository-pert.ismb.it/repository/maven-snapshots/") {
-                authentication(userName: ${System.env.NEXUS_USER}, password: ${System.env.NEXUS_PASSWORD})
+                authentication(userName: "${env.NEXUS_USER}", password: "${env.NEXUS_PASSWORD}")
             }
         }
     } 
