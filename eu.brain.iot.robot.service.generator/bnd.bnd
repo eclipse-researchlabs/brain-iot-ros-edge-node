@@ -1,0 +1,24 @@
+-buildpath: \
+	osgi.annotation;version=6.0.1,\
+	osgi.core;version=6.0,\
+	osgi.cmpn;version=6.0,\
+	com.google.gson,\
+	com.helger.jcodemodel,\
+	be.iminds.iot.ros.api;version=latest,\
+	org.ros.rosjava,\
+	eu.brain.iot.robot.msgs;version=latest,\
+	be.iminds.iot.ros.msgs.generator;version=latest,\
+	org.ros.rosjava.message_generation,\
+	eu.brain.iot.robot.api,\
+	eu.brain.iot.robot.service;version=latest
+
+javac.source: 1.8
+javac.target: 1.8
+
+-includeresource:	OSGI-INF/config.properties=config.properties
+
+Bundle-Version: 1.0.0
+
+Private-Package:	eu.brain.iot.robot.service.config,\
+					eu.brain.iot.robot.service.generator,\
+					eu.brain.iot.robot.topic.config

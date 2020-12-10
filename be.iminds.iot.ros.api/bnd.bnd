@@ -1,0 +1,9 @@
+Bundle-Version: 0.4.0
+Export-Package: \
+	be.iminds.iot.ros.api,\
+	be.iminds.iot.ros.util
+-buildpath: \
+	osgi.core;version=7.0,\
+	osgi.cmpn;version=7.0,\
+	org.ros.rosjava;version=0.2
+	

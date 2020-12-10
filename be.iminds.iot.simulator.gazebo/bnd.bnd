@@ -1,0 +1,21 @@
+Bundle-Version: 0.4.0
+-includeresource:	OSGI-INF/config.properties=config.properties
+-buildpath: \
+	org.ros.rosjava,\
+	org.ros.rosjava.message_generation,\
+	org.jboss.netty,\
+	be.iminds.iot.ros.api;version=latest,\
+	be.iminds.iot.simulator.api;version=latest,\
+	eu.brain.iot.robot.msgs,\
+	osgi.core;version=7.0,\
+	org.apache.felix.configadmin,\
+	osgi.cmpn;version=7.0
+Private-Package: be.iminds.iot.simulator.gazebo
+Export-Package: be.iminds.iot.simulator.api
+
+
+
+
+
+
+

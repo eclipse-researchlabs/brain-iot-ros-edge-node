@@ -1,0 +1,219 @@
+// Available to customize the build
+// build.gradle - Configures the Gradle build for the workspace.
+
+
+/*
+ * Master Gradle build script
+ *
+ * Depends on bndPlugin property set by settings.gradle.  ==> biz.aQute.bnd.gradle:4.3.1
+ * and bnd_* values from gradle.properties.
+ */
+
+import aQute.bnd.build.Workspace
+import aQute.bnd.osgi.Constants
+
+wrapper {
+  jarFile = rootProject.file('.gradle-wrapper/gradle-wrapper.jar')
+}
+
+
+/* Add bnd gradle plugin as a script dependency */
+buildscript {
+  dependencies {
+    classpath bndPlugin
+  }
+}
+
+apply plugin: 'maven'
+//apply plugin: 'java'
+
+// 声明一个configuration
+/*
+configurations {
+    deployerJars
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+	// deployJar是前面configuration声明的
+    deployerJars "org.apache.maven.wagon:wagon-http:2.2" // ssh依赖库
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            configuration = configurations.deployerJars
+            snapshotRepository(url: "https://nexus.repository-pert.ismb.it/repository/maven-snapshots/"){
+                 authentication(userName: NexusUser, password: NexusPassword)
+            }
+        }
+    }
+}*/
+//group = project.properties['groupId'] 
+//artifact = artifactId
+//version = project.properties['version'].toString()
+
+description = """Bill of Materials"""
+
+//sourceCompatibility = 11
+//targetCompatibility = "1.8"
+
+
+
+// Using a getter method
+//    println artifactId
+//    println project.name
+//    println project.buildDir
+//    println getProject().getBuildDir()
+
+//println group
+//println artifactId
+//println version
+
+
+/* Initialize the bnd workspace */
+Workspace.setDriver(Constants.BNDDRIVER_GRADLE)
+Workspace.addGestalt(Constants.GESTALT_BATCH, null)
+ext.bndWorkspace = new Workspace(rootDir, bnd_cnf)
+if (bndWorkspace == null) {
+  throw new GradleException("Unable to load workspace ${rootDir}/${bnd_cnf}")
+}
+
+/*Adding extra properties */
+ext.cnf = rootProject.project(bnd_cnf) 
+//ext.artifactId=
+
+def runCommand(String[] args) {
+ new ByteArrayOutputStream().withStream { os ->
+  def result = exec {
+   commandLine = args
+   standardOutput = os
+  }
+  return os.toString().trim()
+ }
+}
+
+ext {
+	cnf = rootProject.project(bnd_cnf)
+	os = System.env.OS ?: runCommand('uname', '-s')
+}
+
+/* Configure the subprojects */
+subprojects {
+  def bndProject = bndWorkspace.getProject(name)
+  if (bndProject != null) {
+    plugins.apply 'biz.aQute.bnd'
+    plugins.apply 'maven'
+//apply plugin: 'maven-publish'
+//apply plugin: 'java-library'
+//apply plugin: 'java'
+
+    group = project.properties['groupId'] 
+    version = project.properties['version'].toString()
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from 'build/docs/javadoc'
+}
+
+task sourcesJar(type: Jar) {
+    from sourceSets.main.allSource
+    classifier = 'sources'
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            snapshotRepository(url: "https://nexus.repository-pert.ismb.it/repository/maven-snapshots/") {
+                authentication(userName: "$System.env.NEXUS_USER", password: "$System.env.NEXUS_PASSWORD")
+            }
+        }
+    } 
+}
+/*java {
+    withJavadocJar()
+    withSourcesJar()
+}*/
+/*
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+
+artifact("build/libs/bndProject-$version"+".jar") {
+extension 'jar'
+}
+
+				versionMapping {
+                usage('java-api') {
+                    fromResolutionOf('runtimeClasspath')
+                }
+                usage('java-runtime') {
+                    fromResolutionResult()
+                }
+            }
+            pom {
+                packaging = 'bundle'
+        
+            }
+        }
+    }
+
+    repositories {
+        maven {
+            name = "nexus"
+            // change to point to your repo, e.g. http://my.org/repo
+            url = "https://nexus.repository-pert.ismb.it/repository/maven-snapshots/"
+          credentials {
+            username NexusUser
+            password NexusPassword
+           }
+        }
+    }
+}*/
+  
+    task("cleanAll", description: "Clean all code including all (sub)native libraries.", group: 'build') {}
+	 cleanAll.dependsOn(clean)
+
+ //   task("resolve", description: "resolve all code including all (sub)native libraries.", group: 'export') {}
+
+  }     
+}
+
+
+/*task clean {
+    doLast {
+        println 'Default Cleaning!'
+    }
+}*/
+
+
+/*
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
+*/
+
+/*
+https://stackoverflow.com/questions/26344925/how-can-i-make-uploadarchives-dependent-on-another-task
+https://stackoverflow.com/questions/12749225/where-to-put-gradle-configuration-i-e-credentials-that-should-not-be-committe
+
+      <username>${env.NEXUS_USER}</username>
+      <password>${env.NEXUS_PASSWORD}</password>
+
+
+
+
+ext {
+  localRepo = "http://sourcesrv:8080/repository/devel.internal/"
+}
+mavenDeployer {
+      repository(url: project.ext.localRepo) {
+        authentication(userName: NexusUser, password: NexusPassword)
+authentication(userName: $System.env.NEXUS_USER, password: $System.env.NEXUS_PASSWORD)
+      }
+
+*/
+
