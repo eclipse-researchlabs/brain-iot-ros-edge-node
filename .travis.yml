@@ -21,14 +21,11 @@ cache:
 
 
 install:
-    - ./gradlew clean build
+    - ./gradlew clean
 
 script:
-    - ./gradlew resolve export 
+    - ./gradlew build uploadArchives 
 
-
-after_success:
-     - ./gradlew build uploadArchives
 
 
 #end
