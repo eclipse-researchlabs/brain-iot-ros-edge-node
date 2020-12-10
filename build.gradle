@@ -32,16 +32,13 @@ apply plugin: 'maven'
 configurations {
     deployerJars
 }
-
 repositories {
     mavenCentral()
 }
-
 dependencies {
 	// deployJar是前面configuration声明的
     deployerJars "org.apache.maven.wagon:wagon-http:2.2" // ssh依赖库
 }
-
 uploadArchives {
     repositories {
         mavenDeployer {
@@ -128,7 +125,7 @@ uploadArchives {
     repositories {
         mavenDeployer {
             snapshotRepository(url: "https://nexus.repository-pert.ismb.it/repository/maven-snapshots/") {
-                authentication(userName: NexusUser, password: NexusPassword)
+                authentication(userName: "${System.env.NEXUS_USER}", password: "${System.env.NEXUS_PASSWORD}")
             }
         }
     } 
@@ -141,11 +138,9 @@ uploadArchives {
 publishing {
     publications {
         mavenJava(MavenPublication) {
-
 artifact("build/libs/bndProject-$version"+".jar") {
 extension 'jar'
 }
-
 				versionMapping {
                 usage('java-api') {
                     fromResolutionOf('runtimeClasspath')
@@ -160,7 +155,6 @@ extension 'jar'
             }
         }
     }
-
     repositories {
         maven {
             name = "nexus"
@@ -199,24 +193,14 @@ task clean(type: Delete) {
 /*
 https://stackoverflow.com/questions/26344925/how-can-i-make-uploadarchives-dependent-on-another-task
 https://stackoverflow.com/questions/12749225/where-to-put-gradle-configuration-i-e-credentials-that-should-not-be-committe
-
       <username>${env.NEXUS_USER}</username>
       <password>${env.NEXUS_PASSWORD}</password>
-
-
-
-
 ext {
   localRepo = "http://sourcesrv:8080/repository/devel.internal/"
 }
 mavenDeployer {
       repository(url: project.ext.localRepo) {
-        authentication(userName: repoUserName, password: repoPassword)
+        authentication(userName: NexusUser, password: NexusPassword)
 authentication(userName: $System.env.NEXUS_USER, password: $System.env.NEXUS_PASSWORD)
       }
-
 */
-
-
-    
-

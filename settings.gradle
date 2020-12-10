@@ -39,7 +39,6 @@ buildscript {
             password "${System.env.NEXUS_PASSWORD  ?: NexusPassword }"
         }
     }
-
 */
 
   
@@ -54,12 +53,9 @@ repositories {
         url "https://maven.restlet.com"
     }
 }
-
-
 plugins {
     id 'java'   #旧版本  apply plugin: 'java' 应用插件, use id  // apply plugin: JavaPlugin  use plugin type
 }
-
 */
 
 
@@ -200,4 +196,3 @@ def getBndProject(Workspace workspace, String projectName) {
   }
   throw new GradleException("Project ${rootDir}/${projectName} is not a valid bnd project")
 }
-
