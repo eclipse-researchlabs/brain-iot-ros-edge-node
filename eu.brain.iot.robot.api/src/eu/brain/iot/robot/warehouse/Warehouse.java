@@ -17,24 +17,24 @@ public class Warehouse {
 	
 	private HashMap<Integer,Cooridinate> unload=new HashMap<Integer,Cooridinate>();
 
-	private HashMap<Integer,String> Cart=new HashMap<Integer,String>();
+//	private HashMap<Integer,String> Cart=new HashMap<Integer,String>();
 	
 	private Cooridinate placeCenter = null;
-	private Cooridinate placeLeft = null;
-	private Cooridinate placeRight = null;
+/*	private Cooridinate placeLeft = null;
+	private Cooridinate placeRight = null;*/
 	
 
 	public Warehouse() throws IOException
 	{
 		loadPose();
-		loadCart();
+	//	loadCart();
 
         System.out.println("--------------------Warehouse---------------------------");
-        System.out.println(Cart);
+   //     System.out.println(Cart);
         System.out.println(unload);
         System.out.println(placeCenter);
-        System.out.println(placeLeft);
-        System.out.println(placeRight);
+     /*   System.out.println(placeLeft);
+        System.out.println(placeRight);*/
         System.out.println("-----------------------------------------------");
 	}
 	
@@ -51,11 +51,11 @@ public class Warehouse {
         coordinate_data=map.getJSONObject("PlaceCenter");
         placeCenter=json2Cooridinate(coordinate_data);
         
-        coordinate_data=map.getJSONObject("PlaceLeft");
+     /*   coordinate_data=map.getJSONObject("PlaceLeft");
         placeLeft=json2Cooridinate(coordinate_data);
         
         coordinate_data=map.getJSONObject("PlaceRight");
-        placeRight=json2Cooridinate(coordinate_data);
+        placeRight=json2Cooridinate(coordinate_data);*/
         
         JSONArray unloadArray = map.getJSONArray("UNLOAD");
         
@@ -74,7 +74,7 @@ public class Warehouse {
         }
 	}
 	
-	public void loadCart() {
+/*	public void loadCart() {
 		String content = read_Json_file("/carts.json");
 		JSONObject jsonObject = new JSONObject(content);
 
@@ -87,7 +87,7 @@ public class Warehouse {
 
 		}
 
-	}
+	}*/
 
 	public String read_Json_file(String path) {
 		InputStream is = this.getClass().getClassLoader().getResourceAsStream(path);
@@ -122,18 +122,18 @@ public class Warehouse {
 		} else if (mission.equalsIgnoreCase("PLACE_C")) {
 			return placeCenter;
 			
-		} else if (mission.equalsIgnoreCase("PLACE_L")) {
+		} /*else if (mission.equalsIgnoreCase("PLACE_L")) {
 			return placeLeft;
 			
 		} else if (mission.equalsIgnoreCase("PLACE_R")) {
 			return placeRight;
-		}
+		}*/
 		return null;
 	}
 
-	public String getCartName(int MarkerID) {
+/*	public String getCartName(int MarkerID) {
 		return Cart.get(MarkerID);
-	}
+	}*/
 	
 
 }

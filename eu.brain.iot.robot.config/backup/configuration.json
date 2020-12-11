@@ -1,0 +1,21 @@
+{
+
+    ":configurator:resource-version" : 1,
+    ":configurator:symbolic-name" : "eu.brain.iot.service.robotic.robot.config",
+    ":configurator:version" : "0.0.1-SNAPSHOT",
+    
+
+    
+    "eu.brain.iot.example.robot.Door": {
+    	"host": "192.168.1.50", 
+        "port": "8080",
+        "id": "ExampleDoor"
+    },
+    
+    
+    "eu.brain.iot.example.robot.Robot~robotA": {
+           "name": "rb1_base_a",
+           "id": 1
+    }
+
+}

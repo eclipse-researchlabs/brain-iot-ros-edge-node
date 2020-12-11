@@ -37,8 +37,8 @@ public class InitDB {
 			  stmt.execute("CREATE TABLE TASK_INFO(taskId INT PRIMARY KEY,pickedStatus BOOLEAN, pickPoseID INT, placePose VARCHAR(20))");
 
 			  stmt.executeUpdate("INSERT INTO TASK_INFO VALUES('1','false','1','PLACE_C')");
-			  stmt.executeUpdate("INSERT INTO TASK_INFO VALUES('2','false','2','PLACE_L')");
-			  stmt.executeUpdate("INSERT INTO TASK_INFO VALUES('3','false','3','PLACE_R')");
+			//  stmt.executeUpdate("INSERT INTO TASK_INFO VALUES('2','false','2','PLACE_L')");
+			//  stmt.executeUpdate("INSERT INTO TASK_INFO VALUES('3','false','3','PLACE_R')");
 
 			  ResultSet rs = stmt.executeQuery("SELECT * FROM TASK_INFO");
 

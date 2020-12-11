@@ -267,13 +267,13 @@ public class RobotService extends AbstractNodeMain implements SmartBehaviour<Rob
 				int sendResult = writeGOTO(writeGOTO.pickPoseID, writeGOTO.mission);
 				queryreturnedvalue.robotId = robotId;
 				queryreturnedvalue.mission = writeGOTO.mission;
-				if(sendResult == 1)  // sensing goto ok
+				if(sendResult == 1)  // sending goto ok
 				{
 					CallResponse callResp;
 					while(true) {
 						callResp = queryState(writeGOTO.mission);	// goto Query
 					if((callResp != null)) {
-						if(callResp.current_state.equals("finished")/* || callResp.current_state.equals("unknown")*/) {
+						if(callResp.current_state.equals("finished")) {
 							System.out.println("robot "+robotId+" WriteGOTO gets CallResponse: result="+callResp.result+", current_state="+callResp.current_state
 									+", last_event="+callResp.last_event+", message is: "+callResp.message);
 							
@@ -290,7 +290,7 @@ public class RobotService extends AbstractNodeMain implements SmartBehaviour<Rob
 									+", last_event="+callResp.last_event+", message is: "+callResp.message);
 							queryreturnedvalue.value = 0;
 							System.out.println("robot "+robotId+" query WriteGOTO action gets the Unknown state, return value = 0");
-						
+							break;
 						} else {
 							wait(2);
 						}
@@ -343,7 +343,7 @@ public class RobotService extends AbstractNodeMain implements SmartBehaviour<Rob
 									+", last_event="+callResp.last_event+", message is: "+callResp.message);
 							queryreturnedvalue.value = 0;
 							System.out.println("robot "+robotId+" query PickCart action gets the Unknown state, return value = 0");
-						
+							break;
 						} else {
 							wait(2);
 						}
@@ -387,7 +387,7 @@ public class RobotService extends AbstractNodeMain implements SmartBehaviour<Rob
 									+", last_event="+callResp.last_event+", message is: "+callResp.message);
 							queryreturnedvalue.value = 0;
 							System.out.println("robot "+robotId+" query PlaceCART action gets the Unknown state, return value = 0");
-						
+							break;
 						} else {
 							wait(2);
 						}
@@ -473,8 +473,8 @@ public class RobotService extends AbstractNodeMain implements SmartBehaviour<Rob
 	}
 	
 	private int pickCart(int markerID){
-		String cartName= robotWarehouse.getCartName(markerID);
-		this.pickFrameId=cartName;
+	//	String cartName= robotWarehouse.getCartName(markerID);
+	//	this.pickFrameId=cartName;
 		robot_local_control_msgs.PickPetitionRequest Pickrequest= pickComponent.constructMsg_pickRun();
 		return pickComponent.call_pickRun(Pickrequest)[0];
 	}
