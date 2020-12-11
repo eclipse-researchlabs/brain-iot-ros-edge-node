@@ -32,73 +32,45 @@ Help-> Eclipse Markerplace-> search 'Bndtools'-> Installed->Restart Eclipse.
 
 Clone this repository
 
-#### Configure Warehouse Map
+#### (1) Configure Warehouse Map (Skip (1), (2) steps if following setup is correct)
 
 Enter the **eu.brain.iot.robot.api/resources** folder to configuare the warehouse map.
 
-There are two JSON files:
+There are a JSON file:
 
-**carts.json**: The mapping info of the cart market ID and its name. After the robot reach the picking point, robot behaviour send `CheckMarker` event to robot who will reply with the markerID, then a `PickCart` command is sent
-    
-**map.json**: this is a simplified file to store the coordinates. There are three poses in unload area and three poses in the storage area, each pose has its name used to create a task list table which contains the info about which cart should be moved to which storage pose.
+**map.json**: this is a simplified file to store the coordinates. Currently there is only one pick pose in unload area and one place pose in the storage area, each pose has its name used to create a task list table which contains the info about which cart should be moved to which storage pose.
 
-Content of **cart.json**:
-```JSON
-{
-	"Carts":[
-		{
-			"MarkerID":2,
-			"NAME":"rb1_base_a_cart2_contact"
-		},
-		{
-			"MarkerID":3,
-			"NAME":"rb1_base_b_cart3_contact"
-		},
-		{
-			"MarkerID":4,
-			"NAME":"rb1_base_c_cart4_contact"
-		}
-	]
-}
-
-```
 Content of **map.json**:
 ```JSON
 { 
 	"Map":{
-		"PlaceCenter":{"y":0,"x":0,"z":-3.14},
-		"PlaceLeft":{"y":-7.75,"x":0,"z":-3.14},
-		"PlaceRight":{"y":7.75,"x":0,"z":-3.14},
+		"PlaceCenter":{"y":5,"x":0,"z":0},
 		"UNLOAD":[
 		{
 		    "pickPoseID":1,
-		    "pose":{"y":-3.6,"x":8,"z":-3.14}
-		},
-		{
-		    "pickPoseID":2,
-		    "pose":{"y":-5.5,"x":8,"z":-3.14}
-		},
-		{
-		    "pickPoseID":3,
-		    "pose":{"y":-7.75,"x":8,"z":-3.14}
+		    "pose":{"y":0,"x":0,"z":3.14}
 		}
 		]
 	}
-}
-```
-The two config files can be changed based on the real map coordinates.
 
-Internally created shared task list table used by multiple Robot Behaviours:
+}
+
+```
+This config file can be changed based on the real map coordinates.
+
+Internally there is a shared task list table used by multiple Robot Behaviours:
 
 ![image](./tasklist.png)
 
-This is a hard-coded table in Robot Behaviour, the **pickPoseID** and **placePose** correspond to the coordinates in map.json, but you can modify the coordinates in map.json as you want. For the first time to test in a real robot, in current version, only one robot behaviour will be instantiated and control one robot to mave all carts in 3 iterations.
+This is a hard-coded table in Robot Behaviour, the **pickPoseID** and **placePose** correspond to the coordinates in map.json, but you can modify the coordinates in **map.json** as you want. The current version will test only one robot which maves one cart in the first task with taskID=1.
+
+Important! if the **map.json** file is modified, this project must be rebuilt again.
 
 *Contact me if you want to change the number of the carts to be moved!*
 
-This table will be refined according to the updated robotic use case, and multiple tables will be created and managed by a warehouse manager, and integrate with senSinact.
+This table will be refined according to the updated robotic use case, and multiple tables will be created and managed by a warehouse backend, and integrate with sensiNact.
 
-#### Configure the door and only one robot
+#### (2) Configure only one robot
 
 Enter **eu.brain.iot.robot.config** project and open **resources/OSGI-INF/configurator/configuration.json**:
 
@@ -107,98 +79,35 @@ Enter **eu.brain.iot.robot.config** project and open **resources/OSGI-INF/config
     ":configurator:resource-version" : 1,
     ":configurator:symbolic-name" : "eu.brain.iot.service.robotic.robot.config",
     ":configurator:version" : "0.0.1-SNAPSHOT",
-
-    "eu.brain.iot.example.robot.Door": {
-    	"host": "localhost", 
-        "port": "8080",
-        "id": "ExampleDoor"
-    },
     
     "eu.brain.iot.example.robot.Robot~robotA": {
-           "name": "rb1_base_a",
+           "name": "turtlebot_1",
            "id": 1
     }
 }
 
 ```
-When you run the test.bndrun file in nect step, the door smart behaviour developed by UGA for M18 review will be also run together with ROS Edge Node and Robot Behaviour. So here in this configuration file you need to overwrite the real door IP in warehouse. There is one problem in current door smart behaviour, that is once the test.bndrun is launched, the door will always be automatically opened. This problem will be fixed in next version.
+When you run the **test.bndrun** file in next step, it won't run the door smart behaviour, so a physical door is not necessary.
 
-In addition, if you're using a robot whose name is different with **rb1\_base\_a**, remember to replace it, its name is one part of ROS services. 
+In addition, if you're using a robot whose namespace of ros topics is different with **turtlebot\_1**, remember to replace it, its name is one part of ROS services. 
 
-#### Run in a robot
+#### (3) Build and Run in a Physical Robot
 
-Enter the **eu.brain.iot.robot.service** project, open **test.bndrun** and change the **ros.master.uri=http://localhost:11311** to your robot IP, save it. Then package the **test.bndrun** as an executable jar using Gradle build tool:
+Package the **test.bndrun** with default **ros.master.uri=http://localhost:11311** in the **eu.brain.iot.robot.service** project as an executable jar using Gradle build tool. If you change it using your robot IP, rebuild repository again:
 
 ```bash
 $ cd ros-edge-node
 $ ./gradlew clean build resolve export
 $ cd eu.brain.iot.robot.service/generated/distributions/executable
 $ ls
-  test.jar launch.jar
+  test.jar
 ```
-Finally, start up the robot, then run the executable jar everywhere, not limited to the robot, maybe on your laptop, because the ROS Edge Node will (remotely) connect to the robot through its IP. 
+Finally, start up the robot, then run the executable jar everywhere if IP is not **localhost**, it's not limited to the robot, maybe on your laptop, because the ROS Edge Node will (remotely) connect to the robot through its IP. 
 ```bash
 $ java -jar test.jar
 ```
 
-## Tutorial - Try it 
-### Quick start:
-Run a simulation test to see how it works. 
-Start with running a single robot 1 with Stage simulator, here there is no nevigation with the door. 
-```bash
-#Staring the Brain-IoT Stage simulation
-$ roslaunch rb1_brainiot_bringup brainiot_stage.launch world:=~/catkin_ws/src/rb1_brainiot_bringup/worlds/door_map-rb1-base.world
-$ roslaunch rb1_brainiot_bringup rb1_base_stage_complete.launch launch_stage:=false launch_rviz:=false
 
-#After Stage simulation is running, download the project
-$ git clone https://git.repository-pert.ismb.it/BRAIN-IoT/ros-edge-node.git
-$ cd eu.brain.iot.robot.service
-$ bnd run test.bndrun
-#After the logs stop in the console, press 'Enter' button
-g! help             #to see the all possible commands in felix GoGo console
-g! test goto 1 4 	  #to move robot_1 to the STORAGE area("y":-3.6,"x":8,"theta":-3.14) in front of cart_1(rb1_base_a_cart2_contact)
-g! test pick 1 1    #robot_1 pick cart1
-g! test goto 1 5    #move robot_1 to another place {"y":-3.6,"x":8,"theta":-3.14}, just for test
-g! test place 1 1   #robot1 place cart1
-```
-The fellowing is the logs printed:
-```bash
-	g! test goto 1 4
-	inside test!!
-	>> Robot 1 received an event: class eu.brain.iot.robot.events.WriteGOTO
-	g! 
-	GoToComponent: GET GoTo Response: result = ok  state = queued 
-	GoToComponent: GET GoTo_Query_State Response: result = ok  state = queued
-	GoToComponent: GET GoTo_Query_State Response: result = ok  state = queued
-	GoToComponent: GET GoTo_Query_State Response: result = ok  state = queued
-	GoToComponent: GET GoTo_Query_State Response: result = ok  state = running
-	GoToComponent: GET GoTo_Query_State Response: result = ok  state = running
-	GoToComponent: GET GoTo_Query_State Response: result = ok  state = running
-	...
- 	GoToComponent: GET GoTo_Query_State Response: result = ok  state = finished
-	************************************
-	RobotId=1 mission=4 result=1
-	************************************
-```
-Then, we can see robot 1 moving to the target position. Also you can run 3 robots simulation in 2D or 3D. But to do this you need to run the simulation from project [Brain-IoT rb1 simulation](https://git.repository-pert.ismb.it/BRAIN-IoT/brain-iot-rb1-simulation).
-
-The following are a sequence of event commands sent from Felix GoGo console to instruct the 3 robots move their carts to the dropping area **(pose PLACE_LEFT, PLACE_CENTER, PLACE_RIGHT)** separatly in the ROS simulation locally: (requires to run the `launch.bndrun` which will start `orchestrator & door` bundles together for opening door at the startup of the launch file.)
-
-Note: before using all of the cmds below, please import this project in Eclipse following the steps in the next section, then open the `configuration.json` file in the `eu.brain.iot.robot.config` sub-project to uncomment the configs of other two robots.
-
-```bash
-$ cd eu.brain.iot.robot.service
-$ bnd run launch.bndrun
-```
-
-```bash
-test goto 1 4      test pick 1 1   test goto 1 2 (PLACE_LEFT)     test place 1 1    # robot1 move cart1 to 'Place_left'
-test goto 2 4      test pick 2 2   test goto 2 1 (PLACE_CENTER)   test place 2 2    # robot2 move cart2 to 'Place_center'
-test goto 3 4      test pick 3 3   test goto 3 3 (PLACE_RIGHT)    test place 3 3    # robot3 move cart3 to 'Place_right'
-
-cancel goto 1   cancel pick 1   cancel place 1      # cancel a specific task being performed by a robot (robot 1 used here, simular for other robots: 2, 3)
-
-```
 
 ## Import the project into Eclipse for Developers
 
