@@ -17,6 +17,7 @@ import org.osgi.service.component.annotations.Reference;
 	service = {RosCommandInjection.class}
 )
 public class RosCommandInjection {
+	@SuppressWarnings("rawtypes")
 	private ComponentFactory rosCommandFactory;
 
 	// roslaunch command with parameters

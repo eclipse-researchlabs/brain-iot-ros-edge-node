@@ -75,11 +75,7 @@
 	eu.brain.iot.robot.config;version=snapshot,\
 	eu.brain.iot.robot.msgs;version=snapshot,\
 	eu.brain.iot.robot.service;version=snapshot,\
-	be.iminds.iot.ros.msgs.generator;version=snapshot,\
-	com.fasterxml.jackson.core.jackson-annotations;version='[2.10.0,2.10.1)',\
-	com.fasterxml.jackson.core.jackson-core;version='[2.10.0,2.10.1)',\
-	com.fasterxml.jackson.core.jackson-databind;version='[2.10.0,2.10.1)',\
-	eu.brain.iot.service.robotic.door.impl;version='[0.0.1,0.0.2)'
+	be.iminds.iot.ros.msgs.generator;version=snapshot
 	
 	
 #-runsystempackages: sun.reflect
