@@ -16,7 +16,6 @@ repourl="http://aiolos.intec.ugent.be/repositories"
 #	aQute.bnd.repository.osgi.OSGiRepository;readonly=false;name=Maven Local;locations=/home/rui/.m2/repository/repository.xml
         
 
--releaserepo: Release
 
 
 

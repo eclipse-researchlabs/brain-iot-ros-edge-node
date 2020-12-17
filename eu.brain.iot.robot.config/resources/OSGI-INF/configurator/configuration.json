@@ -7,16 +7,16 @@
 
     
     "eu.brain.iot.example.robot.Door": {
-    	"host": "192.168.1.50", 
+    	"host": "10.8.0.106", 
         "port": "8080",
         "id": "ExampleDoor"
     },
     
     
-    "eu.brain.iot.example.robot.Robot~robotA": {
-           "robotIP": "192.168.1.50",
-           "name": "rb1_base_a",
-           "id": 1
+
+    "eu.brain.iot.example.robot.RobotBehavior~RobotBehaviorA": {
+           "id": 2
     }
+    
 
 }

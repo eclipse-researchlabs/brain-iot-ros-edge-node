@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<repository xmlns="http://www.osgi.org/xmlns/repository/v1.0.0" name="Local" increment="1605116598000">
+<repository xmlns="http://www.osgi.org/xmlns/repository/v1.0.0" name="Local" increment="1607700911000">
   <resource>
     <capability namespace="osgi.identity">
       <attribute name="license" value="http://www.apache.org/licenses/LICENSE-2.0.txt"/>
@@ -9932,6 +9932,238 @@
     <requirement namespace="osgi.wiring.host">
       <directive name="filter" value="(osgi.wiring.host=system.bundle)"/>
       <directive name="extension" value="framework"/>
+    </requirement>
+  </resource>
+  <resource>
+    <capability namespace="osgi.identity">
+      <attribute name="osgi.identity" value="org.ros.rosjava_core.rosjava"/>
+      <attribute name="type" value="osgi.bundle"/>
+      <attribute name="version" value="0.2.2" type="Version"/>
+    </capability>
+    <capability namespace="osgi.wiring.bundle">
+      <attribute name="bundle-version" value="0.2.2" type="Version"/>
+      <attribute name="osgi.wiring.bundle" value="org.ros.rosjava_core.rosjava"/>
+    </capability>
+    <capability namespace="osgi.wiring.host">
+      <attribute name="bundle-version" value="0.2.2" type="Version"/>
+      <attribute name="osgi.wiring.host" value="org.ros.rosjava_core.rosjava"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <directive name="uses" value="org.ros.internal.node.server.master,org.ros.namespace"/>
+      <attribute name="version" value="0.2.2" type="Version"/>
+      <attribute name="osgi.wiring.package" value="org.ros"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="version" value="0.2.2" type="Version"/>
+      <attribute name="osgi.wiring.package" value="org.ros.address"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="version" value="0.2.2" type="Version"/>
+      <attribute name="osgi.wiring.package" value="org.ros.concurrent"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <directive name="uses" value="org.ros.internal.node.response"/>
+      <attribute name="version" value="0.2.2" type="Version"/>
+      <attribute name="osgi.wiring.package" value="org.ros.exception"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <directive name="uses" value="org.ros.node"/>
+      <attribute name="version" value="0.2.2" type="Version"/>
+      <attribute name="osgi.wiring.package" value="org.ros.internal.loader"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <directive name="uses" value="org.apache.commons.logging,org.ros.concurrent,org.ros.exception,org.ros.internal.transport,org.ros.message,org.ros.namespace,org.ros.node,org.ros.node.parameter,org.ros.node.service,org.ros.node.topic"/>
+      <attribute name="version" value="0.2.2" type="Version"/>
+      <attribute name="osgi.wiring.package" value="org.ros.internal.node"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <directive name="uses" value="org.ros.internal.node.response,org.ros.internal.node.server,org.ros.internal.node.service,org.ros.internal.node.topic,org.ros.internal.node.xmlrpc,org.ros.internal.transport,org.ros.master.client,org.ros.namespace,org.ros.node.service,org.ros.node.topic"/>
+      <attribute name="version" value="0.2.2" type="Version"/>
+      <attribute name="osgi.wiring.package" value="org.ros.internal.node.client"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <directive name="uses" value="org.ros.internal.node.server,org.ros.namespace,org.ros.node.parameter"/>
+      <attribute name="version" value="0.2.2" type="Version"/>
+      <attribute name="osgi.wiring.package" value="org.ros.internal.node.parameter"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <directive name="uses" value="org.ros.exception,org.ros.internal.node.topic,org.ros.internal.transport,org.ros.master.client"/>
+      <attribute name="version" value="0.2.2" type="Version"/>
+      <attribute name="osgi.wiring.package" value="org.ros.internal.node.response"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <directive name="uses" value="org.ros.address,org.ros.internal.node.client,org.ros.internal.node.parameter,org.ros.internal.node.service,org.ros.internal.node.topic,org.ros.internal.node.xmlrpc,org.ros.internal.transport,org.ros.namespace"/>
+      <attribute name="version" value="0.2.2" type="Version"/>
+      <attribute name="osgi.wiring.package" value="org.ros.internal.node.server"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <directive name="uses" value="org.ros.address,org.ros.internal.node.server,org.ros.namespace"/>
+      <attribute name="version" value="0.2.2" type="Version"/>
+      <attribute name="osgi.wiring.package" value="org.ros.internal.node.server.master"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <directive name="uses" value="org.jboss.netty.buffer,org.jboss.netty.channel,org.jboss.netty.handler.codec.oneone,org.ros.address,org.ros.internal.message,org.ros.internal.message.service,org.ros.internal.node,org.ros.internal.node.server,org.ros.internal.transport,org.ros.message,org.ros.namespace,org.ros.node.service"/>
+      <attribute name="version" value="0.2.2" type="Version"/>
+      <attribute name="osgi.wiring.package" value="org.ros.internal.node.service"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <directive name="uses" value="org.jboss.netty.buffer,org.jboss.netty.channel,org.ros.internal.message.topic,org.ros.internal.node,org.ros.internal.node.server,org.ros.internal.transport,org.ros.message,org.ros.namespace,org.ros.node.topic"/>
+      <attribute name="version" value="0.2.2" type="Version"/>
+      <attribute name="osgi.wiring.package" value="org.ros.internal.node.topic"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <directive name="uses" value="org.apache.xmlrpc.client,org.apache.xmlrpc.common,org.ros.internal.node.server,org.ros.internal.node.server.master"/>
+      <attribute name="version" value="0.2.2" type="Version"/>
+      <attribute name="osgi.wiring.package" value="org.ros.internal.node.xmlrpc"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="version" value="0.2.2" type="Version"/>
+      <attribute name="osgi.wiring.package" value="org.ros.internal.system"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <directive name="uses" value="org.jboss.netty.buffer,org.jboss.netty.channel,org.jboss.netty.channel.group,org.ros.address,org.ros.internal.transport.tcp"/>
+      <attribute name="version" value="0.2.2" type="Version"/>
+      <attribute name="osgi.wiring.package" value="org.ros.internal.transport"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <directive name="uses" value="org.jboss.netty.buffer,org.jboss.netty.channel,org.jboss.netty.channel.group,org.ros.concurrent,org.ros.internal.transport.tcp,org.ros.message"/>
+      <attribute name="version" value="0.2.2" type="Version"/>
+      <attribute name="osgi.wiring.package" value="org.ros.internal.transport.queue"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <directive name="uses" value="org.jboss.netty.buffer,org.jboss.netty.channel,org.jboss.netty.channel.group,org.ros.address,org.ros.internal.node.service,org.ros.internal.node.topic,org.ros.internal.transport"/>
+      <attribute name="version" value="0.2.2" type="Version"/>
+      <attribute name="osgi.wiring.package" value="org.ros.internal.transport.tcp"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <directive name="uses" value="org.ros.internal.node.topic,org.ros.node"/>
+      <attribute name="version" value="0.2.2" type="Version"/>
+      <attribute name="osgi.wiring.package" value="org.ros.master.client"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <directive name="uses" value="org.ros.exception"/>
+      <attribute name="version" value="0.2.2" type="Version"/>
+      <attribute name="osgi.wiring.package" value="org.ros.master.uri"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="version" value="0.2.2" type="Version"/>
+      <attribute name="osgi.wiring.package" value="org.ros.math"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="version" value="0.2.2" type="Version"/>
+      <attribute name="osgi.wiring.package" value="org.ros.namespace"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <directive name="uses" value="org.apache.commons.logging,org.ros.address,org.ros.concurrent,org.ros.exception,org.ros.internal.message.service,org.ros.internal.message.topic,org.ros.message,org.ros.namespace,org.ros.node.parameter,org.ros.node.service,org.ros.node.topic,org.ros.time"/>
+      <attribute name="version" value="0.2.2" type="Version"/>
+      <attribute name="osgi.wiring.package" value="org.ros.node"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <directive name="uses" value="org.ros.namespace"/>
+      <attribute name="version" value="0.2.2" type="Version"/>
+      <attribute name="osgi.wiring.package" value="org.ros.node.parameter"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <directive name="uses" value="org.ros.exception,org.ros.internal.node,org.ros.namespace"/>
+      <attribute name="version" value="0.2.2" type="Version"/>
+      <attribute name="osgi.wiring.package" value="org.ros.node.service"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <directive name="uses" value="org.ros.internal.node,org.ros.internal.node.topic,org.ros.message"/>
+      <attribute name="version" value="0.2.2" type="Version"/>
+      <attribute name="osgi.wiring.package" value="org.ros.node.topic"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <directive name="uses" value="org.ros.internal.node,org.ros.message,org.ros.node.topic,rosgraph_msgs"/>
+      <attribute name="version" value="0.2.2" type="Version"/>
+      <attribute name="osgi.wiring.package" value="org.ros.time"/>
+    </capability>
+    <capability namespace="osgi.content">
+      <attribute name="size" value="331298" type="Long"/>
+      <attribute name="url" value="org.ros.rosjava_core.rosjava/org.ros.rosjava_core.rosjava-0.2.2.jar"/>
+      <attribute name="mime" value="application/vnd.osgi.bundle"/>
+      <attribute name="osgi.content" value="6618A14754D02D7A803F9ABAB856C676756C5B5C77467DA8EB6E4ACCCD95ED82"/>
+    </capability>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=com.google.common.base))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=com.google.common.collect))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=com.google.common.net))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.apache.commons.logging))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.apache.commons.net.ntp))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.apache.xmlrpc))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.apache.xmlrpc.client))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.apache.xmlrpc.common))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.apache.xmlrpc.server))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.apache.xmlrpc.webserver))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.jboss.netty.bootstrap))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.jboss.netty.buffer))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.jboss.netty.channel))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.jboss.netty.channel.group))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.jboss.netty.channel.socket.nio))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.jboss.netty.handler.codec.frame))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.jboss.netty.handler.codec.oneone))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.jboss.netty.handler.codec.replay))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.ros.internal.message))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.ros.internal.message.definition))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.ros.internal.message.service))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.ros.internal.message.topic))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.ros.message))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.xbill.DNS))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=rosgraph_msgs))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=std_msgs))"/>
+    </requirement>
+    <requirement namespace="osgi.ee">
+      <directive name="filter" value="(&amp;(osgi.ee=JavaSE)(version=1.7))"/>
     </requirement>
   </resource>
 </repository>

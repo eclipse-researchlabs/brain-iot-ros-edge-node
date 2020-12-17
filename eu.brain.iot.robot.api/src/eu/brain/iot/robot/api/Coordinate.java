@@ -1,6 +1,11 @@
 package eu.brain.iot.robot.api;
 
-public class Coordinate {
+public class Coordinate implements java.io.Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	double x = 0;
 	double y = 0;
 	double z = 0;
@@ -35,7 +40,7 @@ public class Coordinate {
 	}
 	@Override
 	public String toString() {
-		return "Cooridinate [x=" + x + ", y=" + y + ", z=" + z + "]";
+		return "[x=" + x + ", y=" + y + ", z=" + z + "]";
 	}
 
 	

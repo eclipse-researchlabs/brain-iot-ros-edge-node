@@ -1,11 +1,6 @@
 # Configure Repositories
 
 
--plugin.8.Templates: \
-	aQute.bnd.deployer.repository.LocalIndexedRepo; \
-		name = Templates; \
-		pretty = true; \
-		local = ${build}/templates
 
 
 
@@ -31,8 +26,9 @@ mockito-deps: org.objenesis; version=2.6.0,\
 # -buildrepo: 			BrainIot
 
 -pom: 					groupid	=	eu.brain.iot.service.robotic,\
-						version =	${versionmask;===;${@version}}-SNAPSHOT
+						version =	0.0.2-SNAPSHOT
  
  
 	 
+
 

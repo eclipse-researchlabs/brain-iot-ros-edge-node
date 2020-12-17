@@ -1,5 +1,4 @@
 .DS_Store
-
 .metadata
 .recommenders/
 RemoteSystemsTempFiles/
@@ -7,5 +6,6 @@ RemoteSystemsTempFiles/
 **/generated/
 **/bin/
 git.sh
-**/mytest-service
+eu.brain.iot.robot.service.generator
+**/backup
 

@@ -82,13 +82,21 @@ public class TableQueryer implements SmartBehaviour<RobotCommand> { // TODO must
 					.filter(e -> !e.getKey().startsWith(".")).collect(Collectors.toMap(Entry::getKey, Entry::getValue)));
 
 			serviceProps.put(SmartBehaviourDefinition.PREFIX_ + "filter",  // -1, get all events
-					String.format("(|(robotID=%s)(robotID=%s))", 1, RobotCommand.ALL_ROBOTS));
+					String.format("(|(robotID=%s)(robotID=%s))", 2, RobotCommand.ALL_ROBOTS));
 
 		//	serviceProps.put(SmartBehaviourDefinition.PREFIX_ + "filter",  // -1, get all events
 		//			String.format("((robotID=%s))", RobotCommand.ALL_ROBOTS));
 			
-			System.out.println("+++++++++ filter = " + serviceProps.get(SmartBehaviourDefinition.PREFIX_ + "filter"));
+			System.out.println("+++++++++ Table Queryer filter = " + serviceProps.get(SmartBehaviourDefinition.PREFIX_ + "filter"));
 			reg = context.registerService(SmartBehaviour.class, this, serviceProps);
+			
+			System.out.println("------------  PickingTable ----------------");
+
+			  ResultSet rs = stmt.executeQuery("SELECT * FROM PickingTable");
+
+			  while (rs.next()) {
+			       System.out.println(rs.getString("PPid") + ", " + rs.getString("pose")+ ", " + rs.getString("isAssigned"));
+			  }
 			
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
@@ -107,20 +115,23 @@ public class TableQueryer implements SmartBehaviour<RobotCommand> { // TODO must
 	
 	@Override
 	public void notify(RobotCommand event) {
-		
-		System.out.println(" >> Table Queryer received an event: " + event.getClass());
+
+		System.out.println("--> Table Queryer received a "+event.getClass().getSimpleName()+" event");
 		
 		if (event instanceof NewPickPointRequest) {
 			NewPickPointRequest pickRequest = (NewPickPointRequest) event;
-			worker.execute(() -> {
-				System.out.println("--> Table Queryer received NewPickPointRequest event");
+			NewPickPointResponse rs = getPickResponse(pickRequest);
+			System.out.println("Queryer  sent NewPickPointResponse "+ rs);
+			eventBus.deliver(rs);
+		/*	worker.execute(() -> {
+			//	System.out.println("--> Table Queryer received NewPickPointRequest event");
 				eventBus.deliver(getPickResponse(pickRequest));
-			});
+			});*/
 			
 		} else if (event instanceof NewStoragePointRequest) {
 			NewStoragePointRequest storageRequest = (NewStoragePointRequest) event;
 			worker.execute(() -> {
-				System.out.println("--> Table Queryer received NewStoragePointRequest event");
+		//		System.out.println("--> Table Queryer received NewStoragePointRequest event");
 				eventBus.deliver(getStorageResponse(storageRequest));
 			});
 			
@@ -160,13 +171,20 @@ public class TableQueryer implements SmartBehaviour<RobotCommand> { // TODO must
 			while (rs.next()) {
 
 				pickReponse.hasNewPoint = true;
-				System.out.println("Table Queryer gets a pick point: "+rs.getString("pose"));
-				pickReponse.pickPoint = getCoordinate(rs.getString("pose"));
 
+				pickReponse.pickPoint = getCoordinate(rs.getString("pose"));
+				System.out.println("--> Table Queryer got a pickPoint "+pickReponse.pickPoint);
 				stmt.executeUpdate(
 						"UPDATE PickingTable SET isAssigned='" + true + "' WHERE PPid='" + rs.getString("PPid") + "'");
 				break;
 			}
+			
+			System.out.println("------------  PickingTable ----------------");
+			  rs = stmt.executeQuery("SELECT * FROM PickingTable");
+			  while (rs.next()) {
+			       System.out.println(rs.getString("PPid") + ", " + rs.getString("pose")+ ", " + rs.getString("isAssigned"));
+			  }
+			  
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

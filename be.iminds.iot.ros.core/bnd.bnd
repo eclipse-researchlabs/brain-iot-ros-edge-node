@@ -1,5 +1,5 @@
 Bundle-Version: 1.0.0
--includeresource:	OSGI-INF/config.properties=config.properties
+#-includeresource:	OSGI-INF/config.properties=config.properties
 -buildpath: \
 	be.iminds.iot.ros.api;version=latest,\
 	osgi.core;version=7.0,\

@@ -23,6 +23,7 @@
 package be.iminds.iot.ros.core;
 
 import java.io.File;
+import java.util.Map.Entry;
 import java.net.Socket;
 import java.net.URI;
 import java.util.ArrayList;
@@ -37,9 +38,12 @@ import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
+
+import org.osgi.framework.BundleContext;
 import org.osgi.service.component.ComponentContext;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.ConfigurationPolicy;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.component.annotations.ReferenceCardinality;
@@ -62,6 +66,8 @@ import be.iminds.iot.ros.api.Ros;
 
 @Component(service = {Ros.class},
 	immediate=true,
+	configurationPolicy=ConfigurationPolicy.REQUIRE,
+	name= "eu.brain.iot.robotics.roscore.ROS",
 	property = {"osgi.command.scope=ros", 
 		"osgi.command.function=env",	
 		"osgi.command.function=nodes",
@@ -69,8 +75,7 @@ import be.iminds.iot.ros.api.Ros;
 		"osgi.command.function=publishers",
 		"osgi.command.function=subscribers",
 		"osgi.command.function=services",
-		"osgi.command.function=providers"}/*,
-	properties = "OSGI-INF/config.properties"*/)
+		"osgi.command.function=providers"})
 public class RosImpl extends AbstractNodeMain implements Ros {
 
 	// ROS environment variables
@@ -83,6 +88,9 @@ public class RosImpl extends AbstractNodeMain implements Ros {
 	// ROS core instance (native or rosjava)
 	private Process nativeCore;
 	private RosCore core;
+	private String robotIP;
+	private int robotId;
+	private String robotName;
 	
 	// rosjava connection to the ROS master
 	private MasterStateClient master;
@@ -97,20 +105,53 @@ public class RosImpl extends AbstractNodeMain implements Ros {
 
 	
 	@Activate
-	void activate(ComponentContext context) throws Exception {
-		Dictionary<String,Object>  properties=context.getProperties();
+	void activate(BundleContext context, Map<String, Object> properties) throws Exception {
 		try {
+			String uri = null;
+
+			if (!properties.isEmpty()) {
+				for (Entry<String, Object> entry : properties.entrySet()) {
+					String key = entry.getKey();
+					if (key.equals("ros.master.uri")) {
+						uri = (String) entry.getValue();
+					} else if (key.equals("robotIP")) {
+						this.robotIP = (String) entry.getValue();
+					} else if (key.equals("robotId")) {
+						this.robotId = Integer.parseInt((String) entry.getValue());
+					} else if (key.equals("robotName")) {
+						this.robotName = (String) entry.getValue();
+					}
+				}
+			}
 			
-			String uri = getVariable("ROS_MASTER_URI", "ros.master.uri", properties);
-			if(uri==null){
+			if(uri == null) {
+				if(robotIP != null) {
+					uri = "http://"+robotIP+":11311";
+				} else {
+					uri = getVariable(context, "ROS_MASTER_URI", "ros.master.uri");
+				}
+			}
+
+			if(uri == null){
 				throw new Exception("No master URI configured!");
+			//	deactivate();
 			}
 			masterURI = new URI(uri);//uri
-			System.out.println("\n masterURI = "+masterURI);
-			distro = getVariable("ROS_DISTRO", "ros.distro", properties);
-			namespace = getVariable("ROS_NAMESPACE", "ros.namespace", properties);
-			root = getVariable("ROS_ROOT", "ros.root", properties);
-			packagePath = getVariable("ROS_PACKAGE_PATH", "ros.package.path", properties);
+			System.out.println("\n--> masterURI = "+masterURI);
+			
+			if(robotIP == null) {
+				String[] strs = uri.split(":");
+				robotIP = strs[1].substring(2);
+				System.out.println("--> robotIP = "+robotIP);
+			}
+
+			System.out.println("--> robotName = "+robotName);
+			System.out.println("--> robotId = "+robotId);
+			
+			distro = getVariable(context, "ROS_DISTRO", "ros.distro");
+			namespace = getVariable(context, "ROS_NAMESPACE", "ros.namespace");
+			root = getVariable(context, "ROS_ROOT", "ros.root");
+			packagePath = getVariable(context, "ROS_PACKAGE_PATH", "ros.package.path");
 		} catch(Exception e){
 			System.err.println("Error setting up the ROS environment: "+e.getMessage());
 			throw e;
@@ -130,16 +171,16 @@ public class RosImpl extends AbstractNodeMain implements Ros {
 		// start ROS core if required
 		boolean start = !rosCoreActive();
 		if(start){
-			System.out.println("\n start installed ROS system ?  "+ start);
+			System.out.println("\n start installed ROS system");
 			boolean startNative = false;   // -------keep always running native ros core
-			String rosCoreNative = getVariable(null,"ros.core.native",properties);
+			String rosCoreNative = getVariable(context, null,"ros.core.native");
 			
 			if(rosCoreNative != null){
 				startNative = Boolean.parseBoolean(rosCoreNative);				
 			}
 			
 			if(startNative){
-				
+				System.out.println("\n start Native roscore =  "+ startNative);
 				// native ROScore process
 				ProcessBuilder builder = new ProcessBuilder("roscore", "-p "+masterURI.getPort());
 				builder.environment().put("ROS_MASTER_URI", masterURI.toString());
@@ -176,8 +217,22 @@ public class RosImpl extends AbstractNodeMain implements Ros {
 		if(nativeCore != null){
 			nativeCore.destroy();
 		}
+		if(executor != null){
+			executor.shutdown();
+		}
 		
-		executor.shutdown();
+	}
+	@Override
+	public String getRobotIP() {
+		return robotIP;
+	}
+	@Override
+	public int getRobotId() {
+		return robotId;
+	}
+	@Override
+	public String getRobotName() {
+		return robotName;
 	}
 	
 	private boolean rosCoreActive(){
@@ -210,13 +265,16 @@ public class RosImpl extends AbstractNodeMain implements Ros {
 	
 	
 		
-	private String getVariable(String environmentKey, String propertyKey, Dictionary<String,Object> properties){
+	private String getVariable(BundleContext context, String environmentKey, String propertyKey){
 		// then try context property
-		String ctx = (String)properties.get(propertyKey);
+		
+		String ctx = context.getProperty(propertyKey);
 		if(ctx != null && ctx.length()!=0){
 			return ctx;
-		} else 
+		} else if(environmentKey != null){
 			return System.getenv(environmentKey);
+		}
+		return null;
 	}
             
 	

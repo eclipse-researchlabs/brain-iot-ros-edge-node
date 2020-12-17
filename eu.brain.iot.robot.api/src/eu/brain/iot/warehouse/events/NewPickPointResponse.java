@@ -13,6 +13,8 @@ public class NewPickPointResponse extends RobotCommand{
 	
 	public Coordinate pickPoint;
 	
+	//public String pickPoint;
+	
 	
 
 }

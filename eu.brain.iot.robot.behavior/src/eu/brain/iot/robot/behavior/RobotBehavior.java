@@ -5,6 +5,7 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -18,6 +19,11 @@ import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.metatype.annotations.AttributeDefinition;
 import org.osgi.service.metatype.annotations.ObjectClassDefinition;
+import java.util.function.Predicate;
+
+import org.osgi.util.promise.Deferred;
+import org.osgi.util.promise.Promise;
+
 import com.paremus.brain.iot.example.door.api.DoorStatus;
 import com.paremus.brain.iot.example.door.api.DoorStatus.State;
 import com.paremus.brain.iot.example.door.api.DoorStatusResponse;
@@ -40,7 +46,7 @@ import eu.brain.iot.warehouse.events.NewStoragePointRequest;
 import eu.brain.iot.warehouse.events.NewStoragePointResponse;
 import eu.brain.iot.warehouse.events.NoCartNotice;
 
-@Component(configurationPid = "eu.brain.iot.example.robot.Robot", 
+@Component(configurationPid = "eu.brain.iot.example.robot.RobotBehavior", 
 configurationPolicy = ConfigurationPolicy.REQUIRE, 
 service = {
 		SmartBehaviour.class })
@@ -48,28 +54,28 @@ service = {
 		DoorStatusResponse.class, AvailabilityReturn.class}, 
 		author = "LINKS", name = "Robot Behavior", 
 		description = "Implements a Robot Behavior.")
+
 public class RobotBehavior implements SmartBehaviour<BrainIoTEvent> {
 
 	private int robotID;
-	private String robotIP;
+	private static volatile String robotIP;
 	private boolean robotReady = false;
-	private QueryStateValueReturn queryReturn;
-	private int markerID = 0;
-	private int newMarkerCounter = 0;
-	private int currentMarkerCounter = 0;
+	private static volatile QueryStateValueReturn queryReturn;
+	private static volatile int markerID = 0;
+	private static volatile int newMarkerCounter = 0;
+	private static volatile int currentMarkerCounter = 0;
 	private boolean isDoorOpen = false;
-	private volatile NewPickPointResponse pickResponse = null;
-	private volatile NewStoragePointResponse storageResponse = null;
-	private volatile DockingResponse dockingResponse = null;
-	private volatile CartNoticeResponse cartNoticeResponse = null;
+	private static  volatile NewPickPointResponse pickResponse = null;
+	private static  NewStoragePointResponse storageResponse = null;
+	private static  DockingResponse dockingResponse = null;
+	private static CartNoticeResponse cartNoticeResponse = null;
+	
+	private List<PendingRequest> pendingRequests = new CopyOnWriteArrayList<>();
 
 	@ObjectClassDefinition
 	public static @interface Config {
 
-		@AttributeDefinition(description = "The name of the robot")
-		String name();
-
-		@AttributeDefinition(description = "The identifier for the robot")
+		@AttributeDefinition(description = "The identifier for the robot behaviour")
 		int id();
 
 	}
@@ -84,7 +90,9 @@ public class RobotBehavior implements SmartBehaviour<BrainIoTEvent> {
 	@Activate
 	void activate(BundleContext context, Config config, Map<String, Object> props) {
 		this.config = config;
-		System.out.println("\nHello!  I am robotBehavior : " + config.id() + "  name = " + config.name());
+		this.robotID = config.id();
+		
+		System.out.println("\nHello!  I am robotBehavior : " + config.id());
 
 		worker = Executors.newFixedThreadPool(10);
 
@@ -92,31 +100,30 @@ public class RobotBehavior implements SmartBehaviour<BrainIoTEvent> {
 				.filter(e -> !e.getKey().startsWith(".")).collect(Collectors.toMap(Entry::getKey, Entry::getValue)));
 
 		serviceProps.put(SmartBehaviourDefinition.PREFIX_ + "filter",
-				String.format("(|(robotID=%s)(robotID=%s))", config.id(), RobotCommand.ALL_ROBOTS));
+				String.format("(|(robotID=%s)(robotID=%s))", robotID, RobotCommand.ALL_ROBOTS));
 
-		System.out.println("+++++++++ filter = " + serviceProps.get(SmartBehaviourDefinition.PREFIX_ + "filter"));
+		System.out.println("+++++++++ Robot Behaviour filter = " + serviceProps.get(SmartBehaviourDefinition.PREFIX_ + "filter"));
 		reg = context.registerService(SmartBehaviour.class, this, serviceProps);
 
-		this.robotID = config.id();
+		
 
 		 onStart();
 	}
-
-	@Deactivate
-	void stop() {
-		reg.unregister();
-		worker.shutdown();
-		try {
-			worker.awaitTermination(1, TimeUnit.SECONDS);
-		} catch (InterruptedException ie) {
-			Thread.currentThread().interrupt();
-		}
+	
+	private static class PendingRequest {
+		public Predicate<? super BrainIoTEvent> consumer;
+		public BrainIoTEvent toResend;
+		public Deferred<? super BrainIoTEvent> latch;
+		
+		public int processed = -1;
 	}
 
+	
+
 	public void onStart() {
-		System.out.println("----------enter onStart() 1-------------");
+
 		worker.execute(() -> {
-			System.out.println("-----------enter onStart() 2 worker-------------");
+
 			boolean nextIteration = true;
 			int pickCounter = 1;
 			int storageCounter = 1;
@@ -137,16 +144,19 @@ public class RobotBehavior implements SmartBehaviour<BrainIoTEvent> {
 
 						NewPickPointRequest pickRequest = new NewPickPointRequest();
 						pickRequest.robotID = this.robotID;
-						pickResponse = null;
+				//		this.pickResponse = null;
+				//		setPickResponse(null);
+						RobotBehavior.pickResponse = null;
 						eventBus.deliver(pickRequest);
 
 						waitPickResponse();
 
-						if (pickResponse.hasNewPoint) {
+				//		if (getPickResponse().hasNewPoint) {
+						if (RobotBehavior.pickResponse.hasNewPoint) {	
 							System.out.println("-----------new Pick Point-------------");
-							pickPoint = pickResponse.pickPoint;
+							pickPoint = getPickResponse().pickPoint;
 							if(pickPoint == null) {
-								System.out.println("RB exit!");
+								System.out.println("no pick point, RB exit!");
 								stop();
 							}
 							System.out.println("RB" + robotID + " get new Pick Point: " + pickPoint.getX() + ", "
@@ -234,12 +244,12 @@ public class RobotBehavior implements SmartBehaviour<BrainIoTEvent> {
 							NewStoragePointRequest storageRequest = new NewStoragePointRequest();
 							storageRequest.robotID = this.robotID;
 							storageRequest.markerID = markerID;
-							storageResponse = null;
+							RobotBehavior.storageResponse = null;
 							eventBus.deliver(storageRequest);
 
 							waitStorageResponse();
 
-							if (storageResponse.hasNewPoint) {
+							if (RobotBehavior.storageResponse.hasNewPoint) {
 								System.out.println("-----------new Storage Point-------------");
 								System.out.println("------------------------");
 								break;
@@ -266,7 +276,7 @@ public class RobotBehavior implements SmartBehaviour<BrainIoTEvent> {
 
 							// --------------------------- Go to Storage AUX -------------------------------------
 
-							if (!executeGoTo(storageResponse.storageAuxliaryPoint, "storage AUX")) {
+							if (!executeGoTo(RobotBehavior.storageResponse.storageAuxliaryPoint, "storage AUX")) {
 								break; // execution failed
 							}
 							// --------------------------- check Door Marker  --------------------------------------
@@ -280,7 +290,7 @@ public class RobotBehavior implements SmartBehaviour<BrainIoTEvent> {
 
 							// --------------------------- Go to Storage Point --------------------------------------
 
-							if (!executeGoTo(storageResponse.storagePoint, "storage Point")) {
+							if (!executeGoTo(RobotBehavior.storageResponse.storagePoint, "storage Point")) {
 								break; // execution failed
 							}
 
@@ -388,17 +398,28 @@ public class RobotBehavior implements SmartBehaviour<BrainIoTEvent> {
 				System.out.println("-->RB" + robotID + " received RobotReady event");
 				robotIP = rbc.robotIP;
 				robotReady = rbc.isReady;
+				System.out.println("robotReady--"+robotReady);
 			});
 
 		} else if (event instanceof NewPickPointResponse) {
-			this.pickResponse = (NewPickPointResponse) event;
+		//	this.pickResponse = (NewPickPointResponse) event;
+		//	NewPickPointResponse rs = (NewPickPointResponse) event;
+			System.out.println("\n--1--"+(NewPickPointResponse) event);
+	
+		//	setPickResponse((NewPickPointResponse) event);
+			RobotBehavior.pickResponse = (NewPickPointResponse) event;
+			
 			// System.out.println("-->RB" + robotID + " receive NewPickPointResponse ");
 			worker.execute(() -> {
-				System.out.println("-->RB" + robotID + " receive NewPickPointResponse ");
+			//	RobotBehavior.pickResponse = (NewPickPointResponse) event;
+				
+				
+				System.out.println("-->RB" + robotID + " receive  "+ getPickResponse());
+		//		System.out.println("-->RB" + robotID + " receive NewPickPointResponse "+ getPickResponse().pickPoint.toString());
 			});
 
 		} else if (event instanceof NewStoragePointResponse) {
-			this.storageResponse = (NewStoragePointResponse) event;
+			RobotBehavior.storageResponse = (NewStoragePointResponse) event;
 			worker.execute(() -> {
 				System.out.println("-->RB" + robotID + " receive NewStoragePointResponse ");
 			});
@@ -440,6 +461,60 @@ public class RobotBehavior implements SmartBehaviour<BrainIoTEvent> {
 			});
 		}
 
+	}
+	
+	private static synchronized void setPickResponse(NewPickPointResponse event) {
+		pickResponse = event;
+	}
+	private static synchronized NewPickPointResponse getPickResponse() {
+		return pickResponse;
+	}
+	
+	
+/*	@Override
+	public void notify(BrainIoTEvent event) {
+
+		System.out.println("-->RB" + robotID + " received an event type " + event.getClass().getSimpleName());
+
+		for(PendingRequest pr : pendingRequests) {
+			try {
+				if(pr.consumer.test(event)) {
+					pr.latch.resolve(event);
+				}
+			} catch (Exception e) {
+				pr.latch.fail(e);
+			}
+		}
+	}*/
+	
+	private Promise<Integer> queryStateAsync(int RobotId, int mission) {
+		QueryState qs =new QueryState();
+		
+    	
+		System.out.println("ORCHESTRATOR: SEND QUERY STATE");
+			return awaitResponse(qs, e -> {
+				if(e instanceof QueryStateValueReturn) {
+					QueryStateValueReturn qsvr = (QueryStateValueReturn) e;
+				//	return RobotId == qsvr.robotId && qsvr.mission == mission;
+				}
+				return false;
+			})
+			.map(e -> (QueryStateValueReturn)e)
+			.thenAccept(e -> System.out.println("Orchestrator Recieved a Query response from Robot " + e.robotID))
+			.map(e -> e.robotID);   // QueryStateValueReturn.value
+	}
+	
+	
+	private Promise<BrainIoTEvent> awaitResponse(BrainIoTEvent event, 
+			Predicate<BrainIoTEvent> acceptableResponse) {
+		PendingRequest pr = new PendingRequest();
+		pr.toResend = event;
+		pr.consumer = acceptableResponse;
+		Deferred<BrainIoTEvent> deferred = new Deferred<>();
+		pr.latch = deferred;
+		pendingRequests.add(pr);
+		eventBus.deliver(event);   // for each await, a new command will be sent
+		return deferred.getPromise().timeout(10000).onResolve(() -> pendingRequests.remove(pr));
 	}
 
 	public boolean executeGoTo(Coordinate coordinate, String targetPoint) {
@@ -492,7 +567,8 @@ public class RobotBehavior implements SmartBehaviour<BrainIoTEvent> {
 	public boolean waitPickResponse() {
 		System.out.println("-->RB" + robotID + " in waiting PickResponse");
 		while (true) {
-			if (this.pickResponse != null) {
+		//	if (getPickResponse() != null) {
+			if (RobotBehavior.pickResponse != null) {
 				return true;
 			} else {
 				try {
@@ -507,7 +583,7 @@ public class RobotBehavior implements SmartBehaviour<BrainIoTEvent> {
 	public boolean waitStorageResponse() {
 		System.out.println("-->RB" + robotID + " in waiting storageResponse");
 		while (true) {
-			if (this.storageResponse != null) {
+			if (RobotBehavior.storageResponse != null) {
 				return true;
 			} else {
 				try {
@@ -621,5 +697,15 @@ public class RobotBehavior implements SmartBehaviour<BrainIoTEvent> {
 		return dockingRequest;
 	}
 
+	@Deactivate
+	void stop() {
+		reg.unregister();
+		worker.shutdown();
+		try {
+			worker.awaitTermination(1, TimeUnit.SECONDS);
+		} catch (InterruptedException ie) {
+			Thread.currentThread().interrupt();
+		}
+	}
 
 }

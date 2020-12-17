@@ -38,18 +38,16 @@ public class JsonDataReader {
 		Gson gson = new Gson();
 		JsonReader reader;
 		try {
-		Process proc = Runtime.getRuntime().exec(new String[] {"/bin/bash", "-c", "pwd"});
-		String line="";
-		BufferedReader input =  
-				new BufferedReader  
-				(new InputStreamReader(proc.getInputStream()));  
-		while ((line = input.readLine()) != null) {  
+			Process proc = Runtime.getRuntime().exec(new String[] { "/bin/bash", "-c", "pwd" });
+			String line = "";
+			BufferedReader input = new BufferedReader(new InputStreamReader(proc.getInputStream()));
+			while ((line = input.readLine()) != null) {
 				System.out.println(line);
-		}  
-		input.close();  
-		proc.destroy();
-		proc = null;
-		}catch (IOException e){
+			}
+			input.close();
+			proc.destroy();
+			proc = null;
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
