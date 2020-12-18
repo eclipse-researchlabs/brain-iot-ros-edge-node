@@ -7,7 +7,7 @@
 
     
     "eu.brain.iot.example.robot.Door": {
-    	"host": "10.8.0.106", 
+    	"host": "localhost", 
         "port": "8080",
         "id": "ExampleDoor"
     },
@@ -15,6 +15,9 @@
     
 
     "eu.brain.iot.example.robot.RobotBehavior~RobotBehaviorA": {
+           "id": 1
+    },
+    "eu.brain.iot.example.robot.RobotBehavior~RobotBehaviorB": {
            "id": 2
     }
     

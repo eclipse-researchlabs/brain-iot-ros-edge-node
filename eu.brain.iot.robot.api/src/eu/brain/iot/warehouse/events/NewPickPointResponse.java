@@ -1,6 +1,5 @@
 package eu.brain.iot.warehouse.events;
 
-import eu.brain.iot.robot.api.Coordinate;
 import eu.brain.iot.robot.api.RobotCommand;
 
 /*
@@ -11,9 +10,7 @@ public class NewPickPointResponse extends RobotCommand{
 	
 	public boolean hasNewPoint = false;
 	
-	public Coordinate pickPoint;
-	
-	//public String pickPoint;
+	public String pickPoint;  // 8.0,-3.6,-3.14   presenting x,y,z
 	
 	
 

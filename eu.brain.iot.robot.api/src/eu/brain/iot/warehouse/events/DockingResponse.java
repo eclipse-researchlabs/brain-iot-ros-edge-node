@@ -1,6 +1,5 @@
 package eu.brain.iot.warehouse.events;
 
-import eu.brain.iot.robot.api.Coordinate;
 import eu.brain.iot.robot.api.RobotCommand;
 
 /*
@@ -12,7 +11,7 @@ public class DockingResponse extends RobotCommand{
 	
 	public boolean hasNewPoint = false;
 	
-	public Coordinate dockingPoint;
+	public String dockingPoint;
 
-	public Coordinate dockAuxliaryPoint;
+	public String dockAuxliaryPoint;
 }

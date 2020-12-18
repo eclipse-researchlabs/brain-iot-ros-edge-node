@@ -13,15 +13,14 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
-
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
-
 import eu.brain.iot.eventing.annotation.SmartBehaviourDefinition;
+import eu.brain.iot.eventing.api.BrainIoTEvent;
 import eu.brain.iot.eventing.api.EventBus;
 import eu.brain.iot.eventing.api.SmartBehaviour;
 import eu.brain.iot.warehouse.events.CartMovedNotice;
@@ -34,8 +33,7 @@ import eu.brain.iot.warehouse.events.NewStoragePointRequest;
 import eu.brain.iot.warehouse.events.NewStoragePointResponse;
 import eu.brain.iot.warehouse.events.NoCartNotice;
 import eu.brain.iot.robot.api.Coordinate;
-import eu.brain.iot.robot.api.RobotCommand;
-import eu.brain.iot.robot.events.WriteGoTo;
+
 
 @Component(service = { TableQueryer.class },
 					   immediate = true)
@@ -45,7 +43,7 @@ import eu.brain.iot.robot.events.WriteGoTo;
 		author = "LINKS", name = "Warehouse Backend", 
 		description = "Implements the Tables Queryer in Warehouse Backend.")
 
-public class TableQueryer implements SmartBehaviour<RobotCommand> { // TODO must able to cache multiple requests
+public class TableQueryer implements SmartBehaviour<BrainIoTEvent> { // TODO must able to cache multiple requests
 
 	private static String base = "/home/rui/git/ros-edge-node/eu.brain.iot.robot.tables.creator";
 
@@ -81,11 +79,14 @@ public class TableQueryer implements SmartBehaviour<RobotCommand> { // TODO must
 			Dictionary<String, Object> serviceProps = new Hashtable<>(props.entrySet().stream()
 					.filter(e -> !e.getKey().startsWith(".")).collect(Collectors.toMap(Entry::getKey, Entry::getValue)));
 
-			serviceProps.put(SmartBehaviourDefinition.PREFIX_ + "filter",  // -1, get all events
-					String.format("(|(robotID=%s)(robotID=%s))", 2, RobotCommand.ALL_ROBOTS));
+		/*	serviceProps.put(SmartBehaviourDefinition.PREFIX_ + "filter",  // -1, get all events
+					String.format("(|(robotID=%s)(robotID=%s))", 2, RobotCommand.ALL_ROBOTS));*/
 
-		//	serviceProps.put(SmartBehaviourDefinition.PREFIX_ + "filter",  // -1, get all events
-		//			String.format("((robotID=%s))", RobotCommand.ALL_ROBOTS));
+		/*	serviceProps.put(SmartBehaviourDefinition.PREFIX_ + "filter",  // robotBehaviorID = -1, warehouse backend get all events from robot behaviours
+					String.format("(|(robotID=%s)(robotBehaviorID=%s)", null, RobotCommand.ALL_ROBOTS, true));*/
+			
+			serviceProps.put(SmartBehaviourDefinition.PREFIX_ + "filter",  // get all events
+					String.format("(robotID=*)"));
 			
 			System.out.println("+++++++++ Table Queryer filter = " + serviceProps.get(SmartBehaviourDefinition.PREFIX_ + "filter"));
 			reg = context.registerService(SmartBehaviour.class, this, serviceProps);
@@ -114,9 +115,9 @@ public class TableQueryer implements SmartBehaviour<RobotCommand> { // TODO must
 	
 	
 	@Override
-	public void notify(RobotCommand event) {
+	public void notify(BrainIoTEvent event) {
 
-		System.out.println("--> Table Queryer received a "+event.getClass().getSimpleName()+" event");
+		System.out.println("--> Table Queryer received an event "+event.getClass()/*.getSimpleName()*/);
 		
 		if (event instanceof NewPickPointRequest) {
 			NewPickPointRequest pickRequest = (NewPickPointRequest) event;
@@ -138,21 +139,18 @@ public class TableQueryer implements SmartBehaviour<RobotCommand> { // TODO must
 		} else if (event instanceof DockingRequest) {
 			DockingRequest dockRequest = (DockingRequest) event;
 			worker.execute(() -> {
-				System.out.println("--> Table Queryer received DockingRequest event");
 				eventBus.deliver(getDockResponse(dockRequest));
 			});
 			
 		} else if (event instanceof CartMovedNotice) {
 			CartMovedNotice cartMovedNotice = (CartMovedNotice) event;
 			worker.execute(() -> {
-				System.out.println("--> Table Queryer received CartMovedNotice event");
 				eventBus.deliver(getCartMovedNotice(cartMovedNotice));
 			});
 			
 		} else if (event instanceof NoCartNotice) {
 			NoCartNotice noCartNotice = (NoCartNotice) event;
 			worker.execute(() -> {
-				System.out.println("--> Table Queryer received NoCartNotice event");
 				eventBus.deliver(getNoCartNotice(noCartNotice));
 			});
 		}
@@ -172,7 +170,8 @@ public class TableQueryer implements SmartBehaviour<RobotCommand> { // TODO must
 
 				pickReponse.hasNewPoint = true;
 
-				pickReponse.pickPoint = getCoordinate(rs.getString("pose"));
+		//		pickReponse.pickPoint = getCoordinate(rs.getString("pose"));
+				pickReponse.pickPoint = rs.getString("pose");
 				System.out.println("--> Table Queryer got a pickPoint "+pickReponse.pickPoint);
 				stmt.executeUpdate(
 						"UPDATE PickingTable SET isAssigned='" + true + "' WHERE PPid='" + rs.getString("PPid") + "'");
@@ -209,13 +208,13 @@ public class TableQueryer implements SmartBehaviour<RobotCommand> { // TODO must
 			}
 			if (storageID != null) {
 
-				rs = stmt.executeQuery("SELECT * FROM StorageTable WHERE STid = " +storageID);
+				rs = stmt.executeQuery("SELECT * FROM StorageTable WHERE STid = '" +storageID+"'");
 				
 				while (rs.next()) {
 
 					storageReponse.hasNewPoint = true;
-					storageReponse.storageAuxliaryPoint = getCoordinate(rs.getString("storageAUX"));
-					storageReponse.storagePoint = getCoordinate(rs.getString("storagePose"));
+					storageReponse.storageAuxliaryPoint = rs.getString("storageAUX");
+					storageReponse.storagePoint = rs.getString("storagePose");
 					break;
 				}
 			}
@@ -227,19 +226,20 @@ public class TableQueryer implements SmartBehaviour<RobotCommand> { // TODO must
 	}
 	
 	private DockingResponse getDockResponse(DockingRequest dockingRequest) {
-
+		System.out.println("--> Table Queryer got a DockingRequest for robot "+dockingRequest.robotID);
+		
 		DockingResponse dockReponse = new DockingResponse();
 		dockReponse.robotID = dockingRequest.robotID;
 
 		ResultSet rs;
 		try {
-			rs = stmt.executeQuery("SELECT * FROM DockTable WHERE IPid = "+ dockingRequest.robotIP);
+			rs = stmt.executeQuery("SELECT * FROM DockTable WHERE IPid = '"+ dockingRequest.robotID+"'");
 
 			while (rs.next()) {
 
 				dockReponse.hasNewPoint = true;
-				dockReponse.dockAuxliaryPoint = getCoordinate(rs.getString("dockAUX"));
-				dockReponse.dockingPoint = getCoordinate(rs.getString("dockPose"));
+				dockReponse.dockAuxliaryPoint = rs.getString("dockAUX");
+				dockReponse.dockingPoint = rs.getString("dockPose");
 				break;
 			}
 		} catch (SQLException e) {
@@ -254,7 +254,7 @@ public class TableQueryer implements SmartBehaviour<RobotCommand> { // TODO must
 
 		Coordinate cord = new Coordinate();
 
-		String[] strs = crd.split(",");
+		String[] strs = crd.trim().split(",");
 		cord.setX(new Double(strs[0]).doubleValue());
 		cord.setY(new Double(strs[1]).doubleValue());
 		cord.setZ(new Double(strs[2]).doubleValue());
@@ -267,8 +267,9 @@ public class TableQueryer implements SmartBehaviour<RobotCommand> { // TODO must
 		CartNoticeResponse cartNoticeResponse = new CartNoticeResponse();
 		cartNoticeResponse.robotID = cartMovedNotice.robotID;
 
-		Coordinate targetPoint = cartMovedNotice.pickPoint;
+		Coordinate targetPoint = getCoordinate(cartMovedNotice.pickPoint);
 		Coordinate pickPose = null;
+		
 		ResultSet rs;
 		try {
 			rs = stmt.executeQuery("SELECT * FROM PickingTable WHERE isAssigned=true");
@@ -285,9 +286,21 @@ public class TableQueryer implements SmartBehaviour<RobotCommand> { // TODO must
 				pickPose = null;
 				
 			}
+			System.out.println("------------  PickingTable ----------------");
+
+			  rs = stmt.executeQuery("SELECT * FROM PickingTable");
+
+			  while (rs.next()) {
+			       System.out.println(rs.getString("PPid") + ", " + rs.getString("pose")+ ", " + rs.getString("isAssigned"));
+			  }
+			  
+			  System.out.println("Table Queryer is sending CartNoticeResponse = "+CartNoticeResponse.noticeStatus);
+			  
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		
+		
 
 		return cartNoticeResponse;
 	}
@@ -297,7 +310,8 @@ public class TableQueryer implements SmartBehaviour<RobotCommand> { // TODO must
 		CartNoticeResponse cartNoticeResponse = new CartNoticeResponse();
 		cartNoticeResponse.robotID = noCartNotice.robotID;
 
-		Coordinate targetPoint = noCartNotice.pickPoint;
+	//	Coordinate targetPoint = noCartNotice.pickPoint;
+		Coordinate targetPoint = getCoordinate(noCartNotice.pickPoint);
 		Coordinate pickPose = null;
 		ResultSet rs;
 		try {
@@ -342,6 +356,7 @@ public class TableQueryer implements SmartBehaviour<RobotCommand> { // TODO must
 			Thread.currentThread().interrupt();
 		}
 	}
+
 
 
 }

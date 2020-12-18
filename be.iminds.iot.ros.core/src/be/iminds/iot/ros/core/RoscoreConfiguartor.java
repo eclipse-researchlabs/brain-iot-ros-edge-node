@@ -55,6 +55,7 @@ public class RoscoreConfiguartor {
 				e.printStackTrace();
 			}
 			
+			
 			String roscoreConf = context.getProperty("roscore.config");
 			
 			FileInputStream fstream;
@@ -62,6 +63,8 @@ public class RoscoreConfiguartor {
 				fstream = new FileInputStream(roscoreConf);
 			else
 				fstream = new FileInputStream("/home/rui/git/ros-edge-node/eu.brain.iot.robot.service/resources/rosConfig.txt");
+			
+			
 			
 			reader = new BufferedReader(new InputStreamReader(fstream));
 			line = reader.readLine();

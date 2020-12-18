@@ -103,24 +103,15 @@ public class RobotService extends AbstractNodeMain implements SmartBehaviour<Rob
 
 
     @Activate
-	void activate(BundleContext context/*, Config config*/, Map<String,Object> props){
+	void activate(BundleContext context, Map<String,Object> props){
     	
-    /*	if(config != null) {
-    		this.robotName=config.name();
-    		this.robotID=config.id();
-    		this.robotIP= ros.getRobotIP();
-		} else {*/
 			this.robotName = ros.getRobotName();
 			this.robotID = ros.getRobotId();
 			this.robotIP = ros.getRobotIP();
-//		}
     	System.out.println("\n robot service props = "+props);
-    //	{eu.brain.iot.behaviour.author=LINKS, eu.brain.iot.behaviour.description=Implements a remote Smart Robot.,
-    //	eu.brain.iot.behaviour.filter=, eu.brain.iot.behaviour.consumed=[Ljava.lang.String;@27a83157, component.name=eu.brain.iot.robot.service.RobotService, component.id=6, eu.brain.iot.behaviour.name=Smart Robot}
 
     	String UUID = context.getProperty("org.osgi.framework.uuid");
-    	
-//	    this.config=config;
+
 	    System.out.println("\nHello!  I am robot : "+robotID+ "  name = "+robotName+ "  IP = "+robotIP+ ",  UUID = "+UUID);
 	    
 	    worker = Executors.newFixedThreadPool(10);
@@ -249,20 +240,21 @@ public class RobotService extends AbstractNodeMain implements SmartBehaviour<Rob
 		rbc.robotIP = robotIP;
 		rbc.isReady = true;
 		eventBus.deliver(rbc);
-		System.out.println("robot_"+robotID+"broadCast Ready info");
+		System.out.println(" >>> robot_"+robotID+"broadCast Ready info");
 		
 	}
 
 	@Override
 	public void notify(RobotCommand event) {
 		
-		System.out.println(" >> Robot "+robotID+" received an event: " + event.getClass());
+		System.out.println(" >>> Robot "+robotID+" received an event: " + event.getClass()+" with robotID = "+event.robotID);
 		
 
 		if (event instanceof WriteGoTo) {
 			
 			WriteGoTo writeGoTo = (WriteGoTo) event;
 			worker.execute(() ->{
+				System.out.println(" >>> Robot "+robotID+" received GoTo: " + writeGoTo.coordinate);
 				QueryStateValueReturn queryReturnedValue =new QueryStateValueReturn(); 
 				
 				String sendResult = writeGOTO(writeGoTo.coordinate);
@@ -276,32 +268,35 @@ public class RobotService extends AbstractNodeMain implements SmartBehaviour<Rob
 					if((callResp != null)) {
 						if(callResp.current_state.equals("finished")) {
 							
-							System.out.println("robot "+robotID+" WriteGOTO gets CallResponse: result="+callResp.result+", current_state="+callResp.current_state
+							System.out.println(" >>> robot "+robotID+" WriteGOTO gets CallResponse: result="+callResp.result+", current_state="+callResp.current_state
 									+", last_event="+callResp.last_event+", message is: "+callResp.message);
 							
 							if(callResp.last_event.equals("abort")) {
-								System.out.println("robot "+robotID+" query WriteGOTO action finished, but last_event = abort, so continue to query");
-								continue; // the case might be one action is running, another action cmd is also received, 2nd cmd will be abort.
+								System.out.println(" >>> robot "+robotID+" query WriteGOTO action finished, but last_event = abort, so send CurrentState = unknown!");
+							//	continue; // the case might be one action is running, another action cmd is also received, 2nd cmd will be abort.
+								queryReturnedValue.currentState = CurrentState.unknown;
+								break;
 							}
 							queryReturnedValue.currentState = CurrentState.finished;
 							break;
 						} else if(callResp.current_state.equals("unknown")) {
 							
-							System.out.println("robot "+robotID+" WriteGOTO gets CallResponse: result="+callResp.result+", current_state="+callResp.current_state
+							System.out.println(" >>> robot "+robotID+" WriteGOTO gets CallResponse: result="+callResp.result+", current_state="+callResp.current_state
 									+", last_event="+callResp.last_event+", message is: "+callResp.message);
 							queryReturnedValue.currentState = CurrentState.unknown;
+							break;
 						} else {
 							wait(2);
 						}
 					}else {
 						queryReturnedValue.currentState = CurrentState.unknown;
-						System.out.println("robot "+robotID+" query WriteGOTO no response, timeout!"); //TODO, let it query max=3 times, ==> may be done in goToComponent
+						System.out.println(" >>> robot "+robotID+" query WriteGOTO no response, timeout!"); //TODO, let it query max=3 times, ==> may be done in goToComponent
 						break;
 					}
-				}
-				}else {
+				  }  // while end
+				} else {
 					queryReturnedValue.currentState = CurrentState.unknown;
-					System.out.println("robot "+robotID+" sends WriteGOTO failed! Return CurrentState.unknown");
+					System.out.println(" >>> robot "+robotID+" sends WriteGOTO failed! Return CurrentState.unknown");
 				}
 				eventBus.deliver(queryReturnedValue);
 				}
@@ -328,32 +323,35 @@ public class RobotService extends AbstractNodeMain implements SmartBehaviour<Rob
 						if((callResp != null)) {
 							if(callResp.current_state.equals("finished")) {
 								
-								System.out.println("robot "+robotID+" pickCart gets CallResponse: result="+callResp.result+", current_state="+callResp.current_state
+								System.out.println(" >>> robot "+robotID+" pickCart gets CallResponse: result="+callResp.result+", current_state="+callResp.current_state
 										+", last_event="+callResp.last_event+", message is: "+callResp.message);
 								
 								if(callResp.last_event.equals("abort")) {
 									System.out.println("robot "+robotID+" query pickCart action finished, but last_event = abort, so continue to query");
-									continue; // the case might be one action is running, another action cmd is also received, 2nd cmd will be abort.
+								//	continue; // the case might be one action is running, another action cmd is also received, 2nd cmd will be abort.
+									queryReturnedValue.currentState = CurrentState.unknown;
+									break;
 								}
 								queryReturnedValue.currentState = CurrentState.finished;
 								break;
 							} else if(callResp.current_state.equals("unknown")) {
 								
-								System.out.println("robot "+robotID+" pickCart gets CallResponse: result="+callResp.result+", current_state="+callResp.current_state
+								System.out.println(" >>> robot "+robotID+" pickCart gets CallResponse: result="+callResp.result+", current_state="+callResp.current_state
 										+", last_event="+callResp.last_event+", message is: "+callResp.message);
 								queryReturnedValue.currentState = CurrentState.unknown;
+								break;
 							} else {
 								wait(2);
 							}
 						}else {
 							queryReturnedValue.currentState = CurrentState.unknown;
-							System.out.println("robot "+robotID+" query pickCart no response, timeout!"); //TODO, let it query max=3 times, ==> may be done in goToComponent
+							System.out.println(" >>> robot "+robotID+" query pickCart no response, timeout!"); //TODO, let it query max=3 times, ==> may be done in goToComponent
 							break;
 						}
-					}
+					  }  // while end
 					}else {
 						queryReturnedValue.currentState = CurrentState.unknown;
-						System.out.println("robot "+robotID+" sends pickCart failed! Return CurrentState.unknown");
+						System.out.println(" >>> robot "+robotID+" sends pickCart failed! Return CurrentState.unknown");
 					}
 					eventBus.deliver(queryReturnedValue);
 					}
@@ -375,37 +373,40 @@ public class RobotService extends AbstractNodeMain implements SmartBehaviour<Rob
 						if((callResp != null)) {
 							if(callResp.current_state.equals("finished")) {
 								
-								System.out.println("robot "+robotID+" PlaceCart gets CallResponse: result="+callResp.result+", current_state="+callResp.current_state
+								System.out.println(" >>> robot "+robotID+" PlaceCart gets CallResponse: result="+callResp.result+", current_state="+callResp.current_state
 										+", last_event="+callResp.last_event+", message is: "+callResp.message);
 								
 								if(callResp.last_event.equals("abort")) {
 									System.out.println("robot "+robotID+" query PlaceCart action finished, but last_event = abort, so continue to query");
-									continue; // the case might be one action is running, another action cmd is also received, 2nd cmd will be abort.
+								//	continue; // the case might be one action is running, another action cmd is also received, 2nd cmd will be abort.
+									queryReturnedValue.currentState = CurrentState.unknown;
+									break;
 								}
 								queryReturnedValue.currentState = CurrentState.finished;
 								break;
 							} else if(callResp.current_state.equals("unknown")) {
 								
-								System.out.println("robot "+robotID+" PlaceCart gets CallResponse: result="+callResp.result+", current_state="+callResp.current_state
+								System.out.println(" >>> robot "+robotID+" PlaceCart gets CallResponse: result="+callResp.result+", current_state="+callResp.current_state
 										+", last_event="+callResp.last_event+", message is: "+callResp.message);
 								queryReturnedValue.currentState = CurrentState.unknown;
+								break;
 							} else {
 								wait(2);
 							}
 						}else {
 							queryReturnedValue.currentState = CurrentState.unknown;
-							System.out.println("robot "+robotID+" query PlaceCart no response, timeout!"); //TODO, let it query max=3 times, ==> may be done in goToComponent
+							System.out.println(" >>> robot "+robotID+" query PlaceCart no response, timeout!"); //TODO, let it query max=3 times, ==> may be done in goToComponent
 							break;
 						}
-					}
+					  } // while end
 					}else {
 						queryReturnedValue.currentState = CurrentState.unknown;
-						System.out.println("robot "+robotID+" sends PlaceCart failed! Return CurrentState.unknown");
+						System.out.println(" >>> robot "+robotID+" sends PlaceCart failed! Return CurrentState.unknown");
 					}
 					eventBus.deliver(queryReturnedValue);
 			//	checkDoorStatus = false;
 				isWorkDone = true;  // TODO
-				System.out.println("ROBOT "+robotID +" finishs this iteration......... ");
+				System.out.println(" >>> ROBOT "+robotID +" finishs this iteration......... ");
 				});
 						
 		} else if (event instanceof QueryState) {	// Edge Node also can receive additional QueryState from other entities
@@ -439,12 +440,12 @@ public class RobotService extends AbstractNodeMain implements SmartBehaviour<Rob
 						
 					}else {
 						queryReturnedValue.currentState = CurrentState.unknown;
-						System.out.println("robot "+robotID+" queryState() no response, timeout!  ==> it's set to unknown.");
+						System.out.println(" >>> robot "+robotID+" queryState() no response, timeout!  ==> it's set to unknown.");
 					}
 					
 					eventBus.deliver(queryReturnedValue);
 					
-					System.out.println(" >> Robot "+robotID+" reply with QueryStateValueReturn: " + queryReturnedValue.currentState);			
+					System.out.println(" >>> Robot "+robotID+" reply with QueryStateValueReturn: " + queryReturnedValue.currentState);			
 			});
 							
 		} else if (event instanceof CheckMarker) {
@@ -453,20 +454,28 @@ public class RobotService extends AbstractNodeMain implements SmartBehaviour<Rob
 				markerReturn.robotID = event.robotID;
 				markerReturn.markerID=checkMarkers();
 				eventBus.deliver(markerReturn);									
-				System.out.println(" >> Robot "+robotID+" reply with MarkerReturn: " + markerReturn.markerID);	
+				System.out.println(" >>> Robot "+robotID+" reply with MarkerReturn: " + markerReturn.markerID);	
 			});						
 		} else {
-			System.out.println("Argh! Robot "+robotID+" Received an unknown event type " + event.getClass());
+			System.out.println(" >>> Argh! Robot "+robotID+" Received an unknown event type " + event.getClass());
 								
 		}
 		
 	}
 
-	private String writeGOTO(Coordinate coordinate) {
-		this.coordinate=coordinate;
+	private String writeGOTO(String coordinate) {
+		
+	//	this.coordinate=coordinate;
+		this.coordinate = convertCord(coordinate);
 		robot_local_control_msgs.GoToPetitionRequest GoTorequest=goToComponent.constructMsg_gotoRun();
 		return goToComponent.call_gotoRun(GoTorequest);
 
+	}
+	private Coordinate convertCord(String coordinate) {
+		
+		String[] strs = coordinate.trim().split(",");
+		Coordinate cord = new Coordinate(Double.parseDouble(strs[0]), Double.parseDouble(strs[1]), Double.parseDouble(strs[2]));
+		return cord;
 	}
 	
 	private String pickCart(int markerID){
@@ -502,7 +511,7 @@ public class RobotService extends AbstractNodeMain implements SmartBehaviour<Rob
 				state=null;
 				break;	
 		}
-		System.out.println("Finish cancel");
+		System.out.println(" >>> Finish cancel");
 		return state;
 	}
 	
@@ -525,7 +534,7 @@ public class RobotService extends AbstractNodeMain implements SmartBehaviour<Rob
 			break;
 		default:
 			callResp = null;
-			System.out.println("\n -->Robot "+robotID+" queryState() not match any action  !!!!");
+			System.out.println("\n >>> Robot "+robotID+" queryState() not match any action  !!!!");
 			break;	
 		}
 		return callResp;		
@@ -533,7 +542,7 @@ public class RobotService extends AbstractNodeMain implements SmartBehaviour<Rob
 	
 	private int checkMarkers(){ // TODO
 		List<AlvarMarker> markerList = ar_pose_marker.get_poseMarker_value().getMarkers();
-		System.out.println("\n -->Robot "+robotID+" see Markers size = "+ markerList.size()+", and first marker ID = "+ markerList.get(0).getId());
+		System.out.println("\n >>> Robot "+robotID+" see Markers size = "+ markerList.size()+", and first marker ID = "+ markerList.get(0).getId());
 		return markerList.get(0).getId();
 	}
 	
