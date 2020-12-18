@@ -12,7 +12,7 @@
 	org.eclipse.jetty.LEVEL=WARN,\
 	org.apache.felix.log.storeDebug=false,\
 	org.osgi.service.http.port=8081,\
-	roscore.config=/home/rui/git/ros-edge-node/eu.brain.iot.robot.service/resources/rosConfig.txt
+	roscoreConfFolder=/home/rui/git/ros-edge-node/eu.brain.iot.robot.service/resources/
  
  
  

@@ -16,9 +16,6 @@
 
     "eu.brain.iot.example.robot.RobotBehavior~RobotBehaviorA": {
            "id": 1
-    },
-    "eu.brain.iot.example.robot.RobotBehavior~RobotBehaviorB": {
-           "id": 2
     }
     
 

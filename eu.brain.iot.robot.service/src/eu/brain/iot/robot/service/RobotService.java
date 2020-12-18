@@ -108,7 +108,8 @@ public class RobotService extends AbstractNodeMain implements SmartBehaviour<Rob
 			this.robotName = ros.getRobotName();
 			this.robotID = ros.getRobotId();
 			this.robotIP = ros.getRobotIP();
-    	System.out.println("\n robot service props = "+props);
+			
+//    	System.out.println("\n robot service props = "+props);
 
     	String UUID = context.getProperty("org.osgi.framework.uuid");
 

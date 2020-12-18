@@ -251,7 +251,7 @@ public class RosImpl extends AbstractNodeMain implements Ros {
 	
 	@Override
 	public GraphName getDefaultNodeName() {
-		return GraphName.of("rosinfo/");
+		return GraphName.of("rosinfo"+robotId+"/");
 	}
 
 	@Override

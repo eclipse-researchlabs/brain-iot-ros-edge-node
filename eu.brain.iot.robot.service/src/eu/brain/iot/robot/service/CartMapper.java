@@ -23,7 +23,7 @@ public class CartMapper {
 	{
 		loadCart();
 
-        System.out.println("--------------------CartMapper---------------------------");
+        System.out.println("--------------------Internal CartMapper---------------------------");
         System.out.println(Cart);
         System.out.println("-----------------------------------------------");
 	}
