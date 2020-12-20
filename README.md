@@ -58,12 +58,6 @@ Content of **map.json**:
 ```
 This config file can be changed based on the real map coordinates.
 
-Internally there is a shared task list table used by multiple Robot Behaviours:
-
-![image](./tasklist.png)
-
-This is a hard-coded table in Robot Behaviour, the **pickPoseID** and **placePose** correspond to the coordinates in map.json, but you can modify the coordinates in **map.json** as you want. The current version will test only one robot which maves one cart in the first task with taskID=1.
-
 Important! if the **map.json** file is modified, this project must be rebuilt again.
 
 *Contact me if you want to change the number of the carts to be moved!*
@@ -80,14 +74,21 @@ Enter **eu.brain.iot.robot.config** project and open **resources/OSGI-INF/config
     ":configurator:symbolic-name" : "eu.brain.iot.service.robotic.robot.config",
     ":configurator:version" : "0.0.1-SNAPSHOT",
     
-    "eu.brain.iot.example.robot.Robot~robotA": {
-           "name": "turtlebot_1",
+    "eu.brain.iot.example.robot.RobotBehavior": {
            "id": 1
     }
 }
-
 ```
-When you run the **test.bndrun** file in next step, it won't run the door smart behaviour, so a physical door is not necessary.
+
+Currently the ROS Edge Node has been updated to be able to read the robot IP, robot ID and robot name from an external txt file, the defalt config file is **~/resources/rosConfig.txt** to be created, with the content:
+```bash
+robotIP=localhost
+robotId=1
+robotName=turtlebot_1
+```  
+if above file is changed, there is no need to rebuild the repository.
+
+Moreover, When you run the **test.bndrun** file in next step, it won't run the door smart behaviour, so a physical door is not necessary.
 
 In addition, if you're using a robot whose namespace of ros topics is different with **turtlebot\_1**, remember to replace it, its name is one part of ROS services. 
 

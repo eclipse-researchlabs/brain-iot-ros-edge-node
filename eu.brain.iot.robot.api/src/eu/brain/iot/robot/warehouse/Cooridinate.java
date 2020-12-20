@@ -35,7 +35,7 @@ public class Cooridinate {
 	}
 	@Override
 	public String toString() {
-		return "Cooridinate [y=" + y + ", x=" + x + ", z=" + z + "]";
+		return "[y=" + y + ", x=" + x + ", z=" + z + "]";
 	}
 
 	

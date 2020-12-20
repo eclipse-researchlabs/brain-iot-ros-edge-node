@@ -72,4 +72,10 @@ public interface Ros {
 	void addNode(NodeMain node);
 	
 	void removeNode(NodeMain node);
+	
+	String getRobotIP();
+	
+	int getRobotId();
+	
+	String getRobotName();
 }

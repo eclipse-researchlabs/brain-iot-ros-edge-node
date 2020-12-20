@@ -7,8 +7,7 @@
 
     
     
-    "eu.brain.iot.example.robot.Robot~robotA": {
-           "name": "turtlebot_1",
+    "eu.brain.iot.example.robot.RobotBehavior": {
            "id": 1
     }
 

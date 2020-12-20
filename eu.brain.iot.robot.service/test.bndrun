@@ -12,14 +12,10 @@
 -runproperties: \
     org.eclipse.jetty.util.log.class=org.eclipse.jetty.util.log.StdErrLog,\
 	org.eclipse.jetty.LEVEL=WARN,\
-	ros.core.native=true,\
-	gazebo.launch=true,\
-	verbosity=2,\
-	ros.master.uri=http://localhost:11311,\
 	org.apache.felix.log.storeDebug=false,\
-	felix.fileinstall.dir=resources,\
-	org.osgi.service.http.port=8081,\
-	logback.configurationFile=resources/logback.xml
+	org.osgi.service.http.port=8081
+	
+#	roscoreConfFolder=~/resources/rosConfig.txt
  
  
 -runrequires: \
@@ -34,8 +30,8 @@
 	bnd.identity;version='latest';id='eu.brain.iot.robot.config',\
 	bnd.identity;version='latest';id='eu.brain.iot.robot.msgs',\
 	bnd.identity;version='latest';id='eu.brain.iot.robot.service',\
-	bnd.identity;version='latest';id='be.iminds.iot.ros.core',\
-	bnd.identity;version='latest';id='be.iminds.iot.ros.msgs.generator'
+	bnd.identity;version='latest';id='be.iminds.iot.ros.msgs.generator',\
+	bnd.identity;version='latest';id='be.iminds.iot.ros.core'
 -runbundles: \
 	com.google.guava;version='[12.0.1,12.0.2)',\
 	com.paremus.brain.iot.eventing.api;version='[0.0.1,0.0.2)',\
@@ -68,14 +64,14 @@
 	org.ros.rosjava_core.rosjava;version='[0.2.2,0.2.3)',\
 	org.xbill.dns;version='[2.0.8,2.0.9)',\
 	osgi.promise;version='[7.0.1,7.0.2)',\
+	com.google.guava;version='[18.0.0,18.0.1)',\
 	be.iminds.iot.ros.api;version=snapshot,\
 	be.iminds.iot.ros.core;version=snapshot,\
-	com.google.guava;version='[18.0.0,18.0.1)',\
+	be.iminds.iot.ros.msgs.generator;version=snapshot,\
 	eu.brain.iot.robot.api;version=snapshot,\
 	eu.brain.iot.robot.config;version=snapshot,\
 	eu.brain.iot.robot.msgs;version=snapshot,\
-	eu.brain.iot.robot.service;version=snapshot,\
-	be.iminds.iot.ros.msgs.generator;version=snapshot
+	eu.brain.iot.robot.service;version=snapshot
 	
 	
 #-runsystempackages: sun.reflect

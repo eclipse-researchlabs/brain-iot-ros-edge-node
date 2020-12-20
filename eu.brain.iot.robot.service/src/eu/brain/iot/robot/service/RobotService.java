@@ -30,6 +30,7 @@ import org.ros.node.NodeMain;
 
 import ar_track_alvar_msgs.AlvarMarker;
 import ar_track_alvar_msgs.AlvarMarkers;
+import be.iminds.iot.ros.api.Ros;
 import eu.brain.iot.eventing.annotation.SmartBehaviourDefinition;
 import eu.brain.iot.eventing.api.EventBus;
 import eu.brain.iot.eventing.api.SmartBehaviour;
@@ -62,9 +63,10 @@ import std_msgs.Header;
 
 
 @Component(
-		configurationPid= "eu.brain.iot.example.robot.Robot",
-		configurationPolicy=ConfigurationPolicy.REQUIRE,
-		service = {NodeMain.class})
+	/*	configurationPid= "eu.brain.iot.example.robot.Robot",
+		configurationPolicy=ConfigurationPolicy.REQUIRE,*/
+		immediate=true,
+		service = {SmartBehaviour.class, NodeMain.class})
 @SmartBehaviourDefinition(
 		consumed = {WriteGOTO.class,Cancel.class, PickCart.class,PlaceCART.class,QueryState.class,CheckMarker.class },    
 		author = "LINKS", name = "Smart Robot",
@@ -73,6 +75,7 @@ public class RobotService extends AbstractNodeMain implements SmartBehaviour<Rob
 	
     private String robotName;
     private int robotId;
+    private String robotIP;
     private AvailibilityComponent availibility;
     private Ar_pose_markerComponent ar_pose_marker;
     private GoToComponent  goToComponent;
@@ -82,27 +85,30 @@ public class RobotService extends AbstractNodeMain implements SmartBehaviour<Rob
 	private String pickFrameId;
 	private String currentMission = null;
 	
-	@ObjectClassDefinition
+	/*	@ObjectClassDefinition
 	public static @interface Config {
-/*		@AttributeDefinition(description = "The IP of the robot")
+		@AttributeDefinition(description = "The IP of the robot")
 		String host();
 
 		@AttributeDefinition(description = "The Port of the robot")
 		int port();
-*/
+
 		@AttributeDefinition(description = "The name of the robot")
 		String name();
 
 		@AttributeDefinition(description = "The identifier for the robot")
 		int id();
 
-	}
+	}*/
 
-	private Config config;
+//	private Config config;
 	private ExecutorService worker;
 	private ServiceRegistration<?> reg;
 	private boolean checkDoorStatus = true;
 	private boolean isWorkDone = false;
+	
+	@Reference
+	private Ros ros;
 	
 	@Reference
 	private EventBus eventBus;
@@ -110,28 +116,31 @@ public class RobotService extends AbstractNodeMain implements SmartBehaviour<Rob
 	@Reference
 	private Warehouse robotWarehouse;
 
+
     @Activate
-	void activate(BundleContext context, Config config, Map<String,Object> props){
+	void activate(BundleContext context, Map<String,Object> props){
     	
+			this.robotName = ros.getRobotName();
+			this.robotId = ros.getRobotId();
+			this.robotIP = ros.getRobotIP();
+			
+//    	System.out.println("\n robot service props = "+props);
+
     	String UUID = context.getProperty("org.osgi.framework.uuid");
-    	
-	    this.config=config;
-	    System.out.println("\nHello!  I am robot : "+config.id()+ "  name = "+config.name());
+
+	    System.out.println("\nHello!  I am robot : "+robotId+ "  name = "+robotName+ "  IP = "+robotIP+ ",  UUID = "+UUID);
 	    
 	    worker = Executors.newFixedThreadPool(10);
-//	    worker = Executors.newSingleThreadExecutor();
-	    Dictionary<String, Object> serviceProps = new Hashtable<>(props.entrySet().stream()
-				.filter(e -> !e.getKey().startsWith("."))
-				.collect(Collectors.toMap(Entry::getKey, Entry::getValue)));
-			
-			serviceProps.put(SmartBehaviourDefinition.PREFIX_ + "filter", 
-		    String.format("(|(robotId=%s)(robotId=%s))", config.id(), RobotCommand.ALL_ROBOTS));
-			
-			System.out.println("+++++++++ filter = "+serviceProps.get(SmartBehaviourDefinition.PREFIX_ + "filter"));
-			reg = context.registerService(SmartBehaviour.class, this, serviceProps);
-            
-		this.robotName=config.name();
-		this.robotId=config.id();
+
+		Dictionary<String, Object> serviceProps = new Hashtable<>(props.entrySet().stream()
+				.filter(e -> !e.getKey().startsWith(".")).collect(Collectors.toMap(Entry::getKey, Entry::getValue)));
+
+		serviceProps.put(SmartBehaviourDefinition.PREFIX_ + "filter",
+				String.format("(|(robotID=%s)(robotID=%s))", robotId, RobotCommand.ALL_ROBOTS));
+
+		System.out.println("+++++++++ Ros Edge Node filter = " + serviceProps.get(SmartBehaviourDefinition.PREFIX_ + "filter"));
+		reg = context.registerService(SmartBehaviour.class, this, serviceProps);
+
 	}
     
     @Deactivate
@@ -149,13 +158,13 @@ public class RobotService extends AbstractNodeMain implements SmartBehaviour<Rob
    
    @Override
 	public GraphName getDefaultNodeName() {
-		return GraphName.of("rb1_base_"+config.id()+"/serviceController");
+		return GraphName.of("rb1_base_"+robotId+"/serviceController");
 	}
 
 	@Override
 	public void onStart(ConnectedNode connectedNode) {
 		
-		System.out.println("\n The Robot services are registering....for Robot "+config.id());
+		System.out.println("\n The Robot services are registering....for Robot "+robotId);
 		MessageFactory msgfactory =  connectedNode.getTopicMessageFactory();  
 
 		availibility =new AvailibilityComponent(connectedNode,robotName) {};
@@ -229,16 +238,8 @@ public class RobotService extends AbstractNodeMain implements SmartBehaviour<Rob
 		System.out.println("PlaceComponent service registed.");
 		
 		broadCastReady();
-		
-	/*	while(checkDoorStatus) {
-			autoDetectDoor();  // when it returns, means the robot has past the door, no need to detect 
-		}*/
-		
-		while(!isWorkDone) {
-			wait(10);
-		}
-		
-		System.out.println("ROBOT "+robotId +" exit onStart()......... ");
+
+
 		
 	}
 	
@@ -255,7 +256,7 @@ public class RobotService extends AbstractNodeMain implements SmartBehaviour<Rob
 	@Override
 	public void notify(RobotCommand event) {
 		
-		System.out.println(" >> Robot "+this.config.id()+" received an event: " + event.getClass());
+		System.out.println(" >> Robot "+robotId+" received an event: " + event.getClass());
 		
 
 		if (event instanceof WriteGOTO) {
@@ -440,7 +441,7 @@ public class RobotService extends AbstractNodeMain implements SmartBehaviour<Rob
 					
 					eventBus.deliver(queryreturnedvalue);
 					
-					System.out.println(" >> Robot "+this.config.id()+" reply with QueryStateValueReturn: " + queryreturnedvalue.value);			
+					System.out.println(" >> Robot "+robotId+" reply with QueryStateValueReturn: " + queryreturnedvalue.value);			
 			});
 							
 		} else if (event instanceof CheckMarker) {
@@ -449,10 +450,10 @@ public class RobotService extends AbstractNodeMain implements SmartBehaviour<Rob
 					checkreturnedvalue.robotId = event.robotId;
 					checkreturnedvalue.value=checkMarkers();
 					eventBus.deliver(checkreturnedvalue);									
-					System.out.println(" >> Robot "+this.config.id()+" reply with CheckValueReturn: " + checkreturnedvalue.value);	
+					System.out.println(" >> Robot "+robotId+" reply with CheckValueReturn: " + checkreturnedvalue.value);	
 			});						
 		} else {
-			System.out.println("Argh! Robot "+this.config.id()+" Received an unknown event type " + event.getClass());
+			System.out.println("Argh! Robot "+robotId+" Received an unknown event type " + event.getClass());
 								
 		}
 		
@@ -460,6 +461,7 @@ public class RobotService extends AbstractNodeMain implements SmartBehaviour<Rob
 
 	private int writeGOTO(int pickPoseID, String mission) {
 		Cooridinate cooridinate=robotWarehouse.GetCooridinate(pickPoseID, mission);
+		System.out.println(" >> Robot "+robotId+" will go to : " + cooridinate.toString());	
 		this.cooridinate=cooridinate;
 		robot_local_control_msgs.GoToPetitionRequest GoTorequest=goToComponent.constructMsg_gotoRun();
 		int writeResult=goToComponent.call_gotoRun(GoTorequest)[0]; // returnVal[0] => result, returnVal[1] => state

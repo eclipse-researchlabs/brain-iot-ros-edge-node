@@ -44,7 +44,7 @@ import eu.brain.iot.robot.events.RobotCommand;
 import eu.brain.iot.robot.events.WriteGOTO;
 
 @Component(
-		configurationPid= "eu.brain.iot.example.robot.Robot",
+		configurationPid= "eu.brain.iot.example.robot.RobotBehavior",
 		configurationPolicy=ConfigurationPolicy.REQUIRE,
 		service = {NodeMain.class})
 @SmartBehaviourDefinition(
@@ -64,12 +64,7 @@ public class RobotBehavior extends AbstractNodeMain implements SmartBehaviour<Br
 	
 	@ObjectClassDefinition
 	public static @interface Config {
-/*		@AttributeDefinition(description = "The IP of the robot")
-		String host();
 
-		@AttributeDefinition(description = "The Port of the robot")
-		int port();
-*/
 		@AttributeDefinition(description = "The name of the robot")
 		String name();
 
@@ -92,7 +87,7 @@ public class RobotBehavior extends AbstractNodeMain implements SmartBehaviour<Br
     @Activate
 	void activate(BundleContext context, Config config, Map<String,Object> props){
 	    this.config=config;
-	    System.out.println("\nHello!  I am robotBehavior : "+config.id()+ "  name = "+config.name());
+	    System.out.println("\nHello!  I am robotBehavior : "+config.id());
 	    
 	    worker = Executors.newFixedThreadPool(10);
 //	    worker = Executors.newSingleThreadExecutor();
@@ -103,7 +98,7 @@ public class RobotBehavior extends AbstractNodeMain implements SmartBehaviour<Br
 			serviceProps.put(SmartBehaviourDefinition.PREFIX_ + "filter", 
 		    String.format("(|(robotId=%s)(robotId=%s))", config.id(), RobotCommand.ALL_ROBOTS));
 			
-			System.out.println("+++++++++ filter = "+serviceProps.get(SmartBehaviourDefinition.PREFIX_ + "filter"));
+			System.out.println("+++++++++ RobotBehavior filter = "+serviceProps.get(SmartBehaviourDefinition.PREFIX_ + "filter"));
 			reg = context.registerService(SmartBehaviour.class, this, serviceProps);
 
 		this.robotId=config.id();

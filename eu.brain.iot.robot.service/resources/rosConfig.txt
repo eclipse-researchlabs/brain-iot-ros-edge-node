@@ -1,0 +1,5 @@
+#ros.master.uri=http://localhost:11311
+
+robotIP=localhost
+robotId=1
+robotName=turtlebot_1
