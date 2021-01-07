@@ -18,11 +18,48 @@ Install Ros system and set up the Ros environment variable `ROS_MASTER_URI=http:
 $ source /opt/ros/kinetic/setup.bash
 $ printenv | grep ROS
 ```
-Be sure you have installed the BND tool and [Java 8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) in your system
-``` bash
+Be sure you have installed the bnd CML and [Java 8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) in your system
+1. install openjdk 8
+```bash
 $ sudo apt-get update
-$ sudo apt-get install bnd
+$ sudo apt install openjdk-8-jdk
 ```
+
+Add JAVA environment variables in system file **/etc/profile**, then save:
+```bash
+$ export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-arm64 
+$ export JRE_HOME=${JAVA_HOME}/jre 
+$ export CLASSPATH=.:${JRE_HOME}/lib 
+$ export PATH=${JAVA_HOME}/bin:$JRE_HOME/bin:$PATH
+```
+2. Install JPM command line interface tool
+```bash
+$ curl https://repo1.maven.org/maven2/biz/aQute/bnd/biz.aQute.jpm.run/3.5.0/biz.aQute.jpm.run-3.5.0.jar >t.jar 
+$ sudo java -jar t.jar init
+$ jpm version
+```
+3. Remove old existing bnd tool
+```bash
+$ dpkg --get-selections | grep 'bnd'
+$ sudo apt-get --purge remove *bnd*
+$ sudo rm /usr/local/bin/bnd
+```
+4. Install bnd 4.3.1 or bnd 5.1.2
+``` bash
+$ sudo jpm install https://repo1.maven.org/maven2/biz/aQute/bnd/biz.aQute.bnd/4.3.1/biz.aQute.bnd-4.3.1.jar
+# $ sudo jpm install https://repo1.maven.org/maven2/biz/aQute/bnd/biz.aQute.bnd/5.1.2/biz.aQute.bnd-5.1.2.jar
+```
+5. Add path of installed bnd to system environment, open **/etc/profile**, and modify the last line, then save:
+```bash
+$ export PATH=/usr/local/bin:${JAVA_HOME}/bin:$JRE_HOME/bin:$PATH
+```
+
+6. check bnd version
+```bash
+$ source /etc/profile
+$ bnd version
+```
+
 Install BNDTool IDE in Eclipse
 ``` bash
 Help-> Eclipse Markerplace-> search 'Bndtools'-> Installed->Restart Eclipse.
@@ -82,7 +119,7 @@ Enter **eu.brain.iot.robot.config** project and open **resources/OSGI-INF/config
 
 Currently the ROS Edge Node has been updated to be able to read the robot IP, robot ID and robot name from an external txt file, the defalt config file is **~/resources/rosConfig.txt** to be created, with the content:
 ```bash
-robotIP=localhost
+robotIP=192.168.52.101
 robotId=1
 robotName=turtlebot_1
 ```  
