@@ -44,8 +44,8 @@
 	org.ros.rosjava_core.rosjava;version='[0.2.2,0.2.3)',\
 	org.xbill.dns;version='[2.0.8,2.0.9)',\
 	com.google.guava;version='[18.0.0,18.0.1)',\
-	be.iminds.iot.ros.core;version=snapshot,\
-	eu.brain.iot.robot.msgs;version=snapshot
+	be.iminds.iot.ros.core;version='[1.0.0,1.0.1)',\
+	eu.brain.iot.robot.msgs;version='[1.0.0,1.0.1)'
 	
 	
 #-runsystempackages: sun.reflect

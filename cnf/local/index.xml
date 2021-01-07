@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<repository xmlns="http://www.osgi.org/xmlns/repository/v1.0.0" name="Local" increment="1607700911000">
+<repository xmlns="http://www.osgi.org/xmlns/repository/v1.0.0" name="Local" increment="1608504897000">
   <resource>
     <capability namespace="osgi.identity">
       <attribute name="license" value="http://www.apache.org/licenses/LICENSE-2.0.txt"/>
@@ -4143,6 +4143,38 @@
   </resource>
   <resource>
     <capability namespace="osgi.identity">
+      <attribute name="osgi.identity" value="eu.brain.iot.service.robotic.door.api"/>
+      <attribute name="type" value="osgi.bundle"/>
+      <attribute name="version" value="0.0.2.202012202216" type="Version"/>
+    </capability>
+    <capability namespace="osgi.wiring.bundle">
+      <attribute name="bundle-version" value="0.0.2.202012202216" type="Version"/>
+      <attribute name="osgi.wiring.bundle" value="eu.brain.iot.service.robotic.door.api"/>
+    </capability>
+    <capability namespace="osgi.wiring.host">
+      <attribute name="bundle-version" value="0.0.2.202012202216" type="Version"/>
+      <attribute name="osgi.wiring.host" value="eu.brain.iot.service.robotic.door.api"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <directive name="uses" value="eu.brain.iot.eventing.api"/>
+      <attribute name="version" value="1.0.1" type="Version"/>
+      <attribute name="osgi.wiring.package" value="eu.brain.iot.service.robotic.door.api"/>
+    </capability>
+    <capability namespace="osgi.content">
+      <attribute name="size" value="7808" type="Long"/>
+      <attribute name="url" value="eu.brain.iot.service.robotic.door.api/eu.brain.iot.service.robotic.door.api-0.0.2.jar"/>
+      <attribute name="mime" value="application/vnd.osgi.bundle"/>
+      <attribute name="osgi.content" value="D04EA8D256CCA46B172A57A4CE1990BB88C9B82CC213D7AC1D4FE30105B7CB43"/>
+    </capability>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=eu.brain.iot.eventing.api)(&amp;(version&gt;=0.0.0)(!(version&gt;=1.0.0))))"/>
+    </requirement>
+    <requirement namespace="osgi.ee">
+      <directive name="filter" value="(&amp;(osgi.ee=JavaSE)(version=1.8))"/>
+    </requirement>
+  </resource>
+  <resource>
+    <capability namespace="osgi.identity">
       <attribute name="license" value="http://www.apache.org/licenses/LICENSE-2.0.txt"/>
       <attribute name="osgi.identity" value="org.objenesis"/>
       <attribute name="type" value="osgi.bundle"/>
@@ -5713,58 +5745,6 @@
   </resource>
   <resource>
     <capability namespace="osgi.identity">
-      <attribute name="osgi.identity" value="eu.brain.iot.service.robotic.door.impl"/>
-      <attribute name="type" value="osgi.bundle"/>
-      <attribute name="version" value="0.0.1.202004070810" type="Version"/>
-    </capability>
-    <capability namespace="osgi.wiring.bundle">
-      <attribute name="bundle-version" value="0.0.1.202004070810" type="Version"/>
-      <attribute name="osgi.wiring.bundle" value="eu.brain.iot.service.robotic.door.impl"/>
-    </capability>
-    <capability namespace="osgi.wiring.host">
-      <attribute name="bundle-version" value="0.0.1.202004070810" type="Version"/>
-      <attribute name="osgi.wiring.host" value="eu.brain.iot.service.robotic.door.impl"/>
-    </capability>
-    <capability namespace="eu.brain.iot.behaviour">
-      <attribute name="consumed" value="com.paremus.brain.iot.example.door.api.DoorStatus" type="List&lt;String&gt;"/>
-      <attribute name="name" value="Smart Door"/>
-      <attribute name="description" value="Implements a remote Smart Door."/>
-      <attribute name="author" value="UGA"/>
-    </capability>
-    <capability namespace="osgi.content">
-      <attribute name="size" value="18356" type="Long"/>
-      <attribute name="url" value="eu.brain.iot.service.robotic.door.impl/eu.brain.iot.service.robotic.door.impl-0.0.1.jar"/>
-      <attribute name="mime" value="application/vnd.osgi.bundle"/>
-      <attribute name="osgi.content" value="2C5E74267DD05F772265646F23BA3D336F096A39C7898EA932D4E920D64A9E03"/>
-    </capability>
-    <requirement namespace="osgi.wiring.package">
-      <directive name="filter" value="(&amp;(osgi.wiring.package=com.fasterxml.jackson.core)(&amp;(version&gt;=2.10.0)(!(version&gt;=3.0.0))))"/>
-    </requirement>
-    <requirement namespace="osgi.wiring.package">
-      <directive name="filter" value="(&amp;(osgi.wiring.package=com.fasterxml.jackson.databind)(&amp;(version&gt;=2.10.0)(!(version&gt;=3.0.0))))"/>
-    </requirement>
-    <requirement namespace="osgi.wiring.package">
-      <directive name="filter" value="(&amp;(osgi.wiring.package=com.paremus.brain.iot.example.door.api)(&amp;(version&gt;=1.0.0)(!(version&gt;=2.0.0))))"/>
-    </requirement>
-    <requirement namespace="osgi.wiring.package">
-      <directive name="filter" value="(&amp;(osgi.wiring.package=eu.brain.iot.eventing.api)(&amp;(version&gt;=0.0.0)(!(version&gt;=1.0.0))))"/>
-    </requirement>
-    <requirement namespace="osgi.wiring.package">
-      <directive name="filter" value="(&amp;(osgi.wiring.package=org.osgi.framework)(&amp;(version&gt;=1.9.0)(!(version&gt;=2.0.0))))"/>
-    </requirement>
-    <requirement namespace="osgi.service">
-      <directive name="filter" value="(objectClass=eu.brain.iot.eventing.api.EventBus)"/>
-      <directive name="effective" value="active"/>
-    </requirement>
-    <requirement namespace="osgi.extender">
-      <directive name="filter" value="(&amp;(osgi.extender=osgi.component)(version&gt;=1.4.0)(!(version&gt;=2.0.0)))"/>
-    </requirement>
-    <requirement namespace="osgi.ee">
-      <directive name="filter" value="(&amp;(osgi.ee=JavaSE)(version=1.8))"/>
-    </requirement>
-  </resource>
-  <resource>
-    <capability namespace="osgi.identity">
       <attribute name="license" value="http://www.apache.org/licenses/LICENSE-2.0.txt"/>
       <attribute name="osgi.identity" value="org.apache.commons.lang"/>
       <attribute name="type" value="osgi.bundle"/>
@@ -6312,38 +6292,6 @@
   </resource>
   <resource>
     <capability namespace="osgi.identity">
-      <attribute name="osgi.identity" value="eu.brain.iot.service.robotic.door.api"/>
-      <attribute name="type" value="osgi.bundle"/>
-      <attribute name="version" value="0.0.1.202004070810" type="Version"/>
-    </capability>
-    <capability namespace="osgi.wiring.bundle">
-      <attribute name="bundle-version" value="0.0.1.202004070810" type="Version"/>
-      <attribute name="osgi.wiring.bundle" value="eu.brain.iot.service.robotic.door.api"/>
-    </capability>
-    <capability namespace="osgi.wiring.host">
-      <attribute name="bundle-version" value="0.0.1.202004070810" type="Version"/>
-      <attribute name="osgi.wiring.host" value="eu.brain.iot.service.robotic.door.api"/>
-    </capability>
-    <capability namespace="osgi.wiring.package">
-      <directive name="uses" value="eu.brain.iot.eventing.api"/>
-      <attribute name="version" value="1.0.0" type="Version"/>
-      <attribute name="osgi.wiring.package" value="com.paremus.brain.iot.example.door.api"/>
-    </capability>
-    <capability namespace="osgi.content">
-      <attribute name="size" value="7787" type="Long"/>
-      <attribute name="url" value="eu.brain.iot.service.robotic.door.api/eu.brain.iot.service.robotic.door.api-0.0.1.jar"/>
-      <attribute name="mime" value="application/vnd.osgi.bundle"/>
-      <attribute name="osgi.content" value="6CD322D38C7582ABF26D015FB13EC07548A60BFB5B84528B6F75CF3DBFB6A4FA"/>
-    </capability>
-    <requirement namespace="osgi.wiring.package">
-      <directive name="filter" value="(&amp;(osgi.wiring.package=eu.brain.iot.eventing.api)(&amp;(version&gt;=0.0.0)(!(version&gt;=1.0.0))))"/>
-    </requirement>
-    <requirement namespace="osgi.ee">
-      <directive name="filter" value="(&amp;(osgi.ee=JavaSE)(version=1.8))"/>
-    </requirement>
-  </resource>
-  <resource>
-    <capability namespace="osgi.identity">
       <attribute name="osgi.identity" value="org.ros.rosjava_core.apache_xmlrpc_server"/>
       <attribute name="type" value="osgi.bundle"/>
       <attribute name="version" value="0.2.1" type="Version"/>
@@ -6844,6 +6792,58 @@
     </requirement>
     <requirement namespace="osgi.ee">
       <directive name="filter" value="(&amp;(osgi.ee=JavaSE)(version=1.7))"/>
+    </requirement>
+  </resource>
+  <resource>
+    <capability namespace="osgi.identity">
+      <attribute name="osgi.identity" value="eu.brain.iot.service.robotic.door.impl"/>
+      <attribute name="type" value="osgi.bundle"/>
+      <attribute name="version" value="0.0.2.202012202216" type="Version"/>
+    </capability>
+    <capability namespace="osgi.wiring.bundle">
+      <attribute name="bundle-version" value="0.0.2.202012202216" type="Version"/>
+      <attribute name="osgi.wiring.bundle" value="eu.brain.iot.service.robotic.door.impl"/>
+    </capability>
+    <capability namespace="osgi.wiring.host">
+      <attribute name="bundle-version" value="0.0.2.202012202216" type="Version"/>
+      <attribute name="osgi.wiring.host" value="eu.brain.iot.service.robotic.door.impl"/>
+    </capability>
+    <capability namespace="eu.brain.iot.behaviour">
+      <attribute name="consumed" value="eu.brain.iot.service.robotic.door.api.DoorStatusRequest" type="List&lt;String&gt;"/>
+      <attribute name="name" value="Smart Door"/>
+      <attribute name="description" value="Implements a remote Smart Door."/>
+      <attribute name="author" value="UGA"/>
+    </capability>
+    <capability namespace="osgi.content">
+      <attribute name="size" value="17843" type="Long"/>
+      <attribute name="url" value="eu.brain.iot.service.robotic.door.impl/eu.brain.iot.service.robotic.door.impl-0.0.2.jar"/>
+      <attribute name="mime" value="application/vnd.osgi.bundle"/>
+      <attribute name="osgi.content" value="FABE73CF166A103386020E845DAD557BA5BAA6CA27D0C059BB33DDDD704A1CA6"/>
+    </capability>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=com.fasterxml.jackson.core)(&amp;(version&gt;=2.10.0)(!(version&gt;=3.0.0))))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=com.fasterxml.jackson.databind)(&amp;(version&gt;=2.10.0)(!(version&gt;=3.0.0))))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=eu.brain.iot.eventing.api)(&amp;(version&gt;=0.0.0)(!(version&gt;=1.0.0))))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=eu.brain.iot.service.robotic.door.api)(&amp;(version&gt;=1.0.0)(!(version&gt;=2.0.0))))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.osgi.framework)(&amp;(version&gt;=1.9.0)(!(version&gt;=2.0.0))))"/>
+    </requirement>
+    <requirement namespace="osgi.service">
+      <directive name="filter" value="(objectClass=eu.brain.iot.eventing.api.EventBus)"/>
+      <directive name="effective" value="active"/>
+    </requirement>
+    <requirement namespace="osgi.extender">
+      <directive name="filter" value="(&amp;(osgi.extender=osgi.component)(version&gt;=1.4.0)(!(version&gt;=2.0.0)))"/>
+    </requirement>
+    <requirement namespace="osgi.ee">
+      <directive name="filter" value="(&amp;(osgi.ee=JavaSE)(version=1.8))"/>
     </requirement>
   </resource>
   <resource>

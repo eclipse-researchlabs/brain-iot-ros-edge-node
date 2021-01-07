@@ -7,7 +7,6 @@
 	be.iminds.iot.ros.api;version=latest,\
 	com.paremus.brain.iot.eventing.api,\
 	org.osgi.service.configurator,\
-	eu.brain.iot.service.robotic.door.api,\
 	osgi.core;version=7.0,\
 	osgi.cmpn;version=7.0,\
 	org.ros.rosjava;version=0.2,\

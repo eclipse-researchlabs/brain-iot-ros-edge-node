@@ -4,10 +4,10 @@
 	be.iminds.iot.ros.api;version=latest,\
 	com.paremus.brain.iot.eventing.api,\
 	org.osgi.service.configurator,\
-	eu.brain.iot.service.robotic.door.api,\
 	osgi.core;version=7.0,\
 	osgi.cmpn;version=7.0,\
-	osgi.annotation;version=7.0
+	osgi.annotation;version=7.0,\
+	eu.brain.iot.service.robotic.door.api;version=0.0
 
 
 Bundle-Version: 0.0.2

@@ -29,9 +29,9 @@
 	bnd.identity;version='latest';id='eu.brain.iot.robot.msgs',\
 	bnd.identity;version='latest';id='eu.brain.iot.robot.service',\
 	bnd.identity;version='latest';id='be.iminds.iot.ros.core',\
-	bnd.identity;id='eu.brain.iot.service.robotic.door.impl',\
 	bnd.identity;version='latest';id='eu.brain.iot.robot.behavior',\
-	bnd.identity;version='latest';id='eu.brain.iot.robot.tables.queryer'
+	bnd.identity;version='latest';id='eu.brain.iot.robot.tables.queryer',\
+	bnd.identity;version='0.0.2';id='eu.brain.iot.service.robotic.door.impl'
 -runbundles: \
 	com.google.guava;version='[12.0.1,12.0.2)',\
 	com.paremus.brain.iot.eventing.api;version='[0.0.1,0.0.2)',\
@@ -61,22 +61,22 @@
 	com.fasterxml.jackson.core.jackson-annotations;version='[2.10.0,2.10.1)',\
 	com.fasterxml.jackson.core.jackson-core;version='[2.10.0,2.10.1)',\
 	com.fasterxml.jackson.core.jackson-databind;version='[2.10.0,2.10.1)',\
-	eu.brain.iot.service.robotic.door.api;version='[0.0.1,0.0.2)',\
-	eu.brain.iot.service.robotic.door.impl;version='[0.0.1,0.0.2)',\
 	org.osgi.util.function;version='[1.1.0,1.1.1)',\
 	org.ros.rosjava_core.rosjava;version='[0.2.2,0.2.3)',\
 	org.xbill.dns;version='[2.0.8,2.0.9)',\
 	osgi.promise;version='[7.0.1,7.0.2)',\
 	com.google.guava;version='[18.0.0,18.0.1)',\
 	com.h2database;version='[1.4.200,1.4.201)',\
-	be.iminds.iot.ros.api;version=snapshot,\
-	be.iminds.iot.ros.core;version=snapshot,\
-	eu.brain.iot.robot.api;version=snapshot,\
-	eu.brain.iot.robot.behavior;version=snapshot,\
-	eu.brain.iot.robot.config;version=snapshot,\
-	eu.brain.iot.robot.msgs;version=snapshot,\
-	eu.brain.iot.robot.service;version=snapshot,\
-	eu.brain.iot.robot.tables.queryer;version=snapshot
+	be.iminds.iot.ros.api;version='[1.0.0,1.0.1)',\
+	be.iminds.iot.ros.core;version='[1.0.0,1.0.1)',\
+	eu.brain.iot.robot.api;version='[0.0.2,0.0.3)',\
+	eu.brain.iot.robot.behavior;version='[0.0.2,0.0.3)',\
+	eu.brain.iot.robot.config;version='[0.0.2,0.0.3)',\
+	eu.brain.iot.robot.msgs;version='[1.0.0,1.0.1)',\
+	eu.brain.iot.robot.service;version='[0.0.2,0.0.3)',\
+	eu.brain.iot.robot.tables.queryer;version='[0.0.2,0.0.3)',\
+	eu.brain.iot.service.robotic.door.api;version='[0.0.2,0.0.3)',\
+	eu.brain.iot.service.robotic.door.impl;version='[0.0.2,0.0.3)'
 	
 	
 #-runsystempackages: sun.reflect
