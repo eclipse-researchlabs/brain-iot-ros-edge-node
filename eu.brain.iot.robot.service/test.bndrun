@@ -65,13 +65,13 @@
 	org.xbill.dns;version='[2.0.8,2.0.9)',\
 	osgi.promise;version='[7.0.1,7.0.2)',\
 	com.google.guava;version='[18.0.0,18.0.1)',\
-	be.iminds.iot.ros.api;version='[0.4.0,0.4.1)',\
-	be.iminds.iot.ros.core;version='[0.3.0,0.3.1)',\
-	be.iminds.iot.ros.msgs.generator;version='[0.2.0,0.2.1)',\
-	eu.brain.iot.robot.api;version='[1.0.0,1.0.1)',\
-	eu.brain.iot.robot.config;version='[1.0.0,1.0.1)',\
-	eu.brain.iot.robot.msgs;version='[1.0.0,1.0.1)',\
-	eu.brain.iot.robot.service;version='[1.0.0,1.0.1)'
+	be.iminds.iot.ros.api;version=snapshot,\
+	be.iminds.iot.ros.core;version=snapshot,\
+	be.iminds.iot.ros.msgs.generator;version=snapshot,\
+	eu.brain.iot.robot.api;version=snapshot,\
+	eu.brain.iot.robot.config;version=snapshot,\
+	eu.brain.iot.robot.msgs;version=snapshot,\
+	eu.brain.iot.robot.service;version=snapshot
 	
 	
 #-runsystempackages: sun.reflect

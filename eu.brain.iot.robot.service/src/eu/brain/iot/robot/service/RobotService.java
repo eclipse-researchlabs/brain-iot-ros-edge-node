@@ -324,7 +324,7 @@ public class RobotService extends AbstractNodeMain implements SmartBehaviour<Rob
 				queryreturnedvalue.robotId = robotId;
 				queryreturnedvalue.mission = pickCart.mission;  // "PICK"
 				
-				if(sendResult == 1)  // sensing pick ok
+				if(sendResult == 1)  // sending pick ok
 				{
 					CallResponse callResp;
 					while(true) {
@@ -536,19 +536,24 @@ public class RobotService extends AbstractNodeMain implements SmartBehaviour<Rob
 	
 	private int checkMarkers(){
 		List<AlvarMarker> markerList = ar_pose_marker.get_poseMarker_value().getMarkers();
-		if(markerList!=null) {
-			System.out.println("\n -->Robot "+robotId+" see Markers size = "+ markerList.size());
+		
+		while(markerList!=null) {
+			System.out.println("\n -->Robot "+robotId+" see Markers List size = "+ markerList.size());
 			
 			if(markerList.size()>=1) {
 				System.out.println("\n -->Robot "+robotId+" see first Marker ID = "+ markerList.get(0).getId());
 				return markerList.get(0).getId();
 			}
 			else {
-				System.out.println("\n -->Robot "+robotId+" see Markers size = 0, return default marker =100");
-				return 100;
+				try {
+					TimeUnit.SECONDS.sleep(1);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				markerList = ar_pose_marker.get_poseMarker_value().getMarkers();
 			}
 		}
-		System.out.println("\n -->Robot "+robotId+" doesn't see any Marker, return default marker =100");
+		System.out.println("\n -->Robot "+robotId+" doesn't see Marker List is empty, return default marker =100");
 		return 100;
 		
 	}

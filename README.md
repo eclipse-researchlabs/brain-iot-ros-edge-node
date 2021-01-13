@@ -131,7 +131,7 @@ In addition, if you're using a robot whose namespace of ros topics is different 
 
 #### (3) Build and Run in a Physical Robot
 
-Package the **test.bndrun** with default **ros.master.uri=http://localhost:11311** in the **eu.brain.iot.robot.service** project as an executable jar using Gradle build tool. If you change it using your robot IP, rebuild repository again:
+Package the **test.bndrun** in the **eu.brain.iot.robot.service** project as an executable jar using Gradle build tool. If you change it to your robot IP in previous step, rebuild repository again:
 
 ```bash
 $ cd ros-edge-node

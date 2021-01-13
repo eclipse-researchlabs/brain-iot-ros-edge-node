@@ -1,7 +1,9 @@
 package eu.brain.iot.robot.service;
 
+import ar_track_alvar_msgs.AlvarMarker;
 import ar_track_alvar_msgs.AlvarMarkers;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.ros.node.ConnectedNode;
@@ -32,7 +34,9 @@ public abstract class Ar_pose_markerComponent {
 			}
         	markers = poseMarker.getCurrentValue();
         }
-        System.out.println("get marker successfully, return......."+markers.toString());
+    //    System.out.println("get marker successfully, return......."+markers.toString());
+     //   List<AlvarMarker> markerList = markers.getMarkers();
+        
         return markers;
     }
 }
