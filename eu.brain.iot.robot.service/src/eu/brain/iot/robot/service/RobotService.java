@@ -274,34 +274,38 @@ public class RobotService extends AbstractNodeMain implements SmartBehaviour<Rob
 					while(true) {
 						callResp = queryState(writeGOTO.mission);	// goto Query
 					if((callResp != null)) {
+						
 						if(callResp.current_state.equals("finished")) {
-							System.out.println("robot "+robotId+" WriteGOTO gets CallResponse: result="+callResp.result+", current_state="+callResp.current_state
+							
+							System.out.println(" >>> robot "+robotId+" WriteGOTO gets CallResponse: result="+callResp.result+", current_state="+callResp.current_state
 									+", last_event="+callResp.last_event+", message is: "+callResp.message);
 							
 							if(callResp.last_event.equals("abort")) {
 								queryreturnedvalue.value = 0;
-								System.out.println("robot "+robotId+" query WriteGOTO action finished, but last_event = abort, return value = 0");
-							}else {
+								System.out.println(" >>> robot "+robotId+" query WriteGOTO action finished, but last_event = abort, return value = 0");
+							
+							} else {
 								queryreturnedvalue.value = 1;
 							}
 							break;
 						} else if(callResp.current_state.equals("unknown")) {
 							
-							System.out.println("robot "+robotId+" WriteGOTO gets CallResponse: result="+callResp.result+", current_state="+callResp.current_state
+							System.out.println(" >>> robot "+robotId+" WriteGOTO gets CallResponse: result="+callResp.result+", current_state="+callResp.current_state
 									+", last_event="+callResp.last_event+", message is: "+callResp.message);
 							queryreturnedvalue.value = 0;
-							System.out.println("robot "+robotId+" query WriteGOTO action gets the Unknown state, return value = 0");
+							System.out.println(" >>> robot "+robotId+" query WriteGOTO action gets the Unknown state, return value = 0");
 							break;
+							
 						} else {
 							wait(2);
 						}
 					}else {
-						System.out.println("robot "+robotId+" query WriteGOTO no response, timeout!");
+						System.out.println(" >>> robot "+robotId+" query WriteGOTO no response, timeout!");
 						break;
 					}
 				}
 				}else {
-					System.out.println("robot "+robotId+" sends WriteGOTO failed!");
+					System.out.println(" >>> robot "+robotId+" sends WriteGOTO failed!");
 				}
 				eventBus.deliver(queryreturnedvalue);  // only finished is possible
 				}
@@ -326,35 +330,39 @@ public class RobotService extends AbstractNodeMain implements SmartBehaviour<Rob
 					while(true) {
 						callResp = queryState(pickCart.mission);	// pick Query
 					if((callResp != null)) {
+						
 						if(callResp.current_state.equals("finished")/* || callResp.current_state.equals("unknown")*/) {
 							
-							System.out.println("robot "+robotId+" PickCart gets CallResponse: result="+callResp.result+", current_state="+callResp.current_state
+							System.out.println(" >>> robot "+robotId+" PickCart gets CallResponse: result="+callResp.result+", current_state="+callResp.current_state
 									+", last_event="+callResp.last_event+", message is: "+callResp.message);
 							
 							if(callResp.last_event.equals("abort")) {
 								queryreturnedvalue.value = 0;
-								System.out.println("robot "+robotId+" query PickCart action finished, but last_event = abort, return value = 0");
+								System.out.println(" >>> robot "+robotId+" query PickCart action finished, but last_event = abort, return value = 0");
+							
 							}else {
 								queryreturnedvalue.value = 1;
 							}
 							break;
+							
 						}else if(callResp.current_state.equals("unknown")) {
 							
-							System.out.println("robot "+robotId+" PickCart gets CallResponse: result="+callResp.result+", current_state="+callResp.current_state
+							System.out.println(" >>> robot "+robotId+" PickCart gets CallResponse: result="+callResp.result+", current_state="+callResp.current_state
 									+", last_event="+callResp.last_event+", message is: "+callResp.message);
 							queryreturnedvalue.value = 0;
-							System.out.println("robot "+robotId+" query PickCart action gets the Unknown state, return value = 0");
+							System.out.println(" >>> robot "+robotId+" query PickCart action gets the Unknown state, return value = 0");
 							break;
+						
 						} else {
 							wait(2);
 						}
 					}else {
-						System.out.println("robot "+robotId+" query PickCart no response, timeout!");
+						System.out.println(" >>> robot "+robotId+" query PickCart no response, timeout!");
 						break;
 					}
 				}
 				}else {
-					System.out.println("robot "+robotId+" sends PickCart failed!");
+					System.out.println(" >>> robot "+robotId+" sends PickCart failed!");
 				}
 				eventBus.deliver(queryreturnedvalue);
 				});
@@ -372,38 +380,41 @@ public class RobotService extends AbstractNodeMain implements SmartBehaviour<Rob
 					while(true) {
 						callResp = queryState(plceCart.mission);	// place Query
 					if((callResp != null)) {
+						
 						if(callResp.current_state.equals("finished")/* || callResp.current_state.equals("unknown")*/) {
-							System.out.println("robot "+robotId+" PlaceCART gets CallResponse: result="+callResp.result+", current_state="+callResp.current_state
+							System.out.println(" >>> robot "+robotId+" PlaceCART gets CallResponse: result="+callResp.result+", current_state="+callResp.current_state
 									+", last_event="+callResp.last_event+", message is: "+callResp.message);
 							if(callResp.last_event.equals("abort")) {
 								queryreturnedvalue.value = 0;
-								System.out.println("robot "+robotId+" query plceCart action finished, but last_event = abort, return value = 0");
+								System.out.println(" >>> robot "+robotId+" query plceCart action finished, but last_event = abort, return value = 0");
 							}else {
 								queryreturnedvalue.value = 1;
 							}
 							break;
+							
 						}else if(callResp.current_state.equals("unknown")) {
 							
-							System.out.println("robot "+robotId+" PlaceCART gets CallResponse: result="+callResp.result+", current_state="+callResp.current_state
+							System.out.println(" >>> robot "+robotId+" PlaceCART gets CallResponse: result="+callResp.result+", current_state="+callResp.current_state
 									+", last_event="+callResp.last_event+", message is: "+callResp.message);
 							queryreturnedvalue.value = 0;
-							System.out.println("robot "+robotId+" query PlaceCART action gets the Unknown state, return value = 0");
+							System.out.println(" >>> robot "+robotId+" query PlaceCART action gets the Unknown state, return value = 0");
 							break;
+							
 						} else {
 							wait(2);
 						}
 					}else {
-						System.out.println("robot "+robotId+" query PlaceCART no response, timeout!");
+						System.out.println(" >>> robot "+robotId+" query PlaceCART no response, timeout!");
 						break;
 					}
 				}
 				}else {
-					System.out.println("robot "+robotId+" sends PlaceCART failed!");
+					System.out.println(" >>> robot "+robotId+" sends PlaceCART failed!");
 				}
 				eventBus.deliver(queryreturnedvalue);
 			//	checkDoorStatus = false;
 				isWorkDone = true;  // TODO
-				System.out.println("ROBOT "+robotId +" finishs this iteration......... ");
+				System.out.println(" >>> ROBOT "+robotId +" finishs this iteration......... ");
 				});
 						
 		} else if (event instanceof QueryState) {	// Edge Node also can receive additional QueryState from other entities
@@ -416,7 +427,7 @@ public class RobotService extends AbstractNodeMain implements SmartBehaviour<Rob
 					
 					if((callResp != null)) {	
 						
-							System.out.println("robot "+robotId+" queryState() gets response: result="+callResp.result+", current_state="+callResp.current_state
+							System.out.println(" >>> robot "+robotId+" queryState() gets response: result="+callResp.result+", current_state="+callResp.current_state
 									+", last_event="+callResp.last_event+", message is: "+callResp.message);
 							
 							if (callResp.current_state.compareTo("finished") == 0) {
@@ -436,7 +447,7 @@ public class RobotService extends AbstractNodeMain implements SmartBehaviour<Rob
 					        }
 						
 					}else {
-						System.out.println("robot "+robotId+" queryState() no response, timeout!");
+						System.out.println(" >>> robot "+robotId+" queryState() no response, timeout!");
 					}
 					
 					eventBus.deliver(queryreturnedvalue);
@@ -450,10 +461,10 @@ public class RobotService extends AbstractNodeMain implements SmartBehaviour<Rob
 					checkreturnedvalue.robotId = event.robotId;
 					checkreturnedvalue.value=checkMarkers();
 					eventBus.deliver(checkreturnedvalue);									
-					System.out.println(" >> Robot "+robotId+" reply with CheckValueReturn: " + checkreturnedvalue.value);	
+					System.out.println(" >>>  Robot "+robotId+" reply with CheckValueReturn: " + checkreturnedvalue.value);	
 			});						
 		} else {
-			System.out.println("Argh! Robot "+robotId+" Received an unknown event type " + event.getClass());
+			System.out.println(" >>> Argh! Robot "+robotId+" Received an unknown event type " + event.getClass());
 								
 		}
 		
