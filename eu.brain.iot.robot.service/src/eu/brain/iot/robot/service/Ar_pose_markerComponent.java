@@ -24,6 +24,7 @@ public abstract class Ar_pose_markerComponent {
     public AlvarMarkers get_poseMarker_value() {
     	AlvarMarkers markers = poseMarker.getCurrentValue();
         while (markers == null) {
+        	System.out.println("get empty marker, read again.......");
         	try {
 				TimeUnit.SECONDS.sleep(1);
 			} catch (InterruptedException e) {
@@ -31,6 +32,7 @@ public abstract class Ar_pose_markerComponent {
 			}
         	markers = poseMarker.getCurrentValue();
         }
+        System.out.println("get marker successfully, return......."+markers.toString());
         return markers;
     }
 }

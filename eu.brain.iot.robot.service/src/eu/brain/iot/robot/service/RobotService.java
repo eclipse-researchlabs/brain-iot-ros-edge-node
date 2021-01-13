@@ -536,8 +536,20 @@ public class RobotService extends AbstractNodeMain implements SmartBehaviour<Rob
 	
 	private int checkMarkers(){
 		List<AlvarMarker> markerList = ar_pose_marker.get_poseMarker_value().getMarkers();
-		System.out.println("\n -->Robot "+robotId+" see Markers size = "+ markerList.size()+", and marker ID = "+ markerList.get(0).getId());
-		return markerList.get(0).getId();
+		if(markerList!=null) {
+			System.out.println("\n -->Robot "+robotId+" see Markers size = "+ markerList.size());
+			
+			if(markerList.size()>=1) {
+				System.out.println("\n -->Robot "+robotId+" see first Marker ID = "+ markerList.get(0).getId());
+				return markerList.get(0).getId();
+			}
+			else {
+				System.out.println("\n -->Robot "+robotId+" see Markers size = 0, return default marker =100");
+				return 100;
+			}
+		}
+		System.out.println("\n -->Robot "+robotId+" doesn't see any Marker, return default marker =100");
+		return 100;
 		
 	}
 	
