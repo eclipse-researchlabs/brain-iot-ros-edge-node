@@ -21,12 +21,6 @@
 			<url>https://repo.spring.io/libs-release</url>
 		</repository>
 		
-	<!--   	<repository>
-			<id>ros</id>
-			<name>ros</name>
-			<url>https://github.com/dearzhaorui/rosjava_mvn_repo/raw/master</url>
-		</repository> -->
-		
 		<repository>
             <id>jfrog</id>
             <name>jfrog libs-releases</name>
@@ -283,6 +277,23 @@
 			<version>0.0.2-SNAPSHOT</version>
 			<scope>runtime</scope>
 		</dependency>
+	<!--	<dependency>
+			<groupId>eu.brain.iot.service.robotic</groupId>
+  			<artifactId>eu.brain.iot.robot.behavior</artifactId>
+  			<version>0.0.2-SNAPSHOT</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>eu.brain.iot.service.robotic</groupId>
+  			<artifactId>eu.brain.iot.robot.tables.queryer</artifactId>
+  			<version>0.0.2-SNAPSHOT</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+    <groupId>com.h2database</groupId>
+    <artifactId>h2</artifactId>
+    <version>1.4.200</version>
+</dependency> -->
 	
 	
 	<!-- this block is for test.bndrun for all 3 components 
@@ -382,12 +393,7 @@
 							<artifactId>org.xbill.dns.bundle</artifactId>
 							<version>2.0.8</version>
 </dependency>
-<!--<dependency>
-  <groupId>dnsjava</groupId>
-  <artifactId>dnsjava</artifactId>
-  <version>3.2.2</version>
-  <type>bundle</type>
-</dependency>-->
+
 <!-- https://mvnrepository.com/artifact/org.apache.ws.commons/ws-commons-util -->
 <dependency>
     <groupId>org.apache.ws.commons</groupId>
@@ -405,20 +411,7 @@
     <groupId>org.json</groupId>
     <artifactId>json</artifactId>
     <version>20190722</version>
-</dependency>
-
-<!-- 
-<dependency>
-    <groupId>org.ros.rosjava_messages</groupId>
-  <artifactId>rosgraph_msgs</artifactId>
-  <version>1.11.2</version>
-</dependency> 
-<dependency>
-    <groupId>org.ros.rosjava_messages</groupId>
-  <artifactId>std_msgs</artifactId>
-  <version>0.5.9</version>
-</dependency>-->
-		
+</dependency>		
 			
 <!-- https://mvnrepository.com/artifact/org.apache.felix/org.apache.felix.eventadmin -->
 <dependency>
@@ -485,25 +478,8 @@
 							<file>${basedir}/libs/org.xbill.dns.bundle-2.0.8.jar</file>
 						</configuration>
 					</execution>
-			<!-- 		<execution>
-						<id>execution4</id>
-						<phase>initialize</phase>
-						<goals>
-							<goal>install-file</goal>
-						</goals>
-						<configuration>
-							<groupId>org.ros.rosjava_messages</groupId>
-  							<artifactId>rosgraph_msgs</artifactId>
-  							<version>1.11.2</version>
-							<packaging>jar</packaging>
-							<file>${basedir}/libs/org.ros.rosjava_messages.rosgraph_msgs-1.11.2.jar</file>
-						</configuration>
-					</execution>  -->
 				</executions>
 			</plugin>
-			<!-- Use the bnd-maven-plugin and assemble the symbolic names,  Bnd instructions in the pom are not used if the project has a bnd file 
-						-sources: true			<bndfile>bnd.bnd</bndfile>	-->
-			
 			<plugin>
 				<groupId>biz.aQute.bnd</groupId>
 				<artifactId>bnd-maven-plugin</artifactId>
@@ -536,13 +512,6 @@
 					<skipIfEmpty>true</skipIfEmpty>
 				</configuration>
 			</plugin>
-
-			<!-- Setup the indexer for running and testing <plugin> <groupId>biz.aQute.bnd</groupId> 
-				<artifactId>bnd-indexer-maven-plugin</artifactId> <version>${bnd.version}</version> 
-				<configuration> <includeJar>true</includeJar> <localURLs>REQUIRED</localURLs> 
-				<attach>false</attach> </configuration> <executions> <execution> <id>index</id> 
-				<goals> <goal>index</goal> </goals> <configuration> <indexName>${project.artifactId}</indexName> 
-				</configuration> </execution> </executions> </plugin> -->
 				
 			<!-- Validate that the smart behaviour can resolve  -->
 			<plugin>

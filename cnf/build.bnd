@@ -52,7 +52,7 @@ mockito-deps: org.objenesis; version=2.6.0,\
 -buildrepo: m2Local
 # m2Local
 
-
+ 
 -pom: 					groupid	=	eu.brain.iot.service.robotic,\
 						version =	0.0.2-SNAPSHOT
 

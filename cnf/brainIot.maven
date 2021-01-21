@@ -1,0 +1,4 @@
+com.paremus.brain.iot:eventing.api:0.0.1-SNAPSHOT
+com.paremus.brain.iot:eventing.impl:0.0.1-SNAPSHOT
+com.paremus.brain.iot:message.integrity.api:0.0.1-SNAPSHOT
+com.paremus.brain.iot:message.integrity.insecure.impl:0.0.1-SNAPSHOT

@@ -2362,79 +2362,6 @@
   </resource>
   <resource>
     <capability namespace="osgi.identity">
-      <attribute name="osgi.identity" value="com.paremus.brain.iot.eventing.impl"/>
-      <attribute name="type" value="osgi.bundle"/>
-      <attribute name="version" value="0.0.1.202001280935" type="Version"/>
-    </capability>
-    <capability namespace="osgi.wiring.bundle">
-      <attribute name="bundle-version" value="0.0.1.202001280935" type="Version"/>
-      <attribute name="osgi.wiring.bundle" value="com.paremus.brain.iot.eventing.impl"/>
-    </capability>
-    <capability namespace="osgi.wiring.host">
-      <attribute name="bundle-version" value="0.0.1.202001280935" type="Version"/>
-      <attribute name="osgi.wiring.host" value="com.paremus.brain.iot.eventing.impl"/>
-    </capability>
-    <capability namespace="osgi.wiring.package">
-      <attribute name="version" value="0.0.1" type="Version"/>
-      <attribute name="osgi.wiring.package" value="com.paremus.brain.iot.eventing.spi.remote"/>
-    </capability>
-    <capability namespace="osgi.service">
-      <attribute name="objectClass" value="eu.brain.iot.eventing.api.EventBus" type="List&lt;String&gt;"/>
-    </capability>
-    <capability namespace="osgi.service">
-      <attribute name="objectClass" value="eu.brain.iot.eventing.monitoring.api.EventMonitor" type="List&lt;String&gt;"/>
-    </capability>
-    <capability namespace="osgi.content">
-      <attribute name="size" value="160193" type="Long"/>
-      <attribute name="url" value="com.paremus.brain.iot.eventing.impl/com.paremus.brain.iot.eventing.impl-0.0.1.jar"/>
-      <attribute name="mime" value="application/vnd.osgi.bundle"/>
-      <attribute name="osgi.content" value="4D9A4F065D61BB89D122A7E95B74DFF63E5F5D867568EF2267FE8D115304778F"/>
-    </capability>
-    <requirement namespace="osgi.wiring.package">
-      <directive name="filter" value="(&amp;(osgi.wiring.package=com.paremus.brain.iot.eventing.spi.remote)(&amp;(version&gt;=0.0.0)(!(version&gt;=0.1.0))))"/>
-    </requirement>
-    <requirement namespace="osgi.wiring.package">
-      <directive name="filter" value="(&amp;(osgi.wiring.package=eu.brain.iot.eventing.api)(&amp;(version&gt;=0.0.0)(!(version&gt;=0.1.0))))"/>
-    </requirement>
-    <requirement namespace="osgi.wiring.package">
-      <directive name="filter" value="(&amp;(osgi.wiring.package=eu.brain.iot.eventing.monitoring.api)(&amp;(version&gt;=0.0.0)(!(version&gt;=0.1.0))))"/>
-    </requirement>
-    <requirement namespace="osgi.wiring.package">
-      <directive name="filter" value="(&amp;(osgi.wiring.package=org.osgi.framework)(&amp;(version&gt;=1.9.0)(!(version&gt;=2.0.0))))"/>
-    </requirement>
-    <requirement namespace="osgi.wiring.package">
-      <directive name="filter" value="(&amp;(osgi.wiring.package=org.osgi.util.function)(&amp;(version&gt;=1.0.0)(!(version&gt;=2.0.0))))"/>
-    </requirement>
-    <requirement namespace="osgi.wiring.package">
-      <directive name="filter" value="(&amp;(osgi.wiring.package=org.osgi.util.pushstream)(&amp;(version&gt;=1.0.0)(!(version&gt;=2.0.0))))"/>
-    </requirement>
-    <requirement namespace="osgi.service">
-      <directive name="filter" value="(objectClass=com.paremus.brain.iot.eventing.spi.remote.RemoteEventBus)"/>
-      <directive name="effective" value="active"/>
-      <directive name="resolution" value="optional"/>
-      <directive name="cardinality" value="multiple"/>
-    </requirement>
-    <requirement namespace="osgi.service">
-      <directive name="filter" value="(objectClass=eu.brain.iot.eventing.api.SmartBehaviour)"/>
-      <directive name="effective" value="active"/>
-      <directive name="resolution" value="optional"/>
-      <directive name="cardinality" value="multiple"/>
-    </requirement>
-    <requirement namespace="osgi.service">
-      <directive name="filter" value="(objectClass=eu.brain.iot.eventing.api.UntypedSmartBehaviour)"/>
-      <directive name="effective" value="active"/>
-      <directive name="resolution" value="optional"/>
-      <directive name="cardinality" value="multiple"/>
-    </requirement>
-    <requirement namespace="osgi.extender">
-      <directive name="filter" value="(&amp;(osgi.extender=osgi.component)(version&gt;=1.4.0)(!(version&gt;=2.0.0)))"/>
-    </requirement>
-    <requirement namespace="osgi.ee">
-      <directive name="filter" value="(&amp;(osgi.ee=JavaSE)(version=1.8))"/>
-    </requirement>
-  </resource>
-  <resource>
-    <capability namespace="osgi.identity">
       <attribute name="osgi.identity" value="org.igniterealtime.smack.resolver-dnsjava"/>
       <attribute name="type" value="osgi.bundle"/>
       <attribute name="version" value="4.3.1" type="Version"/>
@@ -6277,54 +6204,6 @@
     </requirement>
     <requirement namespace="osgi.wiring.package">
       <directive name="filter" value="(&amp;(osgi.wiring.package=org.apache.commons.net.whois)(version&gt;=2.0.0))"/>
-    </requirement>
-  </resource>
-  <resource>
-    <capability namespace="osgi.identity">
-      <attribute name="osgi.identity" value="com.paremus.brain.iot.eventing.api"/>
-      <attribute name="type" value="osgi.bundle"/>
-      <attribute name="version" value="0.0.1.202002271728" type="Version"/>
-    </capability>
-    <capability namespace="osgi.wiring.bundle">
-      <attribute name="bundle-version" value="0.0.1.202002271728" type="Version"/>
-      <attribute name="osgi.wiring.bundle" value="com.paremus.brain.iot.eventing.api"/>
-    </capability>
-    <capability namespace="osgi.wiring.host">
-      <attribute name="bundle-version" value="0.0.1.202002271728" type="Version"/>
-      <attribute name="osgi.wiring.host" value="com.paremus.brain.iot.eventing.api"/>
-    </capability>
-    <capability namespace="osgi.wiring.package">
-      <attribute name="version" value="0.0.1" type="Version"/>
-      <attribute name="osgi.wiring.package" value="eu.brain.iot.behaviour.namespace"/>
-    </capability>
-    <capability namespace="osgi.wiring.package">
-      <attribute name="version" value="0.0.1" type="Version"/>
-      <attribute name="osgi.wiring.package" value="eu.brain.iot.eventing.annotation"/>
-    </capability>
-    <capability namespace="osgi.wiring.package">
-      <directive name="uses" value="org.osgi.dto"/>
-      <attribute name="version" value="0.0.1" type="Version"/>
-      <attribute name="osgi.wiring.package" value="eu.brain.iot.eventing.api"/>
-    </capability>
-    <capability namespace="osgi.wiring.package">
-      <directive name="uses" value="org.osgi.dto,org.osgi.util.pushstream"/>
-      <attribute name="version" value="0.0.1" type="Version"/>
-      <attribute name="osgi.wiring.package" value="eu.brain.iot.eventing.monitoring.api"/>
-    </capability>
-    <capability namespace="osgi.content">
-      <attribute name="size" value="27294" type="Long"/>
-      <attribute name="url" value="com.paremus.brain.iot.eventing.api/com.paremus.brain.iot.eventing.api-0.0.1.jar"/>
-      <attribute name="mime" value="application/vnd.osgi.bundle"/>
-      <attribute name="osgi.content" value="7DE1C07664430B517EFFC605850BDA979A4EF2218FE799672A37C3E814990E2B"/>
-    </capability>
-    <requirement namespace="osgi.wiring.package">
-      <directive name="filter" value="(&amp;(osgi.wiring.package=org.osgi.dto)(&amp;(version&gt;=1.1.0)(!(version&gt;=2.0.0))))"/>
-    </requirement>
-    <requirement namespace="osgi.wiring.package">
-      <directive name="filter" value="(&amp;(osgi.wiring.package=org.osgi.util.pushstream)(&amp;(version&gt;=1.0.0)(!(version&gt;=2.0.0))))"/>
-    </requirement>
-    <requirement namespace="osgi.ee">
-      <directive name="filter" value="(&amp;(osgi.ee=JavaSE)(version=1.8))"/>
     </requirement>
   </resource>
   <resource>

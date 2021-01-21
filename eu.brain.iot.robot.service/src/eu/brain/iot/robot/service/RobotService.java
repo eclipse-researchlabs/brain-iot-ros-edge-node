@@ -57,7 +57,7 @@ import std_msgs.Header;
 		service = {SmartBehaviour.class, NodeMain.class})
 @SmartBehaviourDefinition(
 		consumed = {WriteGoTo.class, Cancel.class, PickCart.class, PlaceCart.class, QueryState.class, CheckMarker.class },    
-		author = "LINKS", name = "Smart Robot",
+		author = "LINKS", name = "ROS Edge Node",
 		description = "Implements a remote Smart Robot.")
 public class RobotService extends AbstractNodeMain implements SmartBehaviour<RobotCommand>{
 	
@@ -113,7 +113,7 @@ public class RobotService extends AbstractNodeMain implements SmartBehaviour<Rob
 
     	String UUID = context.getProperty("org.osgi.framework.uuid");
 
-	    System.out.println("\nHello!  I am robot : "+robotID+ "  name = "+robotName+ "  IP = "+robotIP+ ",  UUID = "+UUID);
+	    System.out.println("\nHello!  I am ROS Edge Node : "+robotID+ "  name = "+robotName+ "  IP = "+robotIP+ ",  UUID = "+UUID);
 	    
 	    worker = Executors.newFixedThreadPool(10);
 
@@ -241,7 +241,7 @@ public class RobotService extends AbstractNodeMain implements SmartBehaviour<Rob
 		rbc.robotIP = robotIP;
 		rbc.isReady = true;
 		eventBus.deliver(rbc);
-		System.out.println(" >>> robot_"+robotID+"broadCast Ready info");
+		System.out.println(" >>> robot_"+robotID+" broadCast Ready info");
 		
 	}
 

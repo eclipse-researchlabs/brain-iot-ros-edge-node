@@ -3,7 +3,6 @@
 	eu.brain.iot.robot.msgs;version=latest,\
 	be.iminds.iot.ros.api;version=latest,\
 	com.paremus.brain.iot.eventing.api,\
-	org.osgi.service.configurator,\
 	osgi.core;version=7.0,\
 	osgi.cmpn;version=7.0,\
 	osgi.annotation;version=7.0,\

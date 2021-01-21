@@ -7,21 +7,16 @@
 
     
     "eu.brain.iot.example.robot.Door": {
-    	"host": "localhost", 
+    	"host": "192.168.2.202", 
         "port": "8080",
         "id": "ExampleDoor",
         "path": "/door1/door_controller/command"
     },
     
     
-
-    "eu.brain.iot.example.robot.RobotBehavior~RobotBehaviorA": {
-           "id": 1
-    },
-    
     
     "eu.brain.iot.robot.tables.creator.TablesCreater": {
-           "jsonFilePath": "/home/rui/git/robotics-events/eu.brain.iot.robot.tables.creator/resources/"
+           "jsonFilePath": "/home/rui/resources/"
     }
     
 

@@ -43,74 +43,88 @@ import eu.brain.iot.robot.tables.jsonReader.StorageTable;
 		description = "Implements Four Shared  Tables."
 )
 public class TablesCreater implements SmartBehaviour<BrainIoTEvent> {
-	//Define the connection of database 
-	  private static final String JDBC_URL = "jdbc:h2:./tables;DB_CLOSE_DELAY=-1";//"./tables":DB locaiton;"DB_CLOSE_DELAY=-1":allow single connection 
+		//Define the connection of database 
+	
+		//  private static final String JDBC_URL = "jdbc:h2:./tables;DB_CLOSE_DELAY=-1";//"./tables":DB locaiton;"DB_CLOSE_DELAY=-1":allow single connection 
 
-	  private static final String USER = "RosEdgeNode";
+		  private static final String USER = "RosEdgeNode";
 
-	  private static final String PASSWORD = "123";
+		  private static final String PASSWORD = "123";
 
-	  private static final String DRIVER_CLASS="org.h2.Driver";
-	  
-	  private String jsonFilePath;
-	  
-	  private Connection conn;
-	  private Statement stmt;
-	  private JsonDataReader jsonDataReader;
-	  
-	  @ObjectClassDefinition
-		public static @interface Config {
+		  private static final String DRIVER_CLASS="org.h2.Driver";
+		  
+		  private String jsonFilePath;
+		  
+		  private Connection conn;
+		  private Statement stmt;
+		  private JsonDataReader jsonDataReader;
+		  
+		  @ObjectClassDefinition
+			public static @interface Config {
 
-			@AttributeDefinition(description = "The identifier for the robot behaviour")
-			String jsonFilePath();
+				@AttributeDefinition(description = "The identifier for the robot behaviour")
+				
+				String jsonFilePath();  // /home/fabric-n9/resources/
 
-		}
-
-		private Config config;
-		private ServiceRegistration<?> reg;
-	  
-	@Activate
-	public void init(BundleContext context, Config config, Map<String, Object> props) throws SQLException {
-		this.jsonFilePath = config.jsonFilePath();
-		
-		if(jsonFilePath != null && jsonFilePath.length()>0) {
-			if(!jsonFilePath.endsWith(File.separator)) {
-				jsonFilePath+=File.separator;
 			}
-			jsonDataReader = new JsonDataReader(jsonFilePath);
-		}
-		
-		System.out.println("jsonFilePath = "+jsonFilePath);
-		
-		try {
+
+			private Config config;
+			private ServiceRegistration<?> reg;
+		  
+		@Activate
+		public void init(BundleContext context, Config config, Map<String, Object> props) throws SQLException {
+			this.jsonFilePath = config.jsonFilePath();
 			
-			
-			Class.forName(DRIVER_CLASS);
-
-			conn = DriverManager.getConnection(JDBC_URL, USER, PASSWORD);
-			stmt = conn.createStatement();
-
-			initPickingTable(stmt);
-			initStorageTable(stmt);
-			initCartTable(stmt);
-			initDockTable(stmt);
-
-			stmt.close();
-			conn.close();
-
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-			
-		} catch (SQLException e) {
-			if(stmt != null && !stmt.isClosed()) {
-				stmt.close();
+			if(jsonFilePath != null && jsonFilePath.length()>0) {
+				if(!jsonFilePath.endsWith(File.separator)) {
+					jsonFilePath+=File.separator;
+				}
+				jsonDataReader = new JsonDataReader(jsonFilePath);
 			}
-			if(conn != null && !conn.isClosed()) {
+			
+			System.out.println("jsonFilePath = "+jsonFilePath);
+			
+			try {
+				
+				String home  = System.getenv("HOME");
+				if(!home.endsWith(File.separator)) {
+					home+=File.separator;
+				}
+				// /home/fabric-n9/tables
+				final String JDBC_URL = "jdbc:h2:"+home+"tables;DB_CLOSE_DELAY=-1";
+				
+				System.out.println("Table Creator is creating "+home+"tables..........");
+				
+				Class.forName(DRIVER_CLASS);
+
+				conn = DriverManager.getConnection(JDBC_URL, USER, PASSWORD);
+				stmt = conn.createStatement();
+
+				initPickingTable(stmt);
+				initStorageTable(stmt);
+				initCartTable(stmt);
+				initDockTable(stmt);
+
+				stmt.close(); // TODO don't close it if it's a referenced osgi service
 				conn.close();
+				stmt = null; // TODO don't close it if it's a referenced osgi service
+				conn = null;
+				
+				System.out.println("Table Creator finished to create "+home+"tables..........");
+
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+				
+			} catch (SQLException e) {
+				if(stmt != null && !stmt.isClosed()) {
+					stmt.close();
+				}
+				if(conn != null && !conn.isClosed()) {
+					conn.close();
+				}
+				e.printStackTrace();
 			}
-			e.printStackTrace();
 		}
-	}
 	  
 	  public void initPickingTable(Statement stmt) throws SQLException {
 		  stmt.execute("DROP TABLE IF EXISTS PickingTable");

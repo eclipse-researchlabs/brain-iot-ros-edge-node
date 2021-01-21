@@ -117,7 +117,7 @@ public class RobotService extends AbstractNodeMain implements SmartBehaviour<Rob
 
     	String UUID = context.getProperty("org.osgi.framework.uuid");
 
-	    System.out.println("\nHello!  I am robot : "+robotID+ "  name = "+robotName+ "  IP = "+robotIP+ ",  UUID = "+UUID);
+	    System.out.println("\nHello!  I am ROS Edge Node : "+robotID+ "  name = "+robotName+ "  IP = "+robotIP+ ",  UUID = "+UUID);
 	    
 	    worker = Executors.newFixedThreadPool(10);
 
@@ -229,12 +229,6 @@ public class RobotService extends AbstractNodeMain implements SmartBehaviour<Rob
 		
 		broadCastReady();
 		
-	/*	while(!isWorkDone) {  // TODO, check if only one cart is moved using one robot, how to keep running even exiting onStart()?
-			wait(10);
-		}
-	*/	
-	
-		
 	}
 	
 	
@@ -245,7 +239,7 @@ public class RobotService extends AbstractNodeMain implements SmartBehaviour<Rob
 		rbc.robotIP = robotIP;
 		rbc.isReady = true;
 		eventBus.deliver(rbc);
-		System.out.println(" >>> robot_"+robotID+"broadCast Ready info");
+		System.out.println(" >>> robot_"+robotID+" broadCast Ready info");
 		
 	}
 
