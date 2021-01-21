@@ -3,7 +3,6 @@
 
 
 
-
 -releaserepo: Release
 -baselinerepo: Release
 # Always use contracts  
@@ -23,11 +22,41 @@ mockito-deps: org.objenesis; version=2.6.0,\
   net.bytebuddy.byte-buddy; version=1.7.9,\
   net.bytebuddy.byte-buddy-agent; version=1.7.9 
 
-# -buildrepo: 			BrainIot
+
+# -buildrepo: 			BrainIot  
+
+#To access Maven Central use the following configuration:
+-plugin.4.Central = \
+	\
+	        aQute.bnd.repository.maven.provider.MavenBndRepository; \
+	            snapshotUrl         =   "https://oss.sonatype.org/content/repositories/snapshots/"; \
+				releaseUrl			=	https://repo.maven.apache.org/maven2/; \
+				index               =   ${.}/central.maven; \
+				readOnly            =   true; \
+				name				=	Central
+				
+-plugin.10.brain-iot-snapshots: \
+	aQute.bnd.repository.maven.provider.MavenBndRepository; \
+		snapshotUrl=https://nexus.repository-pert.ismb.it/repository/maven-snapshots/; \
+		releaseUrl=https://nexus.repository-pert.ismb.it/repository/maven-releases/; \
+		index=${build}/brainIot.maven; \
+		readOnly            =   false; \
+        name="BrainIot"
+
+-plugin.6.m2Local: \
+	\
+       		aQute.bnd.repository.maven.provider.MavenBndRepository; \
+       		    index               =   ${.}/m2local.maven; \
+				name				=	m2Local
+
+-buildrepo: m2Local
+# m2Local
+
 
 -pom: 					groupid	=	eu.brain.iot.service.robotic,\
 						version =	0.0.2-SNAPSHOT
+
  
+-connection-settings: maven
  
-	 
 

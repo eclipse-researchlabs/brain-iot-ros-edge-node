@@ -267,6 +267,7 @@ public class RobotService extends AbstractNodeMain implements SmartBehaviour<Rob
 					while(true) {
 						callResp = queryState(writeGoTo.command);	// goto Query
 					if((callResp != null)) {
+						
 						if(callResp.current_state.equals("finished")) {
 							
 							System.out.println(" >>> robot "+robotID+" WriteGOTO gets CallResponse: result="+callResp.result+", current_state="+callResp.current_state
@@ -280,6 +281,7 @@ public class RobotService extends AbstractNodeMain implements SmartBehaviour<Rob
 							}
 							queryReturnedValue.currentState = CurrentState.finished;
 							break;
+							
 						} else if(callResp.current_state.equals("unknown")) {
 							
 							System.out.println(" >>> robot "+robotID+" WriteGOTO gets CallResponse: result="+callResp.result+", current_state="+callResp.current_state
@@ -541,10 +543,28 @@ public class RobotService extends AbstractNodeMain implements SmartBehaviour<Rob
 		return callResp;		
 	}
 	
-	private int checkMarkers(){ // TODO
+	private int checkMarkers(){
 		List<AlvarMarker> markerList = ar_pose_marker.get_poseMarker_value().getMarkers();
-		System.out.println("\n >>> Robot "+robotID+" see Markers size = "+ markerList.size()+", and first marker ID = "+ markerList.get(0).getId());
-		return markerList.get(0).getId();
+		
+		while(markerList!=null) {
+			System.out.println("\n >>> Robot "+robotID+" see Markers List size = "+ markerList.size());
+			
+			if(markerList.size()>=1) {
+				System.out.println("\n >>> Robot "+robotID+" see first Marker ID = "+ markerList.get(0).getId());
+				return markerList.get(0).getId();
+			}
+			else {
+				try {
+					TimeUnit.SECONDS.sleep(1);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				markerList = ar_pose_marker.get_poseMarker_value().getMarkers();
+			}
+		}
+		System.out.println("\n >>> Robot "+robotID+" doesn't see Marker List is empty, return default marker =100");
+		return 100;
+		
 	}
 	
 	

@@ -1,6 +1,6 @@
 -buildpath: \
-	org.ros.rosjava.message_generation,\
 	osgi.core;version=7.0,\
-	osgi.cmpn;version=7.0
+	osgi.cmpn;version=7.0,\
+	org.ros.rosjava_bootstrap.message_generation;version=0.2
 Bundle-Version: 0.2.0
 Private-Package: be.iminds.iot.ros.msgs.generator

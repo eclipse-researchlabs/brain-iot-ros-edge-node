@@ -1,0 +1,16 @@
+-classpath: org.ros.rosjava.message_generation-0.2.1.jar
+Manifest-Version: 1.0
+Bundle-Description: message generation library
+Bundle-ManifestVersion: 2
+Bundle-Name: message_generation
+Bundle-SymbolicName: org.ros.rosjava_bootstrap.message_generation
+ver: 0.2.1
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+-output: ${bsn}-${ver}.jar
+Bundle-Version: ${ver}
+#Import-Package: com.google.gson.annotations;version=${ver}
+#Require-Capability: osgi.ee;filter:="(&(osgi.ee=JavaSE)(version=1.6))"
+Export-Package: *;version=${ver}
+DynamicImport-Package: *
+-groupid: org.ros.rosjava_bootstrap
+-pom: true

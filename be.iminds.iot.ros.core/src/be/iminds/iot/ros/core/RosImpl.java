@@ -170,6 +170,8 @@ public class RosImpl extends AbstractNodeMain implements Ros {
 
 		// start ROS core if required
 		boolean start = !rosCoreActive();
+		System.out.println("\n connecting to roscore, start =" + start);
+		
 		if(start){
 			System.out.println("\n start installed ROS system");
 			boolean startNative = false;   // -------keep always running native ros core
@@ -203,8 +205,11 @@ public class RosImpl extends AbstractNodeMain implements Ros {
 		while(!rosCoreActive()){   //= false
 			Thread.sleep(100);
 		}
+		
 		// add this node
 		addNode(this);
+		
+		System.out.println("\n  add this node 2");
 	}
 	
 	@Deactivate
@@ -261,6 +266,7 @@ public class RosImpl extends AbstractNodeMain implements Ros {
 		synchronized(this){
 			notifyAll();
 		}
+		System.out.println("\n  onStart line 271 \n ");
 	}
 	
 	

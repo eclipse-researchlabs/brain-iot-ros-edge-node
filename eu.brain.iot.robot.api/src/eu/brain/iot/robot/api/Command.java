@@ -4,3 +4,4 @@ public enum Command {
 
 	GOTO, PLACE, PICK;
 }
+

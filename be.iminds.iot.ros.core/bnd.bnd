@@ -1,4 +1,4 @@
-Bundle-Version: 1.0.0
+Bundle-Version: 0.0.2
 #-includeresource:	OSGI-INF/config.properties=config.properties
 -buildpath: \
 	be.iminds.iot.ros.api;version=latest,\
@@ -7,3 +7,4 @@ Bundle-Version: 1.0.0
 	org.ros.rosjava;version=0.2
 Private-Package: be.iminds.iot.ros.core
 Export-Package: be.iminds.iot.ros.api
+

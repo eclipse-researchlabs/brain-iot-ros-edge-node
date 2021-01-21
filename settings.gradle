@@ -12,9 +12,11 @@ import aQute.bnd.osgi.Constants
 /* Add bnd gradle plugin as a script dependency */
 buildscript {
   repositories {
-    jcenter()
+
 	 mavenCentral()
-    //mavenLocal()
+    jcenter()
+
+    mavenLocal()
 	 maven {
         url "https://repository.apache.org/content/groups/snapshots/"
         name "Apache Snapshots"
@@ -160,13 +162,15 @@ projectNames.each { projectName ->
 
 /* Add each project and its dependencies to the graph */
 projectNames.each { projectName ->
+  if (projectName != "eu.brain.iot.ros.edge.node") {
   include projectName
   def project = getBndProject(workspace, projectName)
 
   project?.getDependson()*.getName().each {
     include it
-//println projectName
+println projectName
   }
+}
 }
 
 /* Get the bnd project for the specified project name */

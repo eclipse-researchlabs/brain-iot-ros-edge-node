@@ -55,9 +55,13 @@ public class RoscoreConfiguartor {
 		}
 
 		File file;
-		String roscoreConfFolder = context.getProperty("roscoreConfFolder");
+		String roscoreConfFolder;
+		
+		roscoreConfFolder = context.getProperty("roscoreConfFolder");
 		if (roscoreConfFolder == null)
-			roscoreConfFolder = "/home/rui/git/ros-edge-node/eu.brain.iot.robot.service/resources";
+		//	roscoreConfFolder = "/home/rui/git/ros-edge-node/eu.brain.iot.robot.service/resources";
+			roscoreConfFolder = System.getenv("HOME");
+		
 		if(!roscoreConfFolder.endsWith(File.separator)) {
 			roscoreConfFolder+=File.separator;
 		}
@@ -85,7 +89,7 @@ public class RoscoreConfiguartor {
 				fstream = new FileInputStream(roscoreConfFolder+configFile); // absolute path
 				reader = new BufferedReader(new InputStreamReader(fstream));
 				line = reader.readLine();
-				System.out.println("\nroscore config file: " + configFile);
+				System.out.println("\nroscore config file: " + roscoreConfFolder+configFile);
 				while (line != null && line.trim() != null) {
 
 					if (line.trim().isEmpty() || line.startsWith("#") || line.startsWith("//")) {

@@ -40,7 +40,7 @@ import eu.brain.iot.robot.api.Coordinate;
 @SmartBehaviourDefinition(
 		consumed = { NewPickPointRequest.class, NewStoragePointRequest.class, NoCartNotice.class,
 		CartMovedNotice.class, DockingRequest.class }, 
-		author = "LINKS", name = "Warehouse Backend", 
+		author = "LINKS", name = "Warehouse Module: Tables Queryer", 
 		description = "Implements the Tables Queryer in Warehouse Backend.")
 
 public class TableQueryer implements SmartBehaviour<BrainIoTEvent> { // TODO must able to cache multiple requests

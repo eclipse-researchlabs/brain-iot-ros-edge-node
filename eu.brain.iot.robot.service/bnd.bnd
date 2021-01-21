@@ -2,7 +2,6 @@
 	eu.brain.iot.robot.api;version=latest,\
 	eu.brain.iot.robot.msgs;version=latest,\
 	be.iminds.iot.ros.msgs.generator;version=latest,\
-	org.ros.rosjava.message_generation,\
 	org.apache.felix.gogo.runtime,\
 	be.iminds.iot.ros.api;version=latest,\
 	com.paremus.brain.iot.eventing.api,\
@@ -10,7 +9,8 @@
 	osgi.core;version=7.0,\
 	osgi.cmpn;version=7.0,\
 	org.ros.rosjava;version=0.2,\
-	json;version=20190722.0
+	json;version=20190722.0,\
+	org.ros.rosjava_bootstrap.message_generation;version=0.2
 
 -includeresource: resources
 Bundle-Version: 0.0.2
