@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<repository xmlns="http://www.osgi.org/xmlns/repository/v1.0.0" name="Local" increment="1610647883000">
+<repository xmlns="http://www.osgi.org/xmlns/repository/v1.0.0" name="Local" increment="1611328105000">
   <resource>
     <capability namespace="osgi.identity">
       <attribute name="license" value="http://www.apache.org/licenses/LICENSE-2.0.txt"/>
@@ -2362,6 +2362,86 @@
   </resource>
   <resource>
     <capability namespace="osgi.identity">
+      <attribute name="osgi.identity" value="com.paremus.brain.iot.eventing.impl"/>
+      <attribute name="type" value="osgi.bundle"/>
+      <attribute name="version" value="0.0.1.202101151359" type="Version"/>
+    </capability>
+    <capability namespace="osgi.wiring.bundle">
+      <attribute name="bundle-version" value="0.0.1.202101151359" type="Version"/>
+      <attribute name="osgi.wiring.bundle" value="com.paremus.brain.iot.eventing.impl"/>
+    </capability>
+    <capability namespace="osgi.wiring.host">
+      <attribute name="bundle-version" value="0.0.1.202101151359" type="Version"/>
+      <attribute name="osgi.wiring.host" value="com.paremus.brain.iot.eventing.impl"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="version" value="0.0.1" type="Version"/>
+      <attribute name="osgi.wiring.package" value="com.paremus.brain.iot.eventing.spi.remote"/>
+    </capability>
+    <capability namespace="osgi.service">
+      <attribute name="objectClass" value="eu.brain.iot.eventing.api.EventBus" type="List&lt;String&gt;"/>
+    </capability>
+    <capability namespace="osgi.service">
+      <attribute name="objectClass" value="eu.brain.iot.eventing.monitoring.api.EventMonitor" type="List&lt;String&gt;"/>
+    </capability>
+    <capability namespace="osgi.content">
+      <attribute name="size" value="162371" type="Long"/>
+      <attribute name="url" value="com.paremus.brain.iot.eventing.impl/com.paremus.brain.iot.eventing.impl-0.0.1.jar"/>
+      <attribute name="mime" value="application/vnd.osgi.bundle"/>
+      <attribute name="osgi.content" value="F7F71E2364DA11F2AB0F62A471776B85DBA679000EAF23C95B189444ACF8A473"/>
+    </capability>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=com.paremus.brain.iot.eventing.spi.remote)(&amp;(version&gt;=0.0.0)(!(version&gt;=0.1.0))))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=eu.brain.iot.eventing.api)(&amp;(version&gt;=0.0.0)(!(version&gt;=0.1.0))))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=eu.brain.iot.eventing.message.integrity.api)(&amp;(version&gt;=0.0.0)(!(version&gt;=1.0.0))))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=eu.brain.iot.eventing.monitoring.api)(&amp;(version&gt;=0.0.0)(!(version&gt;=0.1.0))))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.osgi.framework)(&amp;(version&gt;=1.9.0)(!(version&gt;=2.0.0))))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.osgi.util.function)(&amp;(version&gt;=1.0.0)(!(version&gt;=2.0.0))))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.osgi.util.pushstream)(&amp;(version&gt;=1.0.0)(!(version&gt;=2.0.0))))"/>
+    </requirement>
+    <requirement namespace="osgi.service">
+      <directive name="filter" value="(objectClass=com.paremus.brain.iot.eventing.spi.remote.RemoteEventBus)"/>
+      <directive name="effective" value="active"/>
+      <directive name="resolution" value="optional"/>
+      <directive name="cardinality" value="multiple"/>
+    </requirement>
+    <requirement namespace="osgi.service">
+      <directive name="filter" value="(objectClass=eu.brain.iot.eventing.api.SmartBehaviour)"/>
+      <directive name="effective" value="active"/>
+      <directive name="resolution" value="optional"/>
+      <directive name="cardinality" value="multiple"/>
+    </requirement>
+    <requirement namespace="osgi.service">
+      <directive name="filter" value="(objectClass=eu.brain.iot.eventing.api.UntypedSmartBehaviour)"/>
+      <directive name="effective" value="active"/>
+      <directive name="resolution" value="optional"/>
+      <directive name="cardinality" value="multiple"/>
+    </requirement>
+    <requirement namespace="osgi.service">
+      <directive name="filter" value="(objectClass=eu.brain.iot.eventing.message.integrity.api.MessageIntegrityService)"/>
+      <directive name="effective" value="active"/>
+    </requirement>
+    <requirement namespace="osgi.extender">
+      <directive name="filter" value="(&amp;(osgi.extender=osgi.component)(version&gt;=1.4.0)(!(version&gt;=2.0.0)))"/>
+    </requirement>
+    <requirement namespace="osgi.ee">
+      <directive name="filter" value="(&amp;(osgi.ee=JavaSE)(version=1.8))"/>
+    </requirement>
+  </resource>
+  <resource>
+    <capability namespace="osgi.identity">
       <attribute name="osgi.identity" value="org.igniterealtime.smack.resolver-dnsjava"/>
       <attribute name="type" value="osgi.bundle"/>
       <attribute name="version" value="4.3.1" type="Version"/>
@@ -4217,96 +4297,6 @@
   </resource>
   <resource>
     <capability namespace="osgi.identity">
-      <attribute name="osgi.identity" value="org.ros.rosjava_bootstrap.message_generation"/>
-      <attribute name="type" value="osgi.bundle"/>
-      <attribute name="version" value="0.3.0" type="Version"/>
-    </capability>
-    <capability namespace="osgi.wiring.bundle">
-      <attribute name="bundle-version" value="0.3.0" type="Version"/>
-      <attribute name="osgi.wiring.bundle" value="org.ros.rosjava_bootstrap.message_generation"/>
-    </capability>
-    <capability namespace="osgi.wiring.host">
-      <attribute name="bundle-version" value="0.3.0" type="Version"/>
-      <attribute name="osgi.wiring.host" value="org.ros.rosjava_bootstrap.message_generation"/>
-    </capability>
-    <capability namespace="osgi.wiring.package">
-      <attribute name="version" value="0.3.0" type="Version"/>
-      <attribute name="osgi.wiring.package" value="org.ros.exception"/>
-    </capability>
-    <capability namespace="osgi.wiring.package">
-      <directive name="uses" value="org.apache.commons.io.filefilter,org.jboss.netty.buffer,org.ros.internal.message.field,org.ros.message"/>
-      <attribute name="version" value="0.3.0" type="Version"/>
-      <attribute name="osgi.wiring.package" value="org.ros.internal.message"/>
-    </capability>
-    <capability namespace="osgi.wiring.package">
-      <directive name="uses" value="org.ros.internal.message.field,org.ros.message"/>
-      <attribute name="version" value="0.3.0" type="Version"/>
-      <attribute name="osgi.wiring.package" value="org.ros.internal.message.context"/>
-    </capability>
-    <capability namespace="osgi.wiring.package">
-      <directive name="uses" value="org.ros.internal.message,org.ros.message"/>
-      <attribute name="version" value="0.3.0" type="Version"/>
-      <attribute name="osgi.wiring.package" value="org.ros.internal.message.definition"/>
-    </capability>
-    <capability namespace="osgi.wiring.package">
-      <directive name="uses" value="org.jboss.netty.buffer,org.ros.internal.message,org.ros.internal.message.context,org.ros.message"/>
-      <attribute name="version" value="0.3.0" type="Version"/>
-      <attribute name="osgi.wiring.package" value="org.ros.internal.message.field"/>
-    </capability>
-    <capability namespace="osgi.wiring.package">
-      <directive name="uses" value="org.ros.internal.message,org.ros.internal.message.definition,org.ros.message"/>
-      <attribute name="version" value="0.3.0" type="Version"/>
-      <attribute name="osgi.wiring.package" value="org.ros.internal.message.service"/>
-    </capability>
-    <capability namespace="osgi.wiring.package">
-      <directive name="uses" value="org.ros.internal.message,org.ros.internal.message.definition,org.ros.message"/>
-      <attribute name="version" value="0.3.0" type="Version"/>
-      <attribute name="osgi.wiring.package" value="org.ros.internal.message.topic"/>
-    </capability>
-    <capability namespace="osgi.wiring.package">
-      <directive name="uses" value="org.jboss.netty.buffer"/>
-      <attribute name="version" value="0.3.0" type="Version"/>
-      <attribute name="osgi.wiring.package" value="org.ros.message"/>
-    </capability>
-    <capability namespace="osgi.content">
-      <attribute name="size" value="124142" type="Long"/>
-      <attribute name="url" value="org.ros.rosjava_bootstrap.message_generation/org.ros.rosjava_bootstrap.message_generation-0.3.0.jar"/>
-      <attribute name="mime" value="application/vnd.osgi.bundle"/>
-      <attribute name="osgi.content" value="184121628D6A3D7634ADE5BBB20CE9028526EABFEB979908AA8942335CC65D57"/>
-    </capability>
-    <requirement namespace="osgi.wiring.package">
-      <directive name="filter" value="(&amp;(osgi.wiring.package=com.google.common.base))"/>
-    </requirement>
-    <requirement namespace="osgi.wiring.package">
-      <directive name="filter" value="(&amp;(osgi.wiring.package=com.google.common.collect))"/>
-    </requirement>
-    <requirement namespace="osgi.wiring.package">
-      <directive name="filter" value="(&amp;(osgi.wiring.package=org.apache.commons.codec.digest))"/>
-    </requirement>
-    <requirement namespace="osgi.wiring.package">
-      <directive name="filter" value="(&amp;(osgi.wiring.package=org.apache.commons.io))"/>
-    </requirement>
-    <requirement namespace="osgi.wiring.package">
-      <directive name="filter" value="(&amp;(osgi.wiring.package=org.apache.commons.io.filefilter))"/>
-    </requirement>
-    <requirement namespace="osgi.wiring.package">
-      <directive name="filter" value="(&amp;(osgi.wiring.package=org.apache.commons.lang))"/>
-    </requirement>
-    <requirement namespace="osgi.wiring.package">
-      <directive name="filter" value="(&amp;(osgi.wiring.package=org.apache.commons.pool))"/>
-    </requirement>
-    <requirement namespace="osgi.wiring.package">
-      <directive name="filter" value="(&amp;(osgi.wiring.package=org.apache.commons.pool.impl))"/>
-    </requirement>
-    <requirement namespace="osgi.wiring.package">
-      <directive name="filter" value="(&amp;(osgi.wiring.package=org.jboss.netty.buffer))"/>
-    </requirement>
-    <requirement namespace="osgi.ee">
-      <directive name="filter" value="(&amp;(osgi.ee=JavaSE)(version=1.6))"/>
-    </requirement>
-  </resource>
-  <resource>
-    <capability namespace="osgi.identity">
       <attribute name="osgi.identity" value="it.ismb.pert.cpswarm.simulation.gazebo"/>
       <attribute name="type" value="osgi.bundle"/>
       <attribute name="version" value="1.1.1" type="Version"/>
@@ -4982,34 +4972,6 @@
     </requirement>
     <requirement namespace="osgi.wiring.package">
       <directive name="filter" value="(&amp;(osgi.wiring.package=javax.annotation.sql)(version&gt;=1.2.0))"/>
-    </requirement>
-  </resource>
-  <resource>
-    <capability namespace="osgi.identity">
-      <attribute name="osgi.identity" value="be.iminds.iot.simulator.api"/>
-      <attribute name="type" value="osgi.bundle"/>
-      <attribute name="version" value="0.3.0" type="Version"/>
-    </capability>
-    <capability namespace="osgi.wiring.bundle">
-      <attribute name="bundle-version" value="0.3.0" type="Version"/>
-      <attribute name="osgi.wiring.bundle" value="be.iminds.iot.simulator.api"/>
-    </capability>
-    <capability namespace="osgi.wiring.host">
-      <attribute name="bundle-version" value="0.3.0" type="Version"/>
-      <attribute name="osgi.wiring.host" value="be.iminds.iot.simulator.api"/>
-    </capability>
-    <capability namespace="osgi.wiring.package">
-      <attribute name="version" value="0.3.0" type="Version"/>
-      <attribute name="osgi.wiring.package" value="be.iminds.iot.simulator.api"/>
-    </capability>
-    <capability namespace="osgi.content">
-      <attribute name="size" value="8377" type="Long"/>
-      <attribute name="url" value="be.iminds.iot.simulator.api/be.iminds.iot.simulator.api-0.3.0.jar"/>
-      <attribute name="mime" value="application/vnd.osgi.bundle"/>
-      <attribute name="osgi.content" value="6264B0B8AE3C69FBA1E247488945BF893E7FA6B3674801F7F46E6F1FCE4257E6"/>
-    </capability>
-    <requirement namespace="osgi.ee">
-      <directive name="filter" value="(&amp;(osgi.ee=JavaSE)(version=1.8))"/>
     </requirement>
   </resource>
   <resource>
@@ -6208,6 +6170,54 @@
   </resource>
   <resource>
     <capability namespace="osgi.identity">
+      <attribute name="osgi.identity" value="com.paremus.brain.iot.eventing.api"/>
+      <attribute name="type" value="osgi.bundle"/>
+      <attribute name="version" value="0.0.1.202101151359" type="Version"/>
+    </capability>
+    <capability namespace="osgi.wiring.bundle">
+      <attribute name="bundle-version" value="0.0.1.202101151359" type="Version"/>
+      <attribute name="osgi.wiring.bundle" value="com.paremus.brain.iot.eventing.api"/>
+    </capability>
+    <capability namespace="osgi.wiring.host">
+      <attribute name="bundle-version" value="0.0.1.202101151359" type="Version"/>
+      <attribute name="osgi.wiring.host" value="com.paremus.brain.iot.eventing.api"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="version" value="0.0.1" type="Version"/>
+      <attribute name="osgi.wiring.package" value="eu.brain.iot.behaviour.namespace"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="version" value="0.0.1" type="Version"/>
+      <attribute name="osgi.wiring.package" value="eu.brain.iot.eventing.annotation"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <directive name="uses" value="org.osgi.dto"/>
+      <attribute name="version" value="0.0.1" type="Version"/>
+      <attribute name="osgi.wiring.package" value="eu.brain.iot.eventing.api"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <directive name="uses" value="org.osgi.dto,org.osgi.util.pushstream"/>
+      <attribute name="version" value="0.0.1" type="Version"/>
+      <attribute name="osgi.wiring.package" value="eu.brain.iot.eventing.monitoring.api"/>
+    </capability>
+    <capability namespace="osgi.content">
+      <attribute name="size" value="28187" type="Long"/>
+      <attribute name="url" value="com.paremus.brain.iot.eventing.api/com.paremus.brain.iot.eventing.api-0.0.1.jar"/>
+      <attribute name="mime" value="application/vnd.osgi.bundle"/>
+      <attribute name="osgi.content" value="00BBED62469D83D59E127369D4EA53D562534409DDF5DC532916D1FCB855BAD7"/>
+    </capability>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.osgi.dto)(&amp;(version&gt;=1.1.0)(!(version&gt;=2.0.0))))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.osgi.util.pushstream)(&amp;(version&gt;=1.0.0)(!(version&gt;=2.0.0))))"/>
+    </requirement>
+    <requirement namespace="osgi.ee">
+      <directive name="filter" value="(&amp;(osgi.ee=JavaSE)(version=1.8))"/>
+    </requirement>
+  </resource>
+  <resource>
+    <capability namespace="osgi.identity">
       <attribute name="license" value="http://opensource.org/licenses/apache2.0.php; link=&quot;http://www.apache.org/licenses/LICENSE-2.0&quot;; description=&quot;Apache License, Version 2.0&quot;"/>
       <attribute name="osgi.identity" value="org.osgi.service.component"/>
       <attribute name="type" value="osgi.bundle"/>
@@ -7073,93 +7083,6 @@
   </resource>
   <resource>
     <capability namespace="osgi.identity">
-      <attribute name="osgi.identity" value="be.iminds.iot.simulator.gazebo"/>
-      <attribute name="type" value="osgi.bundle"/>
-      <attribute name="version" value="0.4.0" type="Version"/>
-    </capability>
-    <capability namespace="osgi.wiring.bundle">
-      <attribute name="bundle-version" value="0.4.0" type="Version"/>
-      <attribute name="osgi.wiring.bundle" value="be.iminds.iot.simulator.gazebo"/>
-    </capability>
-    <capability namespace="osgi.wiring.host">
-      <attribute name="bundle-version" value="0.4.0" type="Version"/>
-      <attribute name="osgi.wiring.host" value="be.iminds.iot.simulator.gazebo"/>
-    </capability>
-    <capability namespace="osgi.wiring.package">
-      <attribute name="version" value="0.3.0" type="Version"/>
-      <attribute name="osgi.wiring.package" value="be.iminds.iot.simulator.api"/>
-    </capability>
-    <capability namespace="osgi.service">
-      <attribute name="objectClass" value="org.ros.node.NodeMain" type="List&lt;String&gt;"/>
-    </capability>
-    <capability namespace="osgi.content">
-      <attribute name="size" value="36075" type="Long"/>
-      <attribute name="url" value="be.iminds.iot.simulator.gazebo/be.iminds.iot.simulator.gazebo-0.4.0.jar"/>
-      <attribute name="mime" value="application/vnd.osgi.bundle"/>
-      <attribute name="osgi.content" value="E6687C1AE2200D78C7FE87246BE413390C1A951298E07B2FB1BA943AD5052D1D"/>
-    </capability>
-    <requirement namespace="osgi.wiring.package">
-      <directive name="filter" value="(&amp;(osgi.wiring.package=be.iminds.iot.ros.util)(&amp;(version&gt;=0.3.0)(!(version&gt;=1.0.0))))"/>
-    </requirement>
-    <requirement namespace="osgi.wiring.package">
-      <directive name="filter" value="(&amp;(osgi.wiring.package=be.iminds.iot.simulator.api)(&amp;(version&gt;=0.3.0)(!(version&gt;=1.0.0))))"/>
-    </requirement>
-    <requirement namespace="osgi.wiring.package">
-      <directive name="filter" value="(&amp;(osgi.wiring.package=gazebo_msgs)(&amp;(version&gt;=2.4.0)(!(version&gt;=3.0.0))))"/>
-    </requirement>
-    <requirement namespace="osgi.wiring.package">
-      <directive name="filter" value="(&amp;(osgi.wiring.package=geometry_msgs)(&amp;(version&gt;=1.11.0)(!(version&gt;=2.0.0))))"/>
-    </requirement>
-    <requirement namespace="osgi.wiring.package">
-      <directive name="filter" value="(&amp;(osgi.wiring.package=org.osgi.framework)(&amp;(version&gt;=1.7.0)(!(version&gt;=2.0.0))))"/>
-    </requirement>
-    <requirement namespace="osgi.wiring.package">
-      <directive name="filter" value="(&amp;(osgi.wiring.package=org.osgi.service.cm)(&amp;(version&gt;=1.5.0)(!(version&gt;=2.0.0))))"/>
-    </requirement>
-    <requirement namespace="osgi.wiring.package">
-      <directive name="filter" value="(&amp;(osgi.wiring.package=org.osgi.util.promise)(&amp;(version&gt;=1.0.0)(!(version&gt;=2.0.0))))"/>
-    </requirement>
-    <requirement namespace="osgi.wiring.package">
-      <directive name="filter" value="(&amp;(osgi.wiring.package=org.ros.exception)(&amp;(version&gt;=0.2.0)(!(version&gt;=1.0.0))))"/>
-    </requirement>
-    <requirement namespace="osgi.wiring.package">
-      <directive name="filter" value="(&amp;(osgi.wiring.package=org.ros.message)(&amp;(version&gt;=0.2.0)(!(version&gt;=1.0.0))))"/>
-    </requirement>
-    <requirement namespace="osgi.wiring.package">
-      <directive name="filter" value="(&amp;(osgi.wiring.package=org.ros.namespace)(&amp;(version&gt;=0.2.0)(!(version&gt;=1.0.0))))"/>
-    </requirement>
-    <requirement namespace="osgi.wiring.package">
-      <directive name="filter" value="(&amp;(osgi.wiring.package=org.ros.node)(&amp;(version&gt;=0.2.0)(!(version&gt;=1.0.0))))"/>
-    </requirement>
-    <requirement namespace="osgi.wiring.package">
-      <directive name="filter" value="(&amp;(osgi.wiring.package=org.ros.node.service)(&amp;(version&gt;=0.2.0)(!(version&gt;=1.0.0))))"/>
-    </requirement>
-    <requirement namespace="osgi.wiring.package">
-      <directive name="filter" value="(&amp;(osgi.wiring.package=org.ros.node.topic)(&amp;(version&gt;=0.2.0)(!(version&gt;=1.0.0))))"/>
-    </requirement>
-    <requirement namespace="osgi.wiring.package">
-      <directive name="filter" value="(&amp;(osgi.wiring.package=rosgraph_msgs)(&amp;(version&gt;=1.11.0)(!(version&gt;=2.0.0))))"/>
-    </requirement>
-    <requirement namespace="osgi.wiring.package">
-      <directive name="filter" value="(&amp;(osgi.wiring.package=std_srvs)(&amp;(version&gt;=1.11.0)(!(version&gt;=2.0.0))))"/>
-    </requirement>
-    <requirement namespace="osgi.extender">
-      <directive name="filter" value="(&amp;(osgi.extender=osgi.component)(version&gt;=1.3.0)(!(version&gt;=2.0.0)))"/>
-    </requirement>
-    <requirement namespace="osgi.service">
-      <directive name="filter" value="(objectClass=be.iminds.iot.ros.api.Ros)"/>
-      <directive name="effective" value="active"/>
-    </requirement>
-    <requirement namespace="osgi.service">
-      <directive name="filter" value="(objectClass=org.osgi.service.cm.ConfigurationAdmin)"/>
-      <directive name="effective" value="active"/>
-    </requirement>
-    <requirement namespace="osgi.ee">
-      <directive name="filter" value="(&amp;(osgi.ee=JavaSE)(version=1.8))"/>
-    </requirement>
-  </resource>
-  <resource>
-    <capability namespace="osgi.identity">
       <attribute name="osgi.identity" value="org.ros.rosjava_messages.sensor_msgs"/>
       <attribute name="type" value="osgi.bundle"/>
       <attribute name="version" value="1.11.7" type="Version"/>
@@ -7823,6 +7746,34 @@
     </requirement>
     <requirement namespace="osgi.wiring.package">
       <directive name="filter" value="(&amp;(osgi.wiring.package=org.apache.commons.io.output)(version&gt;=1.4.0))"/>
+    </requirement>
+  </resource>
+  <resource>
+    <capability namespace="osgi.identity">
+      <attribute name="osgi.identity" value="com.paremus.brain.iot.message.integrity.api"/>
+      <attribute name="type" value="osgi.bundle"/>
+      <attribute name="version" value="0.0.1.202101151323" type="Version"/>
+    </capability>
+    <capability namespace="osgi.wiring.bundle">
+      <attribute name="bundle-version" value="0.0.1.202101151323" type="Version"/>
+      <attribute name="osgi.wiring.bundle" value="com.paremus.brain.iot.message.integrity.api"/>
+    </capability>
+    <capability namespace="osgi.wiring.host">
+      <attribute name="bundle-version" value="0.0.1.202101151323" type="Version"/>
+      <attribute name="osgi.wiring.host" value="com.paremus.brain.iot.message.integrity.api"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="version" value="0.0.1" type="Version"/>
+      <attribute name="osgi.wiring.package" value="eu.brain.iot.eventing.message.integrity.api"/>
+    </capability>
+    <capability namespace="osgi.content">
+      <attribute name="size" value="7840" type="Long"/>
+      <attribute name="url" value="com.paremus.brain.iot.message.integrity.api/com.paremus.brain.iot.message.integrity.api-0.0.1.jar"/>
+      <attribute name="mime" value="application/vnd.osgi.bundle"/>
+      <attribute name="osgi.content" value="6C18EBB6282E1931AFEB02BCF181A030CEA69A18008EBB892B2516F91C4702BE"/>
+    </capability>
+    <requirement namespace="osgi.ee">
+      <directive name="filter" value="(&amp;(osgi.ee=JavaSE)(version=1.8))"/>
     </requirement>
   </resource>
   <resource>
@@ -9139,6 +9090,39 @@
     </capability>
     <requirement namespace="osgi.ee">
       <directive name="filter" value="(&amp;(osgi.ee=JavaSE)(version=1.6))"/>
+    </requirement>
+  </resource>
+  <resource>
+    <capability namespace="osgi.identity">
+      <attribute name="osgi.identity" value="com.paremus.brain.iot.message.integrity.insecure.impl"/>
+      <attribute name="type" value="osgi.bundle"/>
+      <attribute name="version" value="0.0.1.202101151323" type="Version"/>
+    </capability>
+    <capability namespace="osgi.wiring.bundle">
+      <attribute name="bundle-version" value="0.0.1.202101151323" type="Version"/>
+      <attribute name="osgi.wiring.bundle" value="com.paremus.brain.iot.message.integrity.insecure.impl"/>
+    </capability>
+    <capability namespace="osgi.wiring.host">
+      <attribute name="bundle-version" value="0.0.1.202101151323" type="Version"/>
+      <attribute name="osgi.wiring.host" value="com.paremus.brain.iot.message.integrity.insecure.impl"/>
+    </capability>
+    <capability namespace="osgi.service">
+      <attribute name="objectClass" value="eu.brain.iot.eventing.message.integrity.api.MessageIntegrityService" type="List&lt;String&gt;"/>
+    </capability>
+    <capability namespace="osgi.content">
+      <attribute name="size" value="10453" type="Long"/>
+      <attribute name="url" value="com.paremus.brain.iot.message.integrity.insecure.impl/com.paremus.brain.iot.message.integrity.insecure.impl-0.0.1.jar"/>
+      <attribute name="mime" value="application/vnd.osgi.bundle"/>
+      <attribute name="osgi.content" value="BD7F1DB89E437DD4540D24F75D7E5B971DC8F6555C30CCF65ABE3F9F65F49F96"/>
+    </capability>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=eu.brain.iot.eventing.message.integrity.api)(&amp;(version&gt;=0.0.0)(!(version&gt;=1.0.0))))"/>
+    </requirement>
+    <requirement namespace="osgi.extender">
+      <directive name="filter" value="(&amp;(osgi.extender=osgi.component)(version&gt;=1.4.0)(!(version&gt;=2.0.0)))"/>
+    </requirement>
+    <requirement namespace="osgi.ee">
+      <directive name="filter" value="(&amp;(osgi.ee=JavaSE)(version=1.8))"/>
     </requirement>
   </resource>
   <resource>

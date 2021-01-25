@@ -1,4 +1,0 @@
-ros.master.uri=http://10.8.0.106:11311
-robotIP=10.8.0.106
-robotId=1
-robotName=rb1_base_a

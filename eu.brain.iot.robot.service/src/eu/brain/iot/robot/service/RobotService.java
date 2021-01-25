@@ -48,7 +48,8 @@ import robot_local_control_msgs.PlacePetitionRequest;
 import robot_local_control_msgs.Pose2DStamped;
 import robot_local_control_msgs.Twist2D;
 import std_msgs.Header;
-
+/*import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;*/
 
 @Component(
 	/*	configurationPid= "eu.brain.iot.example.robot.Robot",
@@ -71,23 +72,13 @@ public class RobotService extends AbstractNodeMain implements SmartBehaviour<Rob
     private PlaceComponent placeComponent;
 	private Coordinate coordinate;
 	private String pickFrameId;
+
+/*	@SuppressWarnings("restriction")
+	@Reference
+	private BrainiotLogger logger;
 	
-/*	@ObjectClassDefinition
-	public  @interface Config {
-		
-		@AttributeDefinition(description = "The IP of the robot")
-		String robotIP();  // ros edge node will get this info from ros, and send to RB for querying the docking point 
-		
-		@AttributeDefinition(description = "The name of the robot")
-		String name();
-
-		@AttributeDefinition(description = "The identifier for the robot")
-		int id();
-
-	}*/
-	
-
-//	private Config config;
+	private Logger log;
+*/
 	private ExecutorService worker;
 	private ServiceRegistration<?> reg;
 	private boolean isWorkDone = false;
@@ -101,9 +92,12 @@ public class RobotService extends AbstractNodeMain implements SmartBehaviour<Rob
 	@Reference
 	private CartMapper cartMapper;
 
+//	private static final Logger log = LoggerFactory.getLogger(RobotService.class.getSimpleName());
 
     @Activate
 	void activate(BundleContext context, Map<String,Object> props){
+    	
+    //	log = logger.getLogger();
     	
 			this.robotName = ros.getRobotName();
 			this.robotID = ros.getRobotId();
@@ -113,6 +107,8 @@ public class RobotService extends AbstractNodeMain implements SmartBehaviour<Rob
 
     	String UUID = context.getProperty("org.osgi.framework.uuid");
 
+   // 	log.info("\nHello!  I am ROS Edge Node : "+robotID+ "  name = "+robotName+ "  IP = "+robotIP+ ",  UUID = "+UUID);
+    	
 	    System.out.println("\nHello!  I am ROS Edge Node : "+robotID+ "  name = "+robotName+ "  IP = "+robotIP+ ",  UUID = "+UUID);
 	    
 	    worker = Executors.newFixedThreadPool(10);
