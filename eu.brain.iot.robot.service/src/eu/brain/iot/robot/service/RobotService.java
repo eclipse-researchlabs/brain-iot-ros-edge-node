@@ -48,12 +48,10 @@ import robot_local_control_msgs.PlacePetitionRequest;
 import robot_local_control_msgs.Pose2DStamped;
 import robot_local_control_msgs.Twist2D;
 import std_msgs.Header;
-/*import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;*/
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Component(
-	/*	configurationPid= "eu.brain.iot.example.robot.Robot",
-		configurationPolicy=ConfigurationPolicy.REQUIRE,*/
 		immediate=true,
 		service = {SmartBehaviour.class, NodeMain.class})
 @SmartBehaviourDefinition(
@@ -73,12 +71,6 @@ public class RobotService extends AbstractNodeMain implements SmartBehaviour<Rob
 	private Coordinate coordinate;
 	private String pickFrameId;
 
-/*	@SuppressWarnings("restriction")
-	@Reference
-	private BrainiotLogger logger;
-	
-	private Logger log;
-*/
 	private ExecutorService worker;
 	private ServiceRegistration<?> reg;
 	private boolean isWorkDone = false;
@@ -92,24 +84,21 @@ public class RobotService extends AbstractNodeMain implements SmartBehaviour<Rob
 	@Reference
 	private CartMapper cartMapper;
 
-//	private static final Logger log = LoggerFactory.getLogger(RobotService.class.getSimpleName());
-
+	private static final Logger logger = (Logger) LoggerFactory.getLogger(RobotService.class.getSimpleName());
+	
     @Activate
 	void activate(BundleContext context, Map<String,Object> props){
-    	
-    //	log = logger.getLogger();
     	
 			this.robotName = ros.getRobotName();
 			this.robotID = ros.getRobotId();
 			this.robotIP = ros.getRobotIP();
 			
-//    	System.out.println("\n robot service props = "+props);
 
     	String UUID = context.getProperty("org.osgi.framework.uuid");
 
-   // 	log.info("\nHello!  I am ROS Edge Node : "+robotID+ "  name = "+robotName+ "  IP = "+robotIP+ ",  UUID = "+UUID);
+    	logger.info("\nHello!  I am ROS Edge Node : "+robotID+ "  name = "+robotName+ "  IP = "+robotIP+ ",  UUID = "+UUID);
     	
-	    System.out.println("\nHello!  I am ROS Edge Node : "+robotID+ "  name = "+robotName+ "  IP = "+robotIP+ ",  UUID = "+UUID);
+//	    System.out.println("\nHello!  I am ROS Edge Node : "+robotID+ "  name = "+robotName+ "  IP = "+robotIP+ ",  UUID = "+UUID);
 	    
 	    worker = Executors.newFixedThreadPool(10);
 
@@ -146,7 +135,7 @@ public class RobotService extends AbstractNodeMain implements SmartBehaviour<Rob
 	public void onStart(ConnectedNode connectedNode) {
 		
 		System.out.println("\n The ROS Edge Node is registering....for Robot "+robotID);
-		
+		try {
 		MessageFactory msgfactory =  connectedNode.getTopicMessageFactory();  
 
 		availibility =new AvailibilityComponent(connectedNode,robotName) {};
@@ -220,11 +209,10 @@ public class RobotService extends AbstractNodeMain implements SmartBehaviour<Rob
 		System.out.println("PlaceComponent service registed.");
 		
 		broadCastReady();
-		
-	/*	while(!isWorkDone) {  // TODO, check if only one cart is moved using one robot, how to keep running even exiting onStart()?
-			wait(10);
+
+		}catch(Exception e) {
+			logger.error("\n ROS Edge Node Exception:", e);
 		}
-	*/	
 	
 		
 	}

@@ -31,7 +31,7 @@ public abstract class PickComponent {
         this.robotName = robotName;
     }
 
-    public void register() {
+    public void register() throws Exception {
         pickRun = new GenericService<PickPetitionRequest, PickPetitionResponse>(node);
         pickRun.register((("/"+ robotName)+"/robot_local_control/NavigationComponent/PickComponent/add"), "robot_local_control_msgs/PickPetition");
         pickCancle = new GenericService<ProcedureQueryRequest, ProcedureQueryResponse>(node);

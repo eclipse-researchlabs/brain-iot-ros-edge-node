@@ -18,12 +18,12 @@ public class GenericService<T1, T2>  {
 		this.node=node;
 	}
 	
-	public void register(String topic,String type){
-		  try {
+	public void register(String topic,String type) throws Exception{
+	/*	  try {*/
 			serviceClient=node.newServiceClient(topic,type);
-		  } catch (ServiceNotFoundException e) {
+	/*	  } catch (ServiceNotFoundException e) {
 			throw new RosRuntimeException(e);
-		  }  	
+		  }  	*/
 		} 
 	
 	 public T2 call(T1 request){

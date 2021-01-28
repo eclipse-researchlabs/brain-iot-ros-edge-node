@@ -10,7 +10,10 @@
 	osgi.cmpn;version=7.0,\
 	org.ros.rosjava;version=0.2,\
 	json;version=20190722.0,\
-	org.ros.rosjava_bootstrap.message_generation;version=0.2
+	org.ros.rosjava_bootstrap.message_generation;version=0.2,\
+	ch.qos.logback.classic;version=1.1,\
+	ch.qos.logback.core;version=1.1,\
+	slf4j.api;version=1.7
 
 -includeresource: resources
 Bundle-Version: 0.0.4

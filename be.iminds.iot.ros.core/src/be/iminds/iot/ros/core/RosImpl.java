@@ -62,6 +62,9 @@ import org.ros.node.DefaultNodeMainExecutor;
 import org.ros.node.NodeConfiguration;
 import org.ros.node.NodeMain;
 import org.ros.node.NodeMainExecutor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import be.iminds.iot.ros.api.Ros;
 
 @Component(service = {Ros.class},
@@ -103,6 +106,7 @@ public class RosImpl extends AbstractNodeMain implements Ros {
 	// also register a node to get access to basic ros info
 	private ConnectedNode node;
 
+	private static final Logger logger = (Logger) LoggerFactory.getLogger(RosImpl.class.getSimpleName());
 	
 	@Activate
 	void activate(BundleContext context, Map<String, Object> properties) throws Exception {
@@ -137,24 +141,25 @@ public class RosImpl extends AbstractNodeMain implements Ros {
 			//	deactivate();
 			}
 			masterURI = new URI(uri);//uri
-			System.out.println("\n--> masterURI = "+masterURI);
+			logger.info("\n--> masterURI = "+masterURI);
 			
 			if(robotIP == null) {
 				String[] strs = uri.split(":");
 				robotIP = strs[1].substring(2);
-				System.out.println("--> robotIP = "+robotIP);
+				logger.info("--> robotIP = "+robotIP);
 			}
 
-			System.out.println("--> robotName = "+robotName);
-			System.out.println("--> robotId = "+robotId);
+			logger.info("--> robotName = "+robotName);
+			logger.info("--> robotId = "+robotId);
 			
 			distro = getVariable(context, "ROS_DISTRO", "ros.distro");
 			namespace = getVariable(context, "ROS_NAMESPACE", "ros.namespace");
 			root = getVariable(context, "ROS_ROOT", "ros.root");
 			packagePath = getVariable(context, "ROS_PACKAGE_PATH", "ros.package.path");
 		} catch(Exception e){
-			System.err.println("Error setting up the ROS environment: "+e.getMessage());
-			throw e;
+		//	System.err.println("Error setting up the ROS environment: "+e.getMessage());
+		//	throw e;
+			logger.error("\nError setting up the ROS environment: ", e);
 		} 
 		
 		// create threadpool for running additional rosjava nodes
@@ -169,20 +174,20 @@ public class RosImpl extends AbstractNodeMain implements Ros {
 		executor = DefaultNodeMainExecutor.newDefault(new DefaultScheduledExecutorService(pool));
 
 		// start ROS core if required
-		boolean start = !rosCoreActive();
-		System.out.println("\n connecting to roscore, start =" + start);
+		boolean start = rosCoreActive();
+		logger.info("\n roscore has been started = " + start);
 		
-		if(start){
-			System.out.println("\n start installed ROS system");
-			boolean startNative = false;   // -------keep always running native ros core
+		if(!start){
+			logger.info("\n start installed ROS system");
+			boolean startNative = true;   // -------keep always running native ros core
 			String rosCoreNative = getVariable(context, null,"ros.core.native");
 			
 			if(rosCoreNative != null){
 				startNative = Boolean.parseBoolean(rosCoreNative);				
 			}
-			
+			try {
 			if(startNative){
-				System.out.println("\n start Native roscore =  "+ startNative);
+				logger.info("\n start Native roscore =  "+ startNative);
 				// native ROScore process
 				ProcessBuilder builder = new ProcessBuilder("roscore", "-p "+masterURI.getPort());
 				builder.environment().put("ROS_MASTER_URI", masterURI.toString());
@@ -193,11 +198,15 @@ public class RosImpl extends AbstractNodeMain implements Ros {
 				nativeCore = builder.start();
 				
 			} else {
+				logger.info("\n rosjava ROScore implementation");
 				// rosjava ROScore implementation
 				core = RosCore.newPublic(masterURI.getHost(), masterURI.getPort());
 				core.start();
-				System.out.println("ROS core service [/rosout] started on "+core.getUri());
+				logger.info("ROS core service [/rosout] started on "+core.getUri());
 			}
+			} catch(Exception e){
+					logger.error("\nLaunch roscore Exception: ", e);
+			} 
 		}
 		
 		// block until ROS core is initialized
@@ -209,7 +218,7 @@ public class RosImpl extends AbstractNodeMain implements Ros {
 		// add this node
 		addNode(this);
 		
-		System.out.println("\n  add this node 2");
+		logger.info("ROS Edge Node is connected");
 	}
 	
 	@Deactivate
@@ -266,7 +275,6 @@ public class RosImpl extends AbstractNodeMain implements Ros {
 		synchronized(this){
 			notifyAll();
 		}
-		System.out.println("\n  onStart line 271 \n ");
 	}
 	
 	

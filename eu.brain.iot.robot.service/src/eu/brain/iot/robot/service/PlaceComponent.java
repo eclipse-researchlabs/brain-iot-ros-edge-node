@@ -31,7 +31,7 @@ public abstract class PlaceComponent {
         this.robotName = robotName;
     }
 
-    public void register() {
+    public void register() throws Exception {
         placeRun = new GenericService<PlacePetitionRequest, PlacePetitionResponse>(node);
         placeRun.register((("/"+ robotName)+"/robot_local_control/NavigationComponent/PlaceComponent/add"), "robot_local_control_msgs/PlacePetition");
         placeCancle = new GenericService<ProcedureQueryRequest, ProcedureQueryResponse>(node);

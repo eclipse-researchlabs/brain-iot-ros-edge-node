@@ -14,201 +14,183 @@
 		<bnd.version>5.1.2</bnd.version>
 	</properties>
 
-<repositories>
-<!-- <repository>
+	<repositories>
+
+	<!--  	<repository>
 			<id>spring</id>
 			<name>Spring Libs Repository</name>
 			<url>https://repo.spring.io/libs-release</url>
 		</repository>
--->		
+-->
 		<repository>
-            <id>jfrog</id>
-            <name>jfrog libs-releases</name>
-            <url>http://repo.jfrog.org/artifactory/libs-releases/</url>
-        </repository>
-    <repository>
-            <id>OSGi</id>
-            <name>OSGi public binaries</name>
-            <url>https://oss.sonatype.org/content/groups/osgi</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
- 
-        <repository>
-            <id>Apache Snapshots</id>
-            <url>https://repository.apache.org/content/groups/snapshots/</url>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
+			<id>jfrog</id>
+			<name>jfrog libs-releases</name>
+			<url>http://repo.jfrog.org/artifactory/libs-releases/</url>
+		</repository>
+		<repository>
+			<id>OSGi</id>
+			<name>OSGi public binaries</name>
+			<url>https://oss.sonatype.org/content/groups/osgi</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
 
-        <repository>
-            <id>brain-iot-releases</id>
-            <name>BRAIN-IoT Releases</name>
-            <url>https://nexus.repository-pert.ismb.it/repository/maven-releases/</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-        <repository>
-            <id>brain-iot-snapshots</id>
-            <name>BRAIN-IoT Snapshots</name>
-            <url>https://nexus.repository-pert.ismb.it/repository/maven-snapshots/</url>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
-    <pluginRepositories>
-        <pluginRepository>
-            <id>brain-iot-releases</id>
-            <name>BRAIN-IoT Releases</name>
-            <url>https://nexus.repository-pert.ismb.it/repository/maven-releases/</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </pluginRepository>
-        <pluginRepository>
-            <id>brain-iot-snapshots</id>
-            <name>BRAIN-IoT Snapshots</name>
-            <url>https://nexus.repository-pert.ismb.it/repository/maven-snapshots/</url>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </pluginRepository>
-    </pluginRepositories>
-    
+		<repository>
+			<id>Apache Snapshots</id>
+			<url>https://repository.apache.org/content/groups/snapshots/</url>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+
+		<repository>
+			<id>brain-iot-releases</id>
+			<name>BRAIN-IoT Releases</name>
+			<url>https://nexus.repository-pert.ismb.it/repository/maven-releases/</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>brain-iot-snapshots</id>
+			<name>BRAIN-IoT Snapshots</name>
+			<url>https://nexus.repository-pert.ismb.it/repository/maven-snapshots/</url>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
+	<pluginRepositories>
+		<pluginRepository>
+			<id>brain-iot-releases</id>
+			<name>BRAIN-IoT Releases</name>
+			<url>https://nexus.repository-pert.ismb.it/repository/maven-releases/</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</pluginRepository>
+		<pluginRepository>
+			<id>brain-iot-snapshots</id>
+			<name>BRAIN-IoT Snapshots</name>
+			<url>https://nexus.repository-pert.ismb.it/repository/maven-snapshots/</url>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</pluginRepository>
+	</pluginRepositories>
+
 	<dependencies>
-	
-	<!-- rosjava   -->
-	
-	
-	<dependency>
-      <groupId>org.apache.commons</groupId>
-      <artifactId>com.springsource.org.apache.commons.logging</artifactId>
-      <version>1.1.1</version>
-      <scope>runtime</scope>
-    </dependency>
- <!--    https://mvnrepository.com/artifact/commons-logging/commons-logging -->
-<dependency>
-    <groupId>commons-logging</groupId>
-    <artifactId>commons-logging</artifactId>
-    <version>1.1.1</version>
-    <scope>runtime</scope>
-</dependency>
-    
- <!--   <dependency>
-      <groupId>org.apache.commons</groupId>
-      <artifactId>com.springsource.org.apache.commons.net</artifactId>
-      <version>2.0.0</version>
-      <scope>runtime</scope>
-    </dependency>
-     https://mvnrepository.com/artifact/commons-net/commons-net -->
-<dependency>
-    <groupId>commons-net</groupId>
-    <artifactId>commons-net</artifactId>
-    <version>2.0</version>
-    <scope>runtime</scope>
-</dependency>
-    
-    
-    <!-- rosjava  xmlrpc client -->
-    
-   <dependency>
-      <groupId>org.apache.commons</groupId>
-      <artifactId>com.springsource.org.apache.commons.httpclient</artifactId>
-      <version>3.1.0</version>
-      <scope>runtime</scope>
-    </dependency>
- <!--     https://mvnrepository.com/artifact/commons-httpclient/commons-httpclient -->
-<dependency>
-    <groupId>commons-httpclient</groupId>
-    <artifactId>commons-httpclient</artifactId>
-    <version>3.1</version>
-    <scope>runtime</scope>
-</dependency>
-    
-    <!--  message generation-->
-    
-    <dependency>
-      <groupId>org.apache.commons</groupId>
-      <artifactId>com.springsource.org.apache.commons.codec</artifactId>
-      <version>1.3.0</version>
-      <scope>runtime</scope>
-    </dependency>
- <!--    https://mvnrepository.com/artifact/commons-codec/commons-codec -->
-<dependency>
-    <groupId>commons-codec</groupId>
-    <artifactId>commons-codec</artifactId>
-    <version>1.3</version>
-    <scope>runtime</scope>
-</dependency>
-    
- <!--    <dependency>
-      <groupId>org.apache.commons</groupId>
-      <artifactId>com.springsource.org.apache.commons.io</artifactId>
-      <version>1.4.0</version>
-      <scope>runtime</scope>
-    </dependency>
-    https://mvnrepository.com/artifact/commons-io/commons-io -->
-<dependency>
-    <groupId>commons-io</groupId>
-    <artifactId>commons-io</artifactId>
-    <version>1.4</version>
-    <scope>runtime</scope>
-</dependency>
-    
- <!--  <dependency>
-      <groupId>org.apache.commons</groupId>
-      <artifactId>com.springsource.org.apache.commons.lang</artifactId>
-      <version>2.4.0</version>
-      <scope>runtime</scope>
-    </dependency>
-     https://mvnrepository.com/artifact/commons-lang/commons-lang -->
-<dependency>
-    <groupId>commons-lang</groupId>
-    <artifactId>commons-lang</artifactId>
-    <version>2.6</version>
-    <scope>runtime</scope>
-</dependency>
-    
-  	<dependency>
+
+		<!-- rosjava -->
+
+
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>com.springsource.org.apache.commons.logging</artifactId>
+			<version>1.1.1</version>
+			<scope>runtime</scope>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/commons-logging/commons-logging -->
+		<dependency>
+			<groupId>commons-logging</groupId>
+			<artifactId>commons-logging</artifactId>
+			<version>1.1.1</version>
+			<scope>runtime</scope>
+		</dependency>
+
+		<!-- <dependency> <groupId>org.apache.commons</groupId> <artifactId>com.springsource.org.apache.commons.net</artifactId> 
+			<version>2.0.0</version> <scope>runtime</scope> </dependency> https://mvnrepository.com/artifact/commons-net/commons-net -->
+		<dependency>
+			<groupId>commons-net</groupId>
+			<artifactId>commons-net</artifactId>
+			<version>2.0</version>
+			<scope>runtime</scope>
+		</dependency>
+
+
+		<!-- rosjava xmlrpc client -->
+
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>com.springsource.org.apache.commons.httpclient</artifactId>
+			<version>3.1.0</version>
+			<scope>runtime</scope>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/commons-httpclient/commons-httpclient -->
+		<dependency>
+			<groupId>commons-httpclient</groupId>
+			<artifactId>commons-httpclient</artifactId>
+			<version>3.1</version>
+			<scope>runtime</scope>
+		</dependency>
+
+		<!-- message generation -->
+
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>com.springsource.org.apache.commons.codec</artifactId>
+			<version>1.3.0</version>
+			<scope>runtime</scope>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/commons-codec/commons-codec -->
+		<dependency>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+			<version>1.3</version>
+			<scope>runtime</scope>
+		</dependency>
+
+		<!-- <dependency> <groupId>org.apache.commons</groupId> <artifactId>com.springsource.org.apache.commons.io</artifactId> 
+			<version>1.4.0</version> <scope>runtime</scope> </dependency> https://mvnrepository.com/artifact/commons-io/commons-io -->
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>1.4</version>
+			<scope>runtime</scope>
+		</dependency>
+
+		<!-- <dependency> <groupId>org.apache.commons</groupId> <artifactId>com.springsource.org.apache.commons.lang</artifactId> 
+			<version>2.4.0</version> <scope>runtime</scope> </dependency> https://mvnrepository.com/artifact/commons-lang/commons-lang -->
+		<dependency>
+			<groupId>commons-lang</groupId>
+			<artifactId>commons-lang</artifactId>
+			<version>2.6</version>
+			<scope>runtime</scope>
+		</dependency>
+
+
+		<dependency>
 			<groupId>com.paremus.brain.iot</groupId>
-			<artifactId>message.integrity.insecure.impl</artifactId>
+			<artifactId>message.integrity.api</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
-  <groupId>com.paremus.brain.iot</groupId>
-  <artifactId>message.integrity.api</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
-</dependency>
-		<dependency>
 			<groupId>org.ros.rosjava_bootstrap</groupId>
-			<artifactId>message_generation</artifactId>
+			<artifactId>org.ros.rosjava_bootstrap.message_generation</artifactId>
 			<version>0.2.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.ros.rosjava_core</groupId>
-			<artifactId>rosjava</artifactId>
+			<artifactId>org.ros.rosjava_core.rosjava</artifactId>
 			<version>0.2.2</version>
 		</dependency>
 		<dependency>
@@ -234,14 +216,14 @@
 		<dependency>
 			<groupId>eu.brain.iot.service.robotic</groupId>
 			<artifactId>eu.brain.iot.robot.api</artifactId>
-			<version>0.0.2-SNAPSHOT</version>
+			<version>0.0.4-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>eu.brain.iot.service.robotic</groupId>
 			<artifactId>eu.brain.iot.robot.msgs</artifactId>
-			<version>0.0.2-SNAPSHOT</version>
+			<version>0.0.4-SNAPSHOT</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>com.paremus.brain.iot</groupId>
 			<artifactId>eventing.api</artifactId>
@@ -254,82 +236,49 @@
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
-            <groupId>com.paremus.brain.iot</groupId>
-            <artifactId>message.integrity.insecure.impl</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-            <scope>runtime</scope>
-        </dependency>
-        <dependency>
+			<groupId>com.paremus.brain.iot</groupId>
+			<artifactId>message.integrity.insecure.impl</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
 			<groupId>eu.brain.iot.service.robotic</groupId>
 			<artifactId>be.iminds.iot.ros.api</artifactId>
-			<version>0.0.2-SNAPSHOT</version>		
+			<version>0.0.4-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>eu.brain.iot.service.robotic</groupId>
 			<artifactId>eu.brain.iot.robot.config</artifactId>
-			<version>0.0.2-SNAPSHOT</version>
+			<version>0.0.4-SNAPSHOT</version>
 			<scope>runtime</scope>
 		</dependency>
-	
+
 		<dependency>
 			<groupId>eu.brain.iot.service.robotic</groupId>
 			<artifactId>be.iminds.iot.ros.core</artifactId>
-			<version>0.0.2-SNAPSHOT</version>
+			<version>0.0.4-SNAPSHOT</version>
 			<scope>runtime</scope>
 		</dependency>
-	<!--	<dependency>
-			<groupId>eu.brain.iot.service.robotic</groupId>
-  			<artifactId>eu.brain.iot.robot.behavior</artifactId>
-  			<version>0.0.2-SNAPSHOT</version>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>eu.brain.iot.service.robotic</groupId>
-  			<artifactId>eu.brain.iot.robot.tables.queryer</artifactId>
-  			<version>0.0.2-SNAPSHOT</version>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-    <groupId>com.h2database</groupId>
-    <artifactId>h2</artifactId>
-    <version>1.4.200</version>
-</dependency> -->
-	
-	
-	<!-- this block is for test.bndrun for all 3 components 
-	
-		<dependency>
-			<groupId>eu.brain.iot.service.robotic</groupId>
-			<artifactId>eu.brain.iot.robot.tables.queryer</artifactId>
-			<version>0.0.2-SNAPSHOT</version>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>eu.brain.iot.service.robotic</groupId>
-			<artifactId>eu.brain.iot.robot.behavior</artifactId>
-			<version>0.0.2-SNAPSHOT</version>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>eu.brain.iot.service.robotic</groupId>
-			<artifactId>door.impl</artifactId>
-			<version>0.0.2-SNAPSHOT</version>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-    <groupId>com.h2database</groupId>
-    <artifactId>h2</artifactId>
-    <version>1.4.200</version>
-</dependency>
-<dependency>
-			<groupId>org.apache.felix</groupId>
-			<artifactId>org.apache.felix.gogo.runtime</artifactId>
-			<version>1.1.4</version>
-		</dependency>
-		
--->			
-		
-		
+		<!-- <dependency> <groupId>eu.brain.iot.service.robotic</groupId> <artifactId>eu.brain.iot.robot.behavior</artifactId> 
+			<version>0.0.2-SNAPSHOT</version> <scope>runtime</scope> </dependency> <dependency> 
+			<groupId>eu.brain.iot.service.robotic</groupId> <artifactId>eu.brain.iot.robot.tables.queryer</artifactId> 
+			<version>0.0.2-SNAPSHOT</version> <scope>runtime</scope> </dependency> <dependency> 
+			<groupId>com.h2database</groupId> <artifactId>h2</artifactId> <version>1.4.200</version> 
+			</dependency> -->
+
+
+		<!-- this block is for test.bndrun for all 3 components <dependency> <groupId>eu.brain.iot.service.robotic</groupId> 
+			<artifactId>eu.brain.iot.robot.tables.queryer</artifactId> <version>0.0.2-SNAPSHOT</version> 
+			<scope>runtime</scope> </dependency> <dependency> <groupId>eu.brain.iot.service.robotic</groupId> 
+			<artifactId>eu.brain.iot.robot.behavior</artifactId> <version>0.0.2-SNAPSHOT</version> 
+			<scope>runtime</scope> </dependency> <dependency> <groupId>eu.brain.iot.service.robotic</groupId> 
+			<artifactId>door.impl</artifactId> <version>0.0.2-SNAPSHOT</version> <scope>runtime</scope> 
+			</dependency> <dependency> <groupId>com.h2database</groupId> <artifactId>h2</artifactId> 
+			<version>1.4.200</version> </dependency> <dependency> <groupId>org.apache.felix</groupId> 
+			<artifactId>org.apache.felix.gogo.runtime</artifactId> <version>1.1.4</version> 
+			</dependency> -->
+
+
 		<dependency>
 			<groupId>org.osgi</groupId>
 			<artifactId>org.osgi.service.configurator</artifactId>
@@ -342,91 +291,82 @@
 			<version>1.0.2</version>
 			<scope>runtime</scope>
 		</dependency>
-	<!--	 https://mvnrepository.com/artifact/org.apache.felix/org.apache.felix.converter -->
+		<!-- https://mvnrepository.com/artifact/org.apache.felix/org.apache.felix.converter -->
 		<dependency>
 			<groupId>org.apache.felix</groupId>
 			<artifactId>org.apache.felix.converter</artifactId>
 			<version>1.0.12</version>
 		</dependency>
-<!-- https://mvnrepository.com/artifact/org.apache.felix/org.apache.felix.gogo.command 
-<dependency>
-    <groupId>org.apache.felix</groupId>
-    <artifactId>org.apache.felix.gogo.command</artifactId>
-    <version>1.1.2</version>
-</dependency>-->
-<!-- https://mvnrepository.com/artifact/org.apache.felix/org.apache.felix.gogo.shell 
-<dependency>
-    <groupId>org.apache.felix</groupId>
-    <artifactId>org.apache.felix.gogo.shell</artifactId>
-    <version>1.1.4</version>
-</dependency>-->
-<!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
-<dependency>
-    <groupId>com.google.guava</groupId>
-    <artifactId>guava</artifactId>
-    <version>12.0</version>
-</dependency>
-<!-- https://mvnrepository.com/artifact/com.google.guava/guava 
-<dependency>
-    <groupId>com.google.guava</groupId>
-    <artifactId>guava</artifactId>
-    <version>19.0</version>
-</dependency>-->
-<dependency>
+		<!-- https://mvnrepository.com/artifact/org.apache.felix/org.apache.felix.gogo.command 
+			<dependency> <groupId>org.apache.felix</groupId> <artifactId>org.apache.felix.gogo.command</artifactId> 
+			<version>1.1.2</version> </dependency> -->
+		<!-- https://mvnrepository.com/artifact/org.apache.felix/org.apache.felix.gogo.shell 
+			<dependency> <groupId>org.apache.felix</groupId> <artifactId>org.apache.felix.gogo.shell</artifactId> 
+			<version>1.1.4</version> </dependency> -->
+		<!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>12.0</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.google.guava/guava <dependency> 
+			<groupId>com.google.guava</groupId> <artifactId>guava</artifactId> <version>19.0</version> 
+			</dependency> -->
+		<dependency>
 			<groupId>org.ros.rosjava_core</groupId>
-			<artifactId>apache_xmlrpc_common</artifactId>
+			<artifactId>org.ros.rosjava_core.apache_xmlrpc_common</artifactId>
 			<version>0.2.2</version>
 		</dependency>
 		<dependency>
 			<groupId>org.ros.rosjava_core</groupId>
-			<artifactId>apache_xmlrpc_server</artifactId>
+			<artifactId>org.ros.rosjava_core.apache_xmlrpc_server</artifactId>
 			<version>0.2.2</version>
 		</dependency>
 		<dependency>
 			<groupId>org.ros.rosjava_core</groupId>
-			<artifactId>apache_xmlrpc_client</artifactId>
+			<artifactId>org.ros.rosjava_core.apache_xmlrpc_client</artifactId>
 			<version>0.2.2</version>
 		</dependency>
-<!-- https://mvnrepository.com/artifact/dnsjava/dnsjava -->
-<dependency>
-    <groupId>org.xbill</groupId>
-							<artifactId>org.xbill.dns.bundle</artifactId>
-							<version>2.0.8</version>
-</dependency>
+		<!-- https://mvnrepository.com/artifact/dnsjava/dnsjava -->
+		<dependency>
+			<groupId>org.xbill</groupId>
+			<artifactId>org.xbill.dns.bundle</artifactId>
+			<version>2.0.8</version>
+		</dependency>
 
-<!-- https://mvnrepository.com/artifact/org.apache.ws.commons/ws-commons-util -->
-<dependency>
-    <groupId>org.apache.ws.commons</groupId>
-    <artifactId>ws-commons-util</artifactId>
-    <version>1.0.1</version>
-</dependency>
-<!-- https://mvnrepository.com/artifact/commons-pool/commons-pool -->
-<dependency>
-    <groupId>commons-pool</groupId>
-    <artifactId>commons-pool</artifactId>
-    <version>1.6</version>
-</dependency>
-<!-- https://mvnrepository.com/artifact/org.json/json -->
-<dependency>
-    <groupId>org.json</groupId>
-    <artifactId>json</artifactId>
-    <version>20190722</version>
-</dependency>		
-			
-<!-- https://mvnrepository.com/artifact/org.apache.felix/org.apache.felix.eventadmin -->
-<dependency>
-    <groupId>org.apache.felix</groupId>
-    <artifactId>org.apache.felix.eventadmin</artifactId>
-    <version>1.4.8</version>
-</dependency>
-<!-- https://mvnrepository.com/artifact/org.apache.felix/org.apache.felix.configadmin -->
-<dependency>
-    <groupId>org.apache.felix</groupId>
-    <artifactId>org.apache.felix.configadmin</artifactId>
-    <version>1.9.8</version>
-</dependency>
+		<!-- https://mvnrepository.com/artifact/org.apache.ws.commons/ws-commons-util -->
+		<dependency>
+			<groupId>org.apache.ws.commons</groupId>
+			<artifactId>ws-commons-util</artifactId>
+			<version>1.0.1</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/commons-pool/commons-pool -->
+		<dependency>
+			<groupId>commons-pool</groupId>
+			<artifactId>commons-pool</artifactId>
+			<version>1.6</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.json/json -->
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20190722</version>
+		</dependency>
 
-			
+		<!-- https://mvnrepository.com/artifact/org.apache.felix/org.apache.felix.eventadmin -->
+		<dependency>
+			<groupId>org.apache.felix</groupId>
+			<artifactId>org.apache.felix.eventadmin</artifactId>
+			<version>1.4.8</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.apache.felix/org.apache.felix.configadmin -->
+		<dependency>
+			<groupId>org.apache.felix</groupId>
+			<artifactId>org.apache.felix.configadmin</artifactId>
+			<version>1.9.8</version>
+		</dependency>
+
+
 	</dependencies>
 
 	<build>
@@ -444,7 +384,7 @@
 						</goals>
 						<configuration>
 							<groupId>org.ros.rosjava_core</groupId>
-							<artifactId>rosjava</artifactId>
+							<artifactId>org.ros.rosjava_core.rosjava</artifactId>
 							<version>0.2.2</version>
 							<packaging>jar</packaging>
 							<file>${basedir}/libs/org.ros.rosjava_core.rosjava-0.2.2.jar</file>
@@ -458,7 +398,7 @@
 						</goals>
 						<configuration>
 							<groupId>org.ros.rosjava_bootstrap</groupId>
-							<artifactId>message_generation</artifactId>
+							<artifactId>org.ros.rosjava_bootstrap.message_generation</artifactId>
 							<version>0.2.1</version>
 							<packaging>jar</packaging>
 							<file>${basedir}/libs/org.ros.rosjava_bootstrap.message_generation-0.2.1.jar</file>
@@ -478,8 +418,66 @@
 							<file>${basedir}/libs/org.xbill.dns.bundle-2.0.8.jar</file>
 						</configuration>
 					</execution>
+					<execution>
+						<id>execution4</id>
+						<phase>initialize</phase>
+						<goals>
+							<goal>install-file</goal>
+						</goals>
+						<configuration>
+							<groupId>org.ros.rosjava_core</groupId>
+							<artifactId>org.ros.rosjava_core.apache_xmlrpc_client</artifactId>
+							<version>0.2.2</version>
+							<packaging>jar</packaging>
+							<file>${basedir}/libs/org.ros.rosjava_core.apache_xmlrpc_client-0.2.2.jar</file>
+						</configuration>
+					</execution>
+					<execution>
+						<id>execution5</id>
+						<phase>initialize</phase>
+						<goals>
+							<goal>install-file</goal>
+						</goals>
+						<configuration>
+							<groupId>org.ros.rosjava_core</groupId>
+							<artifactId>org.ros.rosjava_core.apache_xmlrpc_common</artifactId>
+							<version>0.2.2</version>
+							<packaging>jar</packaging>
+							<file>${basedir}/libs/org.ros.rosjava_core.apache_xmlrpc_common-0.2.2.jar</file>
+						</configuration>
+					</execution>
+					<execution>
+						<id>execution6</id>
+						<phase>initialize</phase>
+						<goals>
+							<goal>install-file</goal>
+						</goals>
+						<configuration>
+							<groupId>org.ros.rosjava_core</groupId>
+							<artifactId>org.ros.rosjava_core.apache_xmlrpc_server</artifactId>
+							<version>0.2.2</version>
+							<packaging>jar</packaging>
+							<file>${basedir}/libs/org.ros.rosjava_core.apache_xmlrpc_server-0.2.2.jar</file>
+						</configuration>
+					</execution>
+					<execution>
+						<id>execution7</id>
+						<phase>initialize</phase>
+						<goals>
+							<goal>install-file</goal>
+						</goals>
+						<configuration>
+							<groupId>org.apache.ws.commons</groupId>
+							<artifactId>ws-commons-util</artifactId>
+							<version>1.0.1</version>
+							<packaging>jar</packaging>
+							<file>${basedir}/libs/ws-commons-util-1.0.1.jar</file>
+						</configuration>
+					</execution>
+
 				</executions>
 			</plugin>
+
 			<plugin>
 				<groupId>biz.aQute.bnd</groupId>
 				<artifactId>bnd-maven-plugin</artifactId>
@@ -489,7 +487,7 @@
 						Bundle-SymbolicName: ${project.artifactId}
 						-contract: *
 					]]></bnd>
-				
+
 				</configuration>
 				<executions>
 					<execution>
@@ -512,8 +510,8 @@
 					<skipIfEmpty>true</skipIfEmpty>
 				</configuration>
 			</plugin>
-				
-			<!-- Validate that the smart behaviour can resolve  -->
+
+			<!-- Validate that the smart behaviour can resolve -->
 			<plugin>
 				<groupId>biz.aQute.bnd</groupId>
 				<artifactId>bnd-resolver-maven-plugin</artifactId>
@@ -523,12 +521,12 @@
 						<goals>
 							<goal>resolve</goal>
 						</goals>
-                        <phase>package</phase>
-                        <configuration>
-                            <bndruns>
-                                <bndrun>sb.bndrun</bndrun>
-                            </bndruns>
-                        </configuration>
+						<phase>package</phase>
+						<configuration>
+							<bndruns>
+								<bndrun>launch.bndrun</bndrun>
+							</bndruns>
+						</configuration>
 					</execution>
 				</executions>
 			</plugin>
@@ -539,7 +537,7 @@
 				<version>${bnd.version}</version>
 				<configuration>
 					<bndruns>
-						<bndrun>sb.bndrun</bndrun>
+						<bndrun>launch.bndrun</bndrun>
 					</bndruns>
 					<resolve>true</resolve>
 					<failOnChanges>true</failOnChanges>
@@ -552,26 +550,62 @@
 					</execution>
 				</executions>
 			</plugin>
-			
-			<!-- Expected to inherit configuration from a parent enRoute 
-                pom. This includes -contract definitions and maven-jar-plugin setup -->
-          
-           <plugin>
-                <groupId>com.paremus.brain.iot.maven</groupId>
-                <artifactId>smart-behaviour-maven-plugin</artifactId>
-                <version>0.0.1-SNAPSHOT</version>
-                <executions>
+
+			<!-- Expected to inherit configuration from a parent enRoute pom. This 
+				includes -contract definitions and maven-jar-plugin setup 
+
+			<plugin>
+				<groupId>com.paremus.brain.iot.maven</groupId>
+				<artifactId>smart-behaviour-maven-plugin</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+				<executions>
 					<execution>
 						<goals>
 							<goal>smart-behaviour</goal>
 						</goals>
 						<configuration>
-                            <bndrun>sb.bndrun</bndrun>
-                        </configuration>
+							<bndrun>launch.bndrun</bndrun>
+						</configuration>
 					</execution>
 				</executions>
-            </plugin>
+			</plugin>-->
 			
+			<!-- Setup the indexer for running and testing 
+				<plugin>
+					<groupId>biz.aQute.bnd</groupId>
+					<artifactId>bnd-indexer-maven-plugin</artifactId>
+					<version>${bnd.version}</version>
+					<configuration>
+						<localURLs>REQUIRED</localURLs>
+						<attach>false</attach>
+						<includeJar>true</includeJar>
+					</configuration>
+					<executions>
+						<execution>
+							<id>index</id>
+							<goals>
+								<goal>index</goal>
+							</goals>
+							<configuration>
+								<indexName>${project.artifactId}</indexName>
+							</configuration>
+						</execution>
+						<execution>
+							<id>test-index</id>
+							<goals>
+								<goal>index</goal>
+							</goals>
+							<configuration>
+								<indexName>${project.artifactId}</indexName>
+								<outputFile>${project.build.directory}/test-index.xml</outputFile>
+								<scopes>
+									<scope>test</scope>
+								</scopes>
+							</configuration>
+						</execution>
+					</executions>
+				</plugin> -->
+
 		</plugins>
 
 
@@ -603,7 +637,7 @@
 									<pluginExecutionFilter>
 										<groupId>biz.aQute.bnd</groupId>
 										<artifactId>bnd-maven-plugin</artifactId>
-										<versionRange>[4.2.0,)</versionRange>
+										<versionRange>[5.1.2,)</versionRange>
 										<goals>
 											<goal>bnd-process</goal>
 										</goals>
