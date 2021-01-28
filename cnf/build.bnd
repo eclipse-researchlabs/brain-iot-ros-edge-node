@@ -55,6 +55,6 @@ mockito-deps: org.objenesis; version=2.6.0,\
 						version =	0.0.2-SNAPSHOT
 
  
--connection-settings: maven
+-connection-settings: ~/.m2/settings.xml
  
 

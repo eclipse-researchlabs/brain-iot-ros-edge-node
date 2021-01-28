@@ -7,7 +7,7 @@
 	osgi.annotation;version=7.0
 
 
-Bundle-Version: 0.0.2
+Bundle-Version: 0.0.4
 Export-Package: \
 	eu.brain.iot.robot.api,\
 	eu.brain.iot.robot.events,\

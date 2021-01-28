@@ -9,7 +9,7 @@
 	eu.brain.iot.service.robotic.door.api;version=0.0
 
 
-Bundle-Version: 0.0.2
+Bundle-Version: 0.0.4
 Private-Package: eu.brain.iot.robot.behavior
 
 				

@@ -13,7 +13,7 @@
 	org.ros.rosjava_bootstrap.message_generation;version=0.2
 
 -includeresource: resources
-Bundle-Version: 0.0.2
+Bundle-Version: 0.0.4
 Private-Package: eu.brain.iot.robot.service
 
 				

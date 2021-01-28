@@ -8,7 +8,7 @@
 	eu.brain.iot.robot.api;version=latest
 
 
-Bundle-Version: 0.0.2
+Bundle-Version: 0.0.4
 Private-Package: eu.brain.iot.robot.tables.queryer
 
 				

@@ -11,7 +11,7 @@
 	com.paremus.brain.iot.eventing.impl,\
 	org.osgi.service.configurator
 
-Bundle-Version: 0.0.2
+Bundle-Version: 0.0.4
 #-includeresource: resources
 Private-Package: eu.brain.iot.robot.tables.creator
 
