@@ -47,7 +47,7 @@ mockito-deps: org.objenesis; version=2.6.0,\
        		    index               =   ${.}/m2local.maven; \
 				name				=	m2Local
 
--buildrepo: BrainIot
+-buildrepo: m2Local
 # m2Local
 
  
