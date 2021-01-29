@@ -382,6 +382,12 @@
     <version>1.7.7</version>
 </dependency>
 
+<!-- https://mvnrepository.com/artifact/io.netty/netty -->
+<dependency>
+    <groupId>io.netty</groupId>
+    <artifactId>netty</artifactId>
+    <version>3.5.2.Final</version>
+</dependency>
 
 	</dependencies>
 
