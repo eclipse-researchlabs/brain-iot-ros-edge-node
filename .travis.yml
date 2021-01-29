@@ -2,8 +2,8 @@
 language: java
 
 # travis use default openjdk8, it doesn't support oraclejdk8, but the oraclejdk11 
-#jdk:
-#  - openjdk8
+jdk:
+  - openjdk8
 
 #script: ./gradlew --continue
 
