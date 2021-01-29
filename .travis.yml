@@ -28,7 +28,7 @@ install:
 
 script:
     - ./gradlew clean build install
-    - ls .m2/repository
+    - ls ~/.m2/repository
 
 
 after_success:
