@@ -2,11 +2,11 @@
 set -ev
 cd eu.brain.iot.ros.edge.node
 
-export MAVEN_CLI_OPTS='-s ./.m2/settings.xml -B'
-echo $MAVEN_CLI_OPTS
+#export MAVEN_CLI_OPTS='-s ./.m2/settings.xml -B'
+#echo $MAVEN_CLI_OPTS
 
 
-#cp .m2/settings.xml ~/.m2
+cp .m2/settings.xml ~/.m2
 
 mvn $MAVEN_CLI_OPTS initialize
 mvn $MAVEN_CLI_OPTS verify

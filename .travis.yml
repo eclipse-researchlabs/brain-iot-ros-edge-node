@@ -33,7 +33,7 @@ after_success:
 
 deploy:
   provider: script
-  script: ./gradlew uploadArchives && ./build.sh
+  script: ./gradlew clean build uploadArchives && ./build.sh
   skip_cleanup: true
   on:
     branch: smartbehavior
