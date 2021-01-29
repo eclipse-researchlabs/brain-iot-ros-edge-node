@@ -28,12 +28,12 @@ script:
     - ./gradlew clean build install
 
 
-#after_success:
-#    - ./gradlew resolve export
+after_success:
+    - ./gradlew resolve
 
 deploy:
   provider: script
-  script: ./build.sh
+  script: ./gradlew uploadArchives && ./build.sh
   skip_cleanup: true
   on:
     branch: smartbehavior
