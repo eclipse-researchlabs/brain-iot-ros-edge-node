@@ -26,21 +26,22 @@ install:
     - export M2_HOME=$PWD/apache-maven-3.6.3
     - export PATH=$M2_HOME/bin:$PATH
 
-script: ./gradlew clean build 
-#    - ./gradlew resolve export
+script:
+    - ./gradlew clean build install
+    - ls .m2/repository
 
 
 after_success:
-    - ./gradlew resolve export
+    - ./gradlew clean build resolve export
 
 deploy:
   provider: script
-  script: ./gradlew build uploadArchives && ./build.sh
+  script: ./build.sh
   skip_cleanup: true
   on:
     branch: smartbehavior
 
-
+#  script: ./gradlew build uploadArchives && ./build.sh
 
 #end
 

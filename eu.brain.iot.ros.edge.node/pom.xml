@@ -540,7 +540,7 @@
 						<phase>package</phase>
 						<configuration>
 							<bndruns>
-								<bndrun>launch.bndrun</bndrun>
+								<bndrun>sb.bndrun</bndrun>
 							</bndruns>
 						</configuration>
 					</execution>
@@ -553,7 +553,7 @@
 				<version>${bnd.version}</version>
 				<configuration>
 					<bndruns>
-						<bndrun>launch.bndrun</bndrun>
+						<bndrun>sb.bndrun</bndrun>
 					</bndruns>
 					<resolve>true</resolve>
 					<failOnChanges>true</failOnChanges>
@@ -568,7 +568,7 @@
 			</plugin>
 
 			<!-- Expected to inherit configuration from a parent enRoute pom. This 
-				includes -contract definitions and maven-jar-plugin setup 
+				includes -contract definitions and maven-jar-plugin setup -->
 
 			<plugin>
 				<groupId>com.paremus.brain.iot.maven</groupId>
@@ -580,11 +580,11 @@
 							<goal>smart-behaviour</goal>
 						</goals>
 						<configuration>
-							<bndrun>launch.bndrun</bndrun>
+							<bndrun>sb.bndrun</bndrun>
 						</configuration>
 					</execution>
 				</executions>
-			</plugin>-->
+			</plugin>
 			
 			<!-- Setup the indexer for running and testing 
 				<plugin>
