@@ -28,11 +28,10 @@ install:
 
 script:
     - ./gradlew clean build install
-    - pwd && ls ~/.m2/repository
 
 
 after_success:
-    - ./gradlew clean build resolve export
+    - ./gradlew resolve export
 
 deploy:
   provider: script

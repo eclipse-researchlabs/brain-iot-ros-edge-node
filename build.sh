@@ -2,22 +2,12 @@
 set -ev
 cd eu.brain.iot.ros.edge.node
 
-echo $MAVEN_CLI_OPTS
-echo $MAVEN_DEPLOY_OPTS
-
 export MAVEN_CLI_OPTS='-s ./.m2/settings.xml -B'
 echo $MAVEN_CLI_OPTS
 
-export MAVEN_DEPLOY_OPTS='-DaltReleaseDeploymentRepository=brain-iot-releases::default::https://nexus.repository-pert.ismb.it/repository/maven-releases -DaltSnapshotDeploymentRepository=brain-iot-snapshots::default::https://nexus.repository-pert.ismb.it/repository/maven-snapshots'
-echo $MAVEN_DEPLOY_OPTS
+cat ~/.m2/settings.xml
 
-pwd
-echo $HOME
-
-ls .m2
-ls ~/.m2
-#cd eu.brain.iot.ros.edge.node
-cp .m2/settings.xml ~/.m2
+#cp .m2/settings.xml ~/.m2
 
 mvn initialize
 mvn $MAVEN_CLI_OPTS verify
