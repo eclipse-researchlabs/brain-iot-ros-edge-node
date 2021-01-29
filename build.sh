@@ -13,10 +13,11 @@ echo $MAVEN_DEPLOY_OPTS
 
 pwd
 echo $HOME
-ls
-ls .m2/repository
-ls ~/.m2/repository
+
+ls .m2
+ls ~/.m2
 #cd eu.brain.iot.ros.edge.node
+cp .m2/settings.xml ~/.m2
 
 mvn initialize
 mvn $MAVEN_CLI_OPTS verify
