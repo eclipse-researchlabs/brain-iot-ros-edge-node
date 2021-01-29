@@ -5,11 +5,11 @@
     <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">   
       <fileNamePattern>tests.%i.log.zip</fileNamePattern>   
       <minIndex>1</minIndex>   
-      <maxIndex>3</maxIndex>   
+      <maxIndex>2</maxIndex>   
     </rollingPolicy>   
    
     <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">   
-      <maxFileSize>1MB</maxFileSize>   
+      <maxFileSize>50kB</maxFileSize>   
     </triggeringPolicy>   
     <encoder>   
       <pattern>%d{HH:mm} %-5level %logger{36} - %msg%n</pattern>
@@ -25,7 +25,7 @@
   
   <logger name="org.ros.internal.node.client.Registrar" level="DEBUG" /> 
            
-  <root level="DEBUG">   
+  <root level="TRACE">   
     <appender-ref ref="FILE" />   
   </root>   
 </configuration>

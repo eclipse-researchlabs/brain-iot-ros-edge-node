@@ -11,8 +11,8 @@
 	org.eclipse.jetty.util.log.class=org.eclipse.jetty.util.log.StdErrLog,\
 	org.eclipse.jetty.LEVEL=WARN,\
 	org.apache.felix.log.storeDebug=false,\
-	org.osgi.service.http.port=8081,\
-	logback.configurationFile=resources/logback.xml
+	org.osgi.service.http.port=8081
+
 
  
  

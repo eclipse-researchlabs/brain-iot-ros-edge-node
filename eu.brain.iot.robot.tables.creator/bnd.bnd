@@ -9,11 +9,13 @@
 	org.apache.commons.lang;version=2.6,\
 	com.paremus.brain.iot.eventing.api,\
 	com.paremus.brain.iot.eventing.impl,\
-	org.osgi.service.configurator
+	org.osgi.service.configurator,\
+	ch.qos.logback.classic;version=1.1,\
+	ch.qos.logback.core;version=1.1,\
+	slf4j.api;version=1.7
 
 Bundle-Version: 0.0.4
 #-includeresource: resources
 Private-Package: eu.brain.iot.robot.tables.creator
 
-#org.apache.commons.io,\
 -privatepackage: eu.brain.iot.robot.tables.jsonReader

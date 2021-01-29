@@ -5,6 +5,9 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -17,15 +20,17 @@ import java.io.InputStreamReader;
 public class CartMapper {
 
 	private HashMap<Integer,String> Cart=new HashMap<Integer,String>();
+	
+	private static final Logger logger = (Logger) LoggerFactory.getLogger(RobotService.class.getSimpleName());
 
 	@Activate
 	public CartMapper() throws IOException
 	{
 		loadCart();
 
-        System.out.println("--------------------Internal CartMapper---------------------------");
-        System.out.println(Cart);
-        System.out.println("-----------------------------------------------");
+		logger.info("--------------------Internal CartMapper---------------------------");
+		logger.info(Cart.toString());
+		logger.info("-----------------------------------------------");
 	}
 	
 	public void loadCart() {
@@ -54,7 +59,7 @@ public class CartMapper {
 			}
 			br.close();
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.error("\n Exception:", e);
 		}
 		return configContentStr;
 	}

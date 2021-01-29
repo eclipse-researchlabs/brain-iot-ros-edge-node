@@ -24,7 +24,6 @@ import org.slf4j.LoggerFactory;
 @Component(immediate = true, service = { RoscoreConfiguartor.class })
 public class RoscoreConfiguartor {
 
-	// private BundleContext context;
 	private ConfigurationAdmin ca;
 	private Configuration roscoreConfig;
 
@@ -32,11 +31,19 @@ public class RoscoreConfiguartor {
 
 	private Map<String, String> map = new HashMap<>();
 	
-
-	private static final Logger logger = (Logger) LoggerFactory.getLogger(RoscoreConfiguartor.class.getSimpleName());
+	// set up external logback.xml path in program
+//	static { System.setProperty("logback.configurationFile", "/home/rui/resources/logback.xml");}
+//	private static final Logger logger = (Logger) LoggerFactory.getLogger(RoscoreConfiguartor.class.getSimpleName());
+	
+	private  Logger logger;
 
 	@Activate
 	void activate(BundleContext context, Map<String, Object> config) throws Exception {
+		
+		String home =  System.getenv("HOME");
+		System.setProperty("logback.configurationFile", home+"/resources/logback.xml");
+		
+		logger = (Logger) LoggerFactory.getLogger(RoscoreConfiguartor.class.getSimpleName());
 	
 		logger.info("{} activating....... ", "RoscoreConfiguartor");
 

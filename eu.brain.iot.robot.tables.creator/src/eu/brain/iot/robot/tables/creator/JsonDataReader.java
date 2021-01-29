@@ -13,6 +13,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 public class JsonDataReader {
 	
@@ -22,6 +25,8 @@ public class JsonDataReader {
 	protected DockTable dockTable;
 	private String jsonFilePath;
 	
+	private static final Logger logger = (Logger) LoggerFactory.getLogger(JsonDataReader.class.getSimpleName());
+	
 	public JsonDataReader(){}
 
 
@@ -30,12 +35,12 @@ public class JsonDataReader {
 		this.jsonFilePath = jsonFilePath;
 		loadTables();
 
-        System.out.println("--------------------Warehouse Tables---------------------------");
+		logger.info("--------------------Warehouse Tables---------------------------");
         System.out.println(pickingTable);
         System.out.println(storageTable);
         System.out.println(cartTable);
         System.out.println(dockTable);
-        System.out.println("-----------------------------------------------");
+        logger.info("-----------------------------------------------");
 	}
 	
 	private void loadTables() {
@@ -52,7 +57,7 @@ public class JsonDataReader {
 			proc.destroy();
 			proc = null;
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.error("\n Exception:", e);
 		}
 
 		try {
@@ -70,7 +75,7 @@ public class JsonDataReader {
 			dockTable = gson.fromJson(reader, DockTable.class);
 			
 		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+			logger.error("\n Exception:", e);
 		}
 		
 	}

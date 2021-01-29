@@ -32,7 +32,7 @@ public abstract class GoToComponent {
         this.robotName = robotName;
     }
 
-    public void register() {
+    public void register() throws Exception {
         gotoRun = new GenericService<GoToPetitionRequest, GoToPetitionResponse>(node);
         gotoRun.register((("/"+ robotName)+"/robot_local_control/NavigationComponent/GoToComponent/add"), "robot_local_control_msgs/GoToPetition");
         gotoCancle = new GenericService<ProcedureQueryRequest, ProcedureQueryResponse>(node);

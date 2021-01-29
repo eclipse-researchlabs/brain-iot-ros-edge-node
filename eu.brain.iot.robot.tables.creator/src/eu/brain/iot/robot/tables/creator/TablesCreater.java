@@ -15,6 +15,8 @@ import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.ConfigurationPolicy;
 import org.osgi.service.metatype.annotations.AttributeDefinition;
 import org.osgi.service.metatype.annotations.ObjectClassDefinition;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import eu.brain.iot.eventing.annotation.SmartBehaviourDefinition;
 import eu.brain.iot.eventing.api.BrainIoTEvent;
 import eu.brain.iot.eventing.api.SmartBehaviour;
@@ -70,10 +72,25 @@ public class TablesCreater implements SmartBehaviour<BrainIoTEvent> {
 
 			private Config config;
 			private ServiceRegistration<?> reg;
+			
+			
+//		private static final Logger logger = (Logger) LoggerFactory.getLogger(TablesCreater.class.getSimpleName());
+		private  Logger logger;
 		  
 		@Activate
-		public void init(BundleContext context, Config config, Map<String, Object> props) throws SQLException {
+		public void init(BundleContext context, Config config, Map<String, Object> props)  {
 			this.jsonFilePath = config.jsonFilePath();
+			
+			String home  = System.getenv("HOME");
+			if(!home.endsWith(File.separator)) {
+				home+=File.separator;
+			}
+			
+			System.setProperty("logback.configurationFile", home+"resources/logback.xml");
+			
+			logger = (Logger) LoggerFactory.getLogger(TablesCreater.class.getSimpleName());
+			
+			try {
 			
 			if(jsonFilePath != null && jsonFilePath.length()>0) {
 				if(!jsonFilePath.endsWith(File.separator)) {
@@ -82,18 +99,15 @@ public class TablesCreater implements SmartBehaviour<BrainIoTEvent> {
 				jsonDataReader = new JsonDataReader(jsonFilePath);
 			}
 			
-			System.out.println("jsonFilePath = "+jsonFilePath);
+			logger.info("table creator jsonFilePath = "+jsonFilePath);
 			
 			try {
 				
-				String home  = System.getenv("HOME");
-				if(!home.endsWith(File.separator)) {
-					home+=File.separator;
-				}
+				
 				// /home/fabric-n9/tables
 				final String JDBC_URL = "jdbc:h2:"+home+"tables;DB_CLOSE_DELAY=-1";
 				
-				System.out.println("Table Creator is creating "+home+"tables..........");
+				logger.info("Table Creator is creating "+home+"tables.mv.db..........");
 				
 				Class.forName(DRIVER_CLASS);
 
@@ -110,10 +124,10 @@ public class TablesCreater implements SmartBehaviour<BrainIoTEvent> {
 				stmt = null; // TODO don't close it if it's a referenced osgi service
 				conn = null;
 				
-				System.out.println("Table Creator finished to create "+home+"tables..........");
+				logger.info("Table Creator finished to create "+home+"tables.mv.db..........");
 
 			} catch (ClassNotFoundException e) {
-				e.printStackTrace();
+				logger.error("\n Exception:", e);
 				
 			} catch (SQLException e) {
 				if(stmt != null && !stmt.isClosed()) {
@@ -122,11 +136,15 @@ public class TablesCreater implements SmartBehaviour<BrainIoTEvent> {
 				if(conn != null && !conn.isClosed()) {
 					conn.close();
 				}
-				e.printStackTrace();
+				logger.error("\n Exception:", e);
 			}
+		} catch (Exception e) {
+			logger.error("\n Exception:", e);
+		}
 		}
 	  
-	  public void initPickingTable(Statement stmt) throws SQLException {
+	  public void initPickingTable(Statement stmt) {
+		  try {
 		  stmt.execute("DROP TABLE IF EXISTS PickingTable");
 
 		  stmt.execute("CREATE TABLE PickingTable(PPid VARCHAR(10) PRIMARY KEY, pose VARCHAR(30), isAssigned BOOLEAN)");
@@ -148,19 +166,23 @@ public class TablesCreater implements SmartBehaviour<BrainIoTEvent> {
 			  stmt.executeUpdate("INSERT INTO PickingTable VALUES("+value.toString()+")");
 			  value = null;
 		  }
-		  System.out.println("------------  PickingTable ----------------");
+		  logger.info("------------  PickingTable ----------------");
 
 		  ResultSet rs = stmt.executeQuery("SELECT * FROM PickingTable");
 
 		  while (rs.next()) {
-		       System.out.println(rs.getString("PPid") + ", " + rs.getString("pose")+ ", " + rs.getString("isAssigned"));
+			  logger.info(rs.getString("PPid") + ", " + rs.getString("pose")+ ", " + rs.getString("isAssigned"));
 		  }
 		  
 	  }
+	  } catch (Exception e) {
+			logger.error("\n Exception:", e);
+		}
 		  
 	  }
 	  
-	  public void initStorageTable(Statement stmt) throws SQLException {
+	  public void initStorageTable(Statement stmt) {
+		  try {
 		  stmt.execute("DROP TABLE IF EXISTS StorageTable");
 
 		  stmt.execute("CREATE TABLE StorageTable(STid VARCHAR(10) PRIMARY KEY, storageAUX VARCHAR(30), storagePose VARCHAR(30))");
@@ -182,17 +204,21 @@ public class TablesCreater implements SmartBehaviour<BrainIoTEvent> {
 			  stmt.executeUpdate("INSERT INTO StorageTable VALUES("+value.toString()+")");
 			  value = null;
 		  }
-		  System.out.println("------------  StorageTable ----------------");
+		  logger.info("------------  StorageTable ----------------");
 
 		  ResultSet rs = stmt.executeQuery("SELECT * FROM StorageTable");
 
 		  while (rs.next()) {
-		       System.out.println(rs.getString("STid") + ", " + rs.getString("storageAUX")+ ", " + rs.getString("storagePose"));
+			  logger.info(rs.getString("STid") + ", " + rs.getString("storageAUX")+ ", " + rs.getString("storagePose"));
 		  }
 		  }
+	  } catch (Exception e) {
+			logger.error("\n Exception:", e);
+		}
 	  }
 
-	  public void initCartTable(Statement stmt) throws SQLException {
+	  public void initCartTable(Statement stmt) {
+		  try {
 		  stmt.execute("DROP TABLE IF EXISTS CartTable");
 
 		  stmt.execute("CREATE TABLE CartTable(cartID INT PRIMARY KEY, storageID VARCHAR(10))");
@@ -213,17 +239,21 @@ public class TablesCreater implements SmartBehaviour<BrainIoTEvent> {
 			  stmt.executeUpdate("INSERT INTO CartTable VALUES("+value.toString()+")");
 			  value = null;
 		  }
-		  System.out.println("------------  CartTable ----------------");
+		  logger.info("------------  CartTable ----------------");
 
 		  ResultSet rs = stmt.executeQuery("SELECT * FROM CartTable");
 
 		  while (rs.next()) {
-		       System.out.println(rs.getString("cartID") + ", " + rs.getString("storageID"));
+			  logger.info(rs.getString("cartID") + ", " + rs.getString("storageID"));
 		  }
 		  }
+	  } catch (Exception e) {
+			logger.error("\n Exception:", e);
+		}
 	  }
 	  
-	  public void initDockTable(Statement stmt) throws SQLException {
+	  public void initDockTable(Statement stmt) {
+		  try {
 		  stmt.execute("DROP TABLE IF EXISTS DockTable");
 
 		  stmt.execute("CREATE TABLE DockTable(IPid VARCHAR(20) PRIMARY KEY, dockAUX VARCHAR(30), dockPose VARCHAR(30))");
@@ -244,14 +274,17 @@ public class TablesCreater implements SmartBehaviour<BrainIoTEvent> {
 			  stmt.executeUpdate("INSERT INTO DockTable VALUES("+value.toString()+")");
 			  value = null;
 		  }
-		  System.out.println("------------  DockTable ----------------");
+		  logger.info("------------  DockTable ----------------");
 
 		  ResultSet rs = stmt.executeQuery("SELECT * FROM DockTable");
 
 		  while (rs.next()) {
-		       System.out.println(rs.getString("IPid") + ", " + rs.getString("dockAUX")+ ", " + rs.getString("dockPose"));
+			  logger.info(rs.getString("IPid") + ", " + rs.getString("dockAUX")+ ", " + rs.getString("dockPose"));
 		  }
 		  }
+		  } catch (Exception e) {
+				logger.error("\n Exception:", e);
+			}
 	  }
 	  
 	  private String serializePose(Pose pose) {
