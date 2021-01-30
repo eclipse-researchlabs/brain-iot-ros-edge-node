@@ -186,7 +186,7 @@ public class RobotService extends AbstractNodeMain implements SmartBehaviour<Rob
 			public PickPetitionRequest constructMsg_pickRun() {
 				robot_local_control_msgs.PickPetitionRequest pickRequest=pickRun.serviceClient.newMessage();
 				Pick procedure= msgfactory.newFromType(Pick._TYPE);
-				procedure.setPickFrameId(pickFrameId);
+			//	procedure.setPickFrameId(pickFrameId);
 				pickRequest.setProcedure(procedure);
 				return pickRequest;
 			}
@@ -464,8 +464,8 @@ public class RobotService extends AbstractNodeMain implements SmartBehaviour<Rob
 	}
 	
 	private String pickCart(int markerID){
-		String cartName= cartMapper.getCartName(markerID);
-		this.pickFrameId=cartName;
+	//	String cartName= cartMapper.getCartName(markerID);
+	//	this.pickFrameId=cartName;
 		robot_local_control_msgs.PickPetitionRequest Pickrequest= pickComponent.constructMsg_pickRun();
 		return pickComponent.call_pickRun(Pickrequest);  // ok/error
 	}
