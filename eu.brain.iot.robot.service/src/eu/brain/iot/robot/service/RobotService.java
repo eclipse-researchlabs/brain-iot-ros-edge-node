@@ -312,7 +312,7 @@ public class RobotService extends AbstractNodeMain implements SmartBehaviour<Rob
 										+", last_event="+callResp.last_event+", message is: "+callResp.message);
 								
 								if(callResp.last_event.equals("abort")) {
-									logger.info("robot "+robotID+" query pickCart action finished, but last_event = abort, so continue to query");
+									logger.info("robot "+robotID+" query pickCart action finished, but last_event = abort, so send CurrentState = unknown!");
 								//	continue; // the case might be one action is running, another action cmd is also received, 2nd cmd will be abort.
 									queryReturnedValue.currentState = CurrentState.unknown;
 									break;
@@ -362,7 +362,7 @@ public class RobotService extends AbstractNodeMain implements SmartBehaviour<Rob
 										+", last_event="+callResp.last_event+", message is: "+callResp.message);
 								
 								if(callResp.last_event.equals("abort")) {
-									logger.info("robot "+robotID+" query PlaceCart action finished, but last_event = abort, so continue to query");
+									logger.info("robot "+robotID+" query PlaceCart action finished, but last_event = abort, so send CurrentState = unknown!");
 								//	continue; // the case might be one action is running, another action cmd is also received, 2nd cmd will be abort.
 									queryReturnedValue.currentState = CurrentState.unknown;
 									break;

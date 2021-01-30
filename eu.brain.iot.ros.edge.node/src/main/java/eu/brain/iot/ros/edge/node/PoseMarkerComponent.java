@@ -25,6 +25,7 @@ public abstract class PoseMarkerComponent {
     	AlvarMarkers markers = poseMarker.getCurrentValue();  // TODO check how to decide the markers variable ==> msg type?
 
         while (markers == null) {
+        	System.out.println("get empty marker, read again.......");
         	try {
 				TimeUnit.SECONDS.sleep(1);
 			} catch (InterruptedException e) {

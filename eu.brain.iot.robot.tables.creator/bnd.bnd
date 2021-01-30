@@ -15,7 +15,7 @@
 	slf4j.api;version=1.7
 
 Bundle-Version: 0.0.4
-#-includeresource: resources
+-includeresource: resources
 Private-Package: eu.brain.iot.robot.tables.creator
 
 -privatepackage: eu.brain.iot.robot.tables.jsonReader

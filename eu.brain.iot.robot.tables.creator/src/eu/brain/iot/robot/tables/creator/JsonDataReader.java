@@ -8,9 +8,11 @@ import eu.brain.iot.robot.tables.jsonReader.PickingTable;
 import eu.brain.iot.robot.tables.jsonReader.StorageTable;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 
 import org.slf4j.Logger;
@@ -51,7 +53,7 @@ public class JsonDataReader {
 			String line = "";
 			BufferedReader input = new BufferedReader(new InputStreamReader(proc.getInputStream()));
 			while ((line = input.readLine()) != null) {
-				System.out.println(line);
+				System.out.println(" Table Creator current path = "+ line);
 			}
 			input.close();
 			proc.destroy();
@@ -61,6 +63,12 @@ public class JsonDataReader {
 		}
 
 		try {
+	//		Class cl = Class.forName("JsonDataReader");
+			
+
+	/*		ClassLoader classLoader = ClassLoader.getSystemClassLoader();
+
+InputStream is = classLoader.getResourceAsStream(jsonFilePath+"Picking_Points.json");*/
 			
 			reader = new JsonReader(new FileReader(jsonFilePath+"Picking_Points.json"));
 			pickingTable = gson.fromJson(reader, PickingTable.class);

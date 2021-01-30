@@ -49,17 +49,29 @@ public class CartMapper {
 	}
 
 	public String read_Json_file(String path) {
-		InputStream is = this.getClass().getClassLoader().getResourceAsStream(path);
-		BufferedReader br = new BufferedReader(new InputStreamReader(is));
-		String s = "";
 		String configContentStr = "";
+		BufferedReader br = null;
+		InputStream is = null;
 		try {
+		is = this.getClass().getClassLoader().getResourceAsStream(path);
+		br = new BufferedReader(new InputStreamReader(is));
+		String s = "";
+		
+		
 			while ((s = br.readLine()) != null) {
 				configContentStr = configContentStr + s;
 			}
 			br.close();
 		} catch (IOException e) {
 			logger.error("\n Exception:", e);
+		} finally {
+		    if (is != null) {
+		        try {
+		            is.close();
+		        } catch (IOException e) {
+		        	logger.error("\n Exception:", e);
+		        }
+		    }
 		}
 		return configContentStr;
 	}

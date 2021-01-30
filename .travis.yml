@@ -38,7 +38,5 @@ deploy:
   on:
     branch: smartbehavior
 
-#  script: ./gradlew build uploadArchives && ./build.sh
-
 #end
 
