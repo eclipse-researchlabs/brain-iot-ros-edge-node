@@ -1,10 +1,7 @@
 -buildpath: \
 	eu.brain.iot.robot.api;version=latest,\
-	be.iminds.iot.ros.msgs.generator;version=latest,\
 	org.apache.felix.gogo.runtime,\
 	be.iminds.iot.ros.api;version=latest,\
-	com.paremus.brain.iot.eventing.api,\
-	org.osgi.service.configurator,\
 	osgi.core;version=7.0,\
 	osgi.cmpn;version=7.0,\
 	org.ros.rosjava;version=0.2,\
@@ -15,8 +12,6 @@
 	slf4j.api;version=1.7,\
 	eu.brain.iot.robot.msgs
 
--includeresource: resources
 Bundle-Version: 0.0.4
-Private-Package: eu.brain.iot.robot.service
 
-				
+Private-Package: eu.brain.iot.robot.voltage

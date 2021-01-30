@@ -59,7 +59,8 @@ robotnik_navigation_msgs,\
 std_msgs,\
 tf2_msgs,\
 robot_local_control_msgs,\
-shape_msgs
+shape_msgs,\
+kobuki_msgs
 
                                                      
 

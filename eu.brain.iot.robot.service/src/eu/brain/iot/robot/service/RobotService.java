@@ -1,6 +1,5 @@
 package eu.brain.iot.robot.service;
 
-import java.io.IOException;
 import java.util.Dictionary;
 import java.util.Hashtable;
 import java.util.LinkedList;
@@ -15,11 +14,8 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.ConfigurationPolicy;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.metatype.annotations.AttributeDefinition;
-import org.osgi.service.metatype.annotations.ObjectClassDefinition;
 import org.ros.message.MessageFactory;
 import org.ros.message.Time;
 import org.ros.namespace.GraphName;
@@ -27,7 +23,6 @@ import org.ros.node.AbstractNodeMain;
 import org.ros.node.ConnectedNode;
 import org.ros.node.NodeMain;
 import ar_track_alvar_msgs.AlvarMarker;
-import ar_track_alvar_msgs.AlvarMarkers;
 import be.iminds.iot.ros.api.Ros;
 import eu.brain.iot.eventing.annotation.SmartBehaviourDefinition;
 import eu.brain.iot.eventing.api.EventBus;
@@ -68,6 +63,7 @@ public class RobotService extends AbstractNodeMain implements SmartBehaviour<Rob
     private GoToComponent  goToComponent;
     private PickComponent pickComponent;
     private PlaceComponent placeComponent;
+ //   private BatteryVoltageComponent batteryVoltageComponent;
 	private Coordinate coordinate;
 	private String pickFrameId;
 
