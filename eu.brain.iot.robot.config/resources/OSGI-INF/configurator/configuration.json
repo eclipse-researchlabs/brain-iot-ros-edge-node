@@ -15,9 +15,12 @@
     
     
     
-    "eu.brain.iot.robot.tables.creator.TablesCreater": {
-           "jsonFilePath": "/home/rui/resources/"
+    "eu.brain.iot.robot.tables.creator.TablesCreator": {
+           
     }
+
     
 
 }
+
+/*"resourcesPath": "/home/rui/resources" */

@@ -21,11 +21,15 @@ public class CartMapper {
 
 	private HashMap<Integer,String> Cart=new HashMap<Integer,String>();
 	
-	private static final Logger logger = (Logger) LoggerFactory.getLogger(RobotService.class.getSimpleName());
+//	private static final Logger logger = (Logger) LoggerFactory.getLogger(RobotService.class.getSimpleName());
+	private  Logger logger;
 
 	@Activate
 	public CartMapper() throws IOException
 	{
+		System.setProperty("logback.configurationFile", "/opt/fabric/resources/logback.xml");
+    	logger = (Logger) LoggerFactory.getLogger(RosEdgeNode.class.getSimpleName());
+    	
 		loadCart();
 
 		logger.info("--------------------Internal CartMapper---------------------------");

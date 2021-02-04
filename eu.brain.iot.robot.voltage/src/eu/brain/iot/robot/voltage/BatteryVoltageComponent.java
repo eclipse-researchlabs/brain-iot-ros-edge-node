@@ -6,7 +6,7 @@ import org.ros.node.ConnectedNode;
 
 import kobuki_msgs.SensorState;
 
-public class BatteryVoltageComponent {
+public abstract class BatteryVoltageComponent {
 	private ConnectedNode node;
     private GenericSubscriber<SensorState> voltage;
     private String robotName;

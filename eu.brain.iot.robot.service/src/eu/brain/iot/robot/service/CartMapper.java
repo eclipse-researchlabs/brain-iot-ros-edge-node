@@ -21,7 +21,7 @@ public class CartMapper {
 
 	private HashMap<Integer,String> Cart=new HashMap<Integer,String>();
 	
-	private static final Logger logger = (Logger) LoggerFactory.getLogger(RobotService.class.getSimpleName());
+	private static final Logger logger = (Logger) LoggerFactory.getLogger(RosEdgeNode.class.getSimpleName());
 
 	@Activate
 	public CartMapper() throws IOException

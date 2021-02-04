@@ -137,11 +137,12 @@ public class RosImpl extends AbstractNodeMain implements Ros {
 			}
 
 			if(uri == null){
-				throw new Exception("No master URI configured!");
+				logger.error("Exception:", new Exception("No master URI configured!"));
+			//	throw new Exception("No master URI configured!");
 			//	deactivate();
 			}
 			masterURI = new URI(uri);//uri
-			logger.info("\n--> masterURI = "+masterURI);
+			logger.info("--> masterURI = "+masterURI);
 			
 			if(robotIP == null) {
 				String[] strs = uri.split(":");
@@ -159,7 +160,7 @@ public class RosImpl extends AbstractNodeMain implements Ros {
 		} catch(Exception e){
 		//	System.err.println("Error setting up the ROS environment: "+e.getMessage());
 		//	throw e;
-			logger.error("\nError setting up the ROS environment: ", e);
+			logger.error("Error setting up the ROS environment: ", e);
 		} 
 		
 		// create threadpool for running additional rosjava nodes
@@ -175,10 +176,10 @@ public class RosImpl extends AbstractNodeMain implements Ros {
 
 		// start ROS core if required
 		boolean start = rosCoreActive();
-		logger.info("\n roscore has been started = " + start);
+		logger.info("roscore has been started = " + start);
 		
 		if(!start){
-			logger.info("\n start installed ROS system");
+			logger.info("start installed ROS system");
 			boolean startNative = true;   // -------keep always running native ros core
 			String rosCoreNative = getVariable(context, null,"ros.core.native");
 			
@@ -187,7 +188,7 @@ public class RosImpl extends AbstractNodeMain implements Ros {
 			}
 			try {
 			if(startNative){
-				logger.info("\n start Native roscore =  "+ startNative);
+				logger.info("start Native roscore =  "+ startNative);
 				// native ROScore process
 				ProcessBuilder builder = new ProcessBuilder("roscore", "-p "+masterURI.getPort());
 				builder.environment().put("ROS_MASTER_URI", masterURI.toString());
@@ -198,14 +199,14 @@ public class RosImpl extends AbstractNodeMain implements Ros {
 				nativeCore = builder.start();
 				
 			} else {
-				logger.info("\n rosjava ROScore implementation");
+				logger.info("rosjava ROScore implementation");
 				// rosjava ROScore implementation
 				core = RosCore.newPublic(masterURI.getHost(), masterURI.getPort());
 				core.start();
 				logger.info("ROS core service [/rosout] started on "+core.getUri());
 			}
 			} catch(Exception e){
-					logger.error("\nLaunch roscore Exception: ", e);
+					logger.error("Launch roscore Exception: ", e);
 			} 
 		}
 		

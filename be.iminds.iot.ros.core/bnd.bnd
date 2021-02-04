@@ -14,4 +14,6 @@ Bundle-Version: 0.0.4
 Private-Package: be.iminds.iot.ros.core
 Export-Package: be.iminds.iot.ros.api
 
-#-includeresource: resources
+-includeresource: resources
+
+

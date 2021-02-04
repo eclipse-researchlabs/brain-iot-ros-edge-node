@@ -1,3 +1,13 @@
+/*******************************************************************************
+ * Copyright (C) 2021 LINKS Foundation
+ * 
+ * This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License 2.0
+ * which is available at https://www.eclipse.org/legal/epl-2.0/
+ * 
+ * SPDX-License-Identifier: EPL-2.0
+ ******************************************************************************/
+
 package eu.brain.iot.robot.behaviour;
 
 import java.io.IOException;
@@ -24,6 +34,7 @@ import org.osgi.service.component.annotations.ConfigurationPolicy;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Modified;
 import org.osgi.service.component.annotations.ServiceScope;
+import org.osgi.service.metatype.annotations.ObjectClassDefinition;
 import org.osgi.service.component.annotations.Reference;
 import java.util.function.Predicate;
 import org.osgi.util.promise.Deferred;
@@ -80,17 +91,13 @@ public class RobotBehaviour implements SmartBehaviour<BrainIoTEvent> {
 	private BundleContext context;
 	
 
-/*	@ObjectClassDefinition
+	@ObjectClassDefinition
 	public static @interface Config {
-
-		@AttributeDefinition(description = "The identifier for the robot behaviour")
-		int id();
-
-	}*/
+		String logPath() default "/opt/fabric/resources/logback.xml"; // "/opt/fabric/resources/";
+	}
 	
-	private static final Logger logger = (Logger) LoggerFactory.getLogger(RobotBehaviour.class.getSimpleName());
-
-//	private Config config;
+	private  Logger logger;
+	
 	private ExecutorService worker;
 	private ServiceRegistration<?> reg;
 
@@ -103,14 +110,16 @@ public class RobotBehaviour implements SmartBehaviour<BrainIoTEvent> {
     }
 
 	@Activate
-	void activate(BundleContext context, /*Config config,*/ Map<String, Object> props) {
-	/*	this.config = config;
-		this.robotID = config.id();*/
+	void activate(BundleContext context, Config config, Map<String, Object> props) {
+		
+		System.setProperty("logback.configurationFile", config.logPath());
+		
+		logger = (Logger) LoggerFactory.getLogger(RobotBehaviour.class.getSimpleName());
 		this.context = context;
 		
 		String UUID = context.getProperty("org.osgi.framework.uuid");
 		
-		logger.info("\nHello!  I am robotBehavior : " + robotID + ",  UUID = "+UUID);
+		logger.info("Hello!  I am robotBehavior : " + robotID + ",  UUID = "+UUID);
 
 		worker = Executors.newFixedThreadPool(10);
 
@@ -286,7 +295,7 @@ public class RobotBehaviour implements SmartBehaviour<BrainIoTEvent> {
 							}
 							
 							// --------------------------- check Door Marker  --------------------------------------
-							logger.info("--------------------------- Check Door Marker --------------------------------------");
+					/*		logger.info("--------------------------- Check Door Marker --------------------------------------");
 							
 							CheckMarker checkDoorMarker = createCheckMarker(); // CheckMarker
 							eventBus.deliver(checkDoorMarker);
@@ -294,7 +303,7 @@ public class RobotBehaviour implements SmartBehaviour<BrainIoTEvent> {
 
 							int DoorID = waitMarker();
 							logger.info("-->RB" + robotID + " got DoorID = " + DoorID);
-
+*/
 							
 							// --------------------------- Go to Storage Point --------------------------------------
 							logger.info("--------------------------- Go to Storage Point --------------------------------------");
@@ -399,7 +408,7 @@ public class RobotBehaviour implements SmartBehaviour<BrainIoTEvent> {
 
 			if (nextIteration == false) { // only when normal exit(no pick, no storage after querying for a long time)
 				logger.info("-->Tasks are done. Robot Behavior " + robotID + " exit !!!");
-			} else {
+			} else { // when the WriteGoTo action fail with the last_event=abort, robot behavior will exit.
 				logger.info("-->RB " + robotID + "  exit because of failure in robot!!!");
 			}
 		}
@@ -423,7 +432,7 @@ public class RobotBehaviour implements SmartBehaviour<BrainIoTEvent> {
 			worker.execute(() -> {
 				robotIP = rbc.robotIP;
 				robotID = rbc.robotID;
-			//	robotReady = rbc.isReady;
+
 				
 				Bundle adminBundle = FrameworkUtil.getBundle(RobotBehaviour.class);
 				String location = adminBundle.getLocation();
@@ -435,7 +444,7 @@ public class RobotBehaviour implements SmartBehaviour<BrainIoTEvent> {
 					Hashtable<String, Object> props = new Hashtable<>();
 					props.put(SmartBehaviourDefinition.PREFIX_ + "filter", // only receive some sepecific events with robotID
 							String.format("(|(robotID=%s)(robotID=%s))", robotID, RobotCommand.ALL_ROBOTS));
-					config.update(props);
+					config.update(props); // the modified() method will be called. it will receive only the events with the robotID.
 					logger.info("-->RB " + robotID + " update properties = "+props);
 					
 				} catch (IOException e) {
@@ -679,6 +688,7 @@ public class RobotBehaviour implements SmartBehaviour<BrainIoTEvent> {
 			Thread.currentThread().interrupt();
 			logger.error("\n Exception:", ie);
 		}
+		logger.info("------------  Robot Behavior "+ robotID+" is deactivated----------------");
 	}
 
 }

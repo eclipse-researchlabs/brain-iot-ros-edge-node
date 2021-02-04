@@ -4,7 +4,6 @@
 	org.apache.felix.gogo.runtime,\
 	be.iminds.iot.ros.api;version=latest,\
 	com.paremus.brain.iot.eventing.api,\
-	org.osgi.service.configurator,\
 	osgi.core;version=7.0,\
 	osgi.cmpn;version=7.0,\
 	org.ros.rosjava;version=0.2,\

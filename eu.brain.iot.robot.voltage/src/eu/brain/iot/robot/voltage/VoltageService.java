@@ -13,7 +13,8 @@ import org.ros.node.AbstractNodeMain;
 import org.ros.node.ConnectedNode;
 import org.ros.node.NodeMain;
 import be.iminds.iot.ros.api.Ros;
-import eu.brain.iot.robot.events.*;
+import eu.brain.iot.eventing.api.EventBus;
+import eu.brain.iot.robot.events.BetteryVoltage;
 import kobuki_msgs.SensorState;
 import std_msgs.Header;
 import org.slf4j.Logger;
@@ -33,12 +34,12 @@ public class VoltageService extends AbstractNodeMain{
 	@Reference
 	private Ros ros;
 	
-/*	@Reference
+	@Reference
 	private EventBus eventBus;
-*/	
+	 
 
 
-//	private static final Logger logger = (Logger) LoggerFactory.getLogger(VoltageService.class.getSimpleName());
+	private static final Logger logger = (Logger) LoggerFactory.getLogger(VoltageService.class.getSimpleName());
 	
     @Activate
 	void activate(BundleContext context){

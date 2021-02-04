@@ -11,7 +11,8 @@
 	osgi.identity;filter:='(osgi.identity=org.apache.felix.gogo.command)',\
 	bnd.identity;version='latest';id='eu.brain.iot.robot.voltage',\
 	bnd.identity;version='latest';id='be.iminds.iot.ros.core',\
-	bnd.identity;version='latest';id='eu.brain.iot.robot.msgs'
+	bnd.identity;version='latest';id='eu.brain.iot.robot.msgs',\
+	bnd.identity;id='org.ros.rosjava_bootstrap.message_generation'
 
 	
 -runbundles: \
@@ -40,10 +41,13 @@
 	org.osgi.util.function;version='[1.1.0,1.1.1)',\
 	org.osgi.util.pushstream;version='[1.0.0,1.0.1)',\
 	org.ros.rosjava;version='[0.2.2,0.2.3)',\
-	org.ros.rosjava.message_generation;version='[0.2.1,0.2.2)',\
 	org.ros.rosjava_core.apache_xmlrpc_client;version='[0.2.1,0.2.2)',\
 	org.ros.rosjava_core.apache_xmlrpc_common;version='[0.2.1,0.2.2)',\
 	org.ros.rosjava_core.apache_xmlrpc_server;version='[0.2.1,0.2.2)',\
 	osgi.promise;version='[7.0.1,7.0.2)',\
 	slf4j.api;version='[1.7.30,1.7.31)',\
-	ws-commons-util;version='[1.0.1,1.0.2)'
+	ws-commons-util;version='[1.0.1,1.0.2)',\
+	com.paremus.brain.iot.eventing.impl;version='[0.0.1,0.0.2)',\
+	com.paremus.brain.iot.message.integrity.api;version='[0.0.1,0.0.2)',\
+	com.paremus.brain.iot.message.integrity.insecure.impl;version='[0.0.1,0.0.2)',\
+	org.ros.rosjava_bootstrap.message_generation;version='[0.2.1,0.2.2)'

@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Dictionary;
 import java.util.HashMap;
@@ -18,6 +19,7 @@ import org.osgi.service.cm.ConfigurationAdmin;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
+import org.osgi.service.metatype.annotations.ObjectClassDefinition;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,18 +33,24 @@ public class RoscoreConfiguartor {
 
 	private Map<String, String> map = new HashMap<>();
 	
-	// set up external logback.xml path in program
-//	static { System.setProperty("logback.configurationFile", "/home/rui/resources/logback.xml");}
-//	private static final Logger logger = (Logger) LoggerFactory.getLogger(RoscoreConfiguartor.class.getSimpleName());
-	
 	private  Logger logger;
+	private String resourcesPath;
+	
+	@ObjectClassDefinition
+	public static @interface Config {
+		String resourcesPath() default "/home/rui/resources/"; // "/opt/fabric/resources/";  /home/rui/resources
+	}
 
 	@Activate
-	void activate(BundleContext context, Map<String, Object> config) throws Exception {
-		
-		String home =  System.getenv("HOME");
-		System.setProperty("logback.configurationFile", home+"/resources/logback.xml");
-		
+	void activate(BundleContext context, Config config) throws Exception {
+		this.resourcesPath = config.resourcesPath();
+		if(resourcesPath != null && resourcesPath.length()>0) {
+			if(!resourcesPath.endsWith(File.separator)) {
+				resourcesPath+=File.separator;
+			}
+			
+		}
+		System.setProperty("logback.configurationFile", resourcesPath+"logback.xml");		
 		logger = (Logger) LoggerFactory.getLogger(RoscoreConfiguartor.class.getSimpleName());
 	
 		logger.info("{} activating....... ", "RoscoreConfiguartor");
@@ -50,33 +58,9 @@ public class RoscoreConfiguartor {
 		executor = Executors.newSingleThreadExecutor();
 		BufferedReader reader = null;
 		String line;
-
-		try {
-			Process proc = Runtime.getRuntime().exec(new String[] { "/bin/bash", "-c", "pwd" });
-			String line2 = "";
-			BufferedReader input = new BufferedReader(new InputStreamReader(proc.getInputStream()));
-			while ((line2 = input.readLine()) != null) {
-				logger.info("Current Path = {}", line2);
-			}
-			input.close();
-			proc.destroy();
-			proc = null;
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
 		File file;
-		String roscoreConfFolder;
 		
-		roscoreConfFolder = context.getProperty("roscoreConfFolder");
-		if (roscoreConfFolder == null)
-			roscoreConfFolder = System.getenv("HOME");
-		
-		if(!roscoreConfFolder.endsWith(File.separator)) {
-			roscoreConfFolder+=File.separator;
-		}
-		
-		file = new File(roscoreConfFolder);
+		file = new File(resourcesPath);
 		
 		// This filter will only include files starting with rosConfig
 		FilenameFilter filter = new FilenameFilter() {
@@ -96,10 +80,10 @@ public class RoscoreConfiguartor {
 			if (map.size() != 0)
 				map.clear();
 			try {
-				fstream = new FileInputStream(roscoreConfFolder+configFile); // absolute path
+				fstream = new FileInputStream(resourcesPath+configFile); // absolute path
 				reader = new BufferedReader(new InputStreamReader(fstream));
 				line = reader.readLine();
-				logger.info("\nroscore config file: " + roscoreConfFolder+configFile);
+				logger.info("roscore config file: " + resourcesPath+configFile);
 				while (line != null && line.trim() != null) {
 
 					if (line.trim().isEmpty() || line.startsWith("#") || line.startsWith("//")) {

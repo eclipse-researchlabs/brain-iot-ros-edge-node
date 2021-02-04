@@ -1,15 +1,22 @@
+/*******************************************************************************
+ * Copyright (C) 2021 LINKS Foundation
+ * 
+ * This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License 2.0
+ * which is available at https://www.eclipse.org/legal/epl-2.0/
+ * 
+ * SPDX-License-Identifier: EPL-2.0
+ ******************************************************************************/
 package eu.brain.iot.robot.tables.queryer;
 
-import java.io.File;
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.Dictionary;
 import java.util.Hashtable;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -18,8 +25,13 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.ConfigurationPolicy;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
+import org.osgi.service.metatype.annotations.ObjectClassDefinition;
+import org.osgi.util.function.Predicate;
+import org.osgi.util.promise.Deferred;
+import org.osgi.util.promise.Promise;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import eu.brain.iot.eventing.annotation.SmartBehaviourDefinition;
@@ -36,10 +48,14 @@ import eu.brain.iot.warehouse.events.NewStoragePointRequest;
 import eu.brain.iot.warehouse.events.NewStoragePointResponse;
 import eu.brain.iot.warehouse.events.NoCartNotice;
 import eu.brain.iot.robot.api.Coordinate;
+import eu.brain.iot.robot.tables.creator.api.TableCreator;
 
 
 @Component(service = { TableQueryer.class },
-		   immediate = true)
+		   immediate = true,
+		   configurationPid = "eu.brain.iot.robot.tables.queryer.TablesQueryer", 
+		   configurationPolicy = ConfigurationPolicy.OPTIONAL
+		)
 @SmartBehaviourDefinition(
 		consumed = { NewPickPointRequest.class, NewStoragePointRequest.class, NoCartNotice.class,
 		CartMovedNotice.class, DockingRequest.class }, 
@@ -48,75 +64,42 @@ import eu.brain.iot.robot.api.Coordinate;
 
 public class TableQueryer implements SmartBehaviour<BrainIoTEvent> { // TODO must able to cache multiple requests
 
-//	private static String base = "/home/rui/git/ros-edge-node/eu.brain.iot.robot.tables.creator";
-//		private static String base = "/home/fabric-n9";
-
-//	private static final String JDBC_URL = "jdbc:h2:" + base + "/tables;DB_CLOSE_DELAY=-1";
-
-	private static final String USER = "RosEdgeNode";
-
-	private static final String PASSWORD = "123";
-
-	private static final String DRIVER_CLASS = "org.h2.Driver";
-
-	private Connection conn;
-	private Statement stmt;
 	private ExecutorService worker;
 	private ServiceRegistration<?> reg;
 	
 	@Reference
 	private EventBus eventBus;
 	
-	// Question: can tablesCreater be referenced from a different osgi FW in same node or different node in fabric?
+	@Reference
+	private TableCreator tablesCreator;
 	
-	// TODO: MUST run with creator to install, but // TODO don't close it if it's a referenced osgi service
-//	@Reference
-//	private TableCreator tablesCreater;
-	
-//	private static final Logger logger = (Logger) LoggerFactory.getLogger(TableQueryer.class.getSimpleName());
 	private  Logger logger;
+	private String logPath;
+	
+	@ObjectClassDefinition
+	public static @interface Config {  // if run with creator, this logback.xml is not used
+		String logPath() default "/opt/fabric/resources/logback.xml";
+
+	}
+	
+	private List<PendingRequest> pendingRequests = new CopyOnWriteArrayList<>();
 
 	@Activate
-	public void activate(BundleContext context, Map<String, Object> props) throws SQLException {
-		try {
-			
-			String home  = System.getenv("HOME");
-			if(!home.endsWith(File.separator)) {
-				home+=File.separator;
-			}
-			
-			System.setProperty("logback.configurationFile", home+"resources/logback.xml");
+	public void activate(BundleContext context, Config config, Map<String, Object> props) throws SQLException {
+		this.logPath = config.logPath();
+
+			System.setProperty("logback.configurationFile", logPath);
 			
 			logger = (Logger) LoggerFactory.getLogger(TableQueryer.class.getSimpleName());
 					
-			logger.info("\nHello, this is Table Queryer !");
+			logger.info("Hello, this is Table Queryer !");
 			
-			Class.forName(DRIVER_CLASS);
-			
-//-----------------------todo------------------------------
-			
-			// /home/fabric-n9/tables
-			final String JDBC_URL = "jdbc:h2:"+home+"tables;DB_CLOSE_DELAY=-1";
-			
-			logger.info("Table Queryer is reading "+home+"tables.mv.db..........");
-			
-			conn = DriverManager.getConnection(JDBC_URL, USER, PASSWORD);
-			stmt = conn.createStatement();
-//-----------------------------------------------------			
-			
-	//		conn = tablesCreater.getConn();
-	//		stmt = tablesCreater.getStmt();
+			logger.info("Table Queryer is using log: "+logPath);
 
 			worker = Executors.newFixedThreadPool(10);
 			
 			Dictionary<String, Object> serviceProps = new Hashtable<>(props.entrySet().stream()
 					.filter(e -> !e.getKey().startsWith(".")).collect(Collectors.toMap(Entry::getKey, Entry::getValue)));
-
-		/*	serviceProps.put(SmartBehaviourDefinition.PREFIX_ + "filter",  // -1, get all events
-					String.format("(|(robotID=%s)(robotID=%s))", 2, RobotCommand.ALL_ROBOTS));*/
-
-		/*	serviceProps.put(SmartBehaviourDefinition.PREFIX_ + "filter",  // robotBehaviorID = -1, warehouse backend get all events from robot behaviours
-					String.format("(|(robotID=%s)(robotBehaviorID=%s)", null, RobotCommand.ALL_ROBOTS, true));*/
 			
 			serviceProps.put(SmartBehaviourDefinition.PREFIX_ + "filter",  // get all events
 					String.format("(robotID=*)"));
@@ -124,58 +107,69 @@ public class TableQueryer implements SmartBehaviour<BrainIoTEvent> { // TODO mus
 			logger.info("+++++++++ Table Queryer filter = " + serviceProps.get(SmartBehaviourDefinition.PREFIX_ + "filter"));
 			reg = context.registerService(SmartBehaviour.class, this, serviceProps);
 			
-			logger.info("------------  PickingTable ----------------");
+			logger.info("------------Queryer:  PickingTable ----------------");
 
-			  ResultSet rs = stmt.executeQuery("SELECT * FROM PickingTable");
+			try {
+				  ResultSet rs = tablesCreator.executeQuery("SELECT * FROM PickingTable");
 
-			  while (rs.next()) {
-				  logger.info(rs.getString("PPid") + ", " + rs.getString("pose")+ ", " + rs.getString("isAssigned"));
-			  }
-			
-		} catch (ClassNotFoundException e) {
-			logger.error("\n Exception:", e);
-
-		} catch (SQLException e) {
-			if (stmt != null && !stmt.isClosed()) {
-				stmt.close();
-			}
-			if (conn != null && !conn.isClosed()) {
-				conn.close();
-			}
-			logger.error("\n Exception:", e);
-		}
-	
+			if (rs != null) {
+				while (rs.next()) {
+					logger.info(rs.getString("PPid") + ", " + rs.getString("pose") + ", " + rs.getString("isAssigned"));
+				}
+			} else
+				logger.error("Error accours to query PickingTable, got null");
+				} catch(Exception e) {
+					logger.error("\n Exception:", e);
+				}
 	}
-	
 	
 	@Override
 	public void notify(BrainIoTEvent event) {
 
-		logger.info("--> Table Queryer received an event "+event.getClass()/*.getSimpleName()*/);
+		logger.info("--> Table Queryer received an event "+event.getClass());
 		
 		if (event instanceof NewPickPointRequest) {
 			NewPickPointRequest pickRequest = (NewPickPointRequest) event;
 			NewPickPointResponse rs = getPickResponse(pickRequest);
-			logger.info("Queryer  sent NewPickPointResponse "+ rs);
-			eventBus.deliver(rs);
-			
+	/*		Promise<NewPickPointResponse> promise = pickResponseAsync(pickRequest);
+			NewPickPointResponse rs = null;
+			try {
+				rs = promise.getValue();
+			} catch (InvocationTargetException | InterruptedException e) {
+				logger.error("--> Exception:  ", e);
+			}*/  // the NewPickPointResponse is created by queryer itself, not received from eventbus
+			if(rs !=null) {
+				logger.info("Queryer  sent NewPickPointResponse "+ rs);
+				eventBus.deliver(rs);
+			}	
 		} else if (event instanceof NewStoragePointRequest) {
 			NewStoragePointRequest storageRequest = (NewStoragePointRequest) event;
 			worker.execute(() -> {
-		//		System.out.println("--> Table Queryer received NewStoragePointRequest event");
-				eventBus.deliver(getStorageResponse(storageRequest));
+				NewStoragePointResponse resp = getStorageResponse(storageRequest);
+				if(resp!=null) {
+					logger.info("Queryer  sent NewStoragePointResponse "+ resp);
+					eventBus.deliver(resp);
+				}
 			});
 			
 		} else if (event instanceof DockingRequest) {
 			DockingRequest dockRequest = (DockingRequest) event;
 			worker.execute(() -> {
-				eventBus.deliver(getDockResponse(dockRequest));
+				DockingResponse resp = getDockResponse(dockRequest);
+				if(resp!=null) {
+					logger.info("Queryer  sent DockingResponse "+ resp);
+					eventBus.deliver(resp);
+				}
 			});
 			
 		} else if (event instanceof CartMovedNotice) {
 			CartMovedNotice cartMovedNotice = (CartMovedNotice) event;
 			worker.execute(() -> {
-				eventBus.deliver(getCartMovedNotice(cartMovedNotice));
+				CartNoticeResponse resp = getCartMovedNotice(cartMovedNotice);
+				if(resp!=null) {
+					logger.info("Queryer  sent CartNoticeResponse "+ resp);
+					eventBus.deliver(resp);
+				}
 			});
 			
 		} else if (event instanceof NoCartNotice) {
@@ -191,33 +185,34 @@ public class TableQueryer implements SmartBehaviour<BrainIoTEvent> { // TODO mus
 
 		NewPickPointResponse pickReponse = new NewPickPointResponse();
 		pickReponse.robotID = pickRequest.robotID;
-
-		ResultSet rs;
 		try {
-			rs = stmt.executeQuery("SELECT * FROM PickingTable WHERE isAssigned=false");
 
+		ResultSet rs = tablesCreator.executeQuery("SELECT * FROM PickingTable WHERE isAssigned=false");
+
+		if (rs == null) {
+			logger.error("Error accours to query PickingTable, nothing to reply");
+			return null;
+		} else {
 			while (rs.next()) {
 
 				pickReponse.hasNewPoint = true;
-
-		//		pickReponse.pickPoint = getCoordinate(rs.getString("pose"));
 				pickReponse.pickPoint = rs.getString("pose");
 				logger.info("--> Table Queryer got a pickPoint "+pickReponse.pickPoint);
-				stmt.executeUpdate(
+				tablesCreator.executeUpdate(
 						"UPDATE PickingTable SET isAssigned='" + true + "' WHERE PPid='" + rs.getString("PPid") + "'");
 				break;
 			}
-			
-			logger.info("------------  PickingTable ----------------");
-			  rs = stmt.executeQuery("SELECT * FROM PickingTable");
-			  while (rs.next()) {
-				  logger.info(rs.getString("PPid") + ", " + rs.getString("pose")+ ", " + rs.getString("isAssigned"));
-			  }
-			  
-		} catch (SQLException e) {
-			logger.error("\n Exception:", e);
 		}
-
+		logger.info("------------Queryer:  PickingTable ----------------");
+		  rs = tablesCreator.executeQuery("SELECT * FROM PickingTable");
+		  while (rs.next()) {
+			  logger.info(rs.getString("PPid") + ", " + rs.getString("pose")+ ", " + rs.getString("isAssigned"));
+		  }
+			  
+		} catch (Exception e) {
+			logger.error("\n Exception:", e);
+			return null;
+		}
 		return pickReponse;
 	}
 
@@ -228,18 +223,23 @@ public class TableQueryer implements SmartBehaviour<BrainIoTEvent> { // TODO mus
 
 		NewStoragePointResponse storageReponse = new NewStoragePointResponse();
 		storageReponse.robotID = storageRequest.robotID;
-
-		ResultSet rs;
 		try {
-			rs = stmt.executeQuery("SELECT * FROM CartTable WHERE cartID=" + markerID);
-
+		ResultSet rs = tablesCreator.executeQuery("SELECT * FROM CartTable WHERE cartID=" + markerID);
+		if (rs == null) {
+			logger.error("Error accours to query CartTable, no StorageResponse to reply");
+			return null;
+		} else {
 			while (rs.next()) {
 				storageID = rs.getString("storageID");
+				break;
 			}
 			if (storageID != null) {
 
-				rs = stmt.executeQuery("SELECT * FROM StorageTable WHERE STid = '" +storageID+"'");
-				
+				rs = tablesCreator.executeQuery("SELECT * FROM StorageTable WHERE STid = '" +storageID+"'");
+				if (rs == null) {
+					logger.error("Error accours to query StorageTable, no StorageResponse to reply");
+					return null;
+				} else {
 				while (rs.next()) {
 
 					storageReponse.hasNewPoint = true;
@@ -247,9 +247,13 @@ public class TableQueryer implements SmartBehaviour<BrainIoTEvent> { // TODO mus
 					storageReponse.storagePoint = rs.getString("storagePose");
 					break;
 				}
+				}
 			}
-		} catch (SQLException e) {
+		}
+			
+		} catch (Exception e) {
 			logger.error("\n Exception:", e);
+			return null;
 		}
 
 		return storageReponse;
@@ -260,11 +264,12 @@ public class TableQueryer implements SmartBehaviour<BrainIoTEvent> { // TODO mus
 		
 		DockingResponse dockReponse = new DockingResponse();
 		dockReponse.robotID = dockingRequest.robotID;
-
-		ResultSet rs;
 		try {
-			rs = stmt.executeQuery("SELECT * FROM DockTable WHERE IPid = '"+ dockingRequest.robotID+"'");
-
+		ResultSet rs = tablesCreator.executeQuery("SELECT * FROM DockTable WHERE IPid = '"+ dockingRequest.robotID+"'");
+		if (rs == null) {
+			logger.error("Error accours to query DockTable, nothing to reply");
+			return null;
+		} else {
 			while (rs.next()) {
 
 				dockReponse.hasNewPoint = true;
@@ -272,8 +277,10 @@ public class TableQueryer implements SmartBehaviour<BrainIoTEvent> { // TODO mus
 				dockReponse.dockingPoint = rs.getString("dockPose");
 				break;
 			}
-		} catch (SQLException e) {
+		}
+		} catch (Exception e) {
 			logger.error("\n Exception:", e);
+			return null;
 		}
 
 		return dockReponse;
@@ -299,16 +306,17 @@ public class TableQueryer implements SmartBehaviour<BrainIoTEvent> { // TODO mus
 
 		Coordinate targetPoint = getCoordinate(cartMovedNotice.pickPoint);
 		Coordinate pickPose = null;
-		
-		ResultSet rs;
 		try {
-			rs = stmt.executeQuery("SELECT * FROM PickingTable WHERE isAssigned=true");
-
+		ResultSet rs = tablesCreator.executeQuery("SELECT * FROM PickingTable WHERE isAssigned=true");
+		if (rs == null) {
+			logger.error("Error accours to query PickingTable marked with TRUE, nothing to reply");
+			return null;
+		} else {
 			while (rs.next()) {
 				pickPose = getCoordinate(rs.getString("pose"));
 				
 				if(pickPose.getX() == targetPoint.getX() && pickPose.getY() == targetPoint.getY() && pickPose.getZ() == targetPoint.getZ()) {
-					stmt.executeUpdate(
+					tablesCreator.executeUpdate(
 							"UPDATE PickingTable SET isAssigned='" + false + "' WHERE PPid='" + rs.getString("PPid") + "'");
 					pickPose = null;
 					break;
@@ -316,22 +324,21 @@ public class TableQueryer implements SmartBehaviour<BrainIoTEvent> { // TODO mus
 				pickPose = null;
 				
 			}
-			logger.info("------------  PickingTable ----------------");
-
-			  rs = stmt.executeQuery("SELECT * FROM PickingTable");
-
-			  while (rs.next()) {
-			       logger.info(rs.getString("PPid") + ", " + rs.getString("pose")+ ", " + rs.getString("isAssigned"));
-			  }
-			  
-			  logger.info("Table Queryer is sending CartNoticeResponse = "+CartNoticeResponse.noticeStatus);
-			  
-		} catch (SQLException e) {
-			logger.error("\n Exception:", e);
 		}
-		
-		
+		logger.info("------------Queryer:  PickingTable ----------------");
 
+		  rs = tablesCreator.executeQuery("SELECT * FROM PickingTable");
+
+		  while (rs.next()) {
+		       logger.info(rs.getString("PPid") + ", " + rs.getString("pose")+ ", " + rs.getString("isAssigned"));
+		  }
+		  
+		  logger.info("Table Queryer is sending CartNoticeResponse = "+CartNoticeResponse.noticeStatus);
+			
+		} catch (Exception e) {
+			logger.error("\n Exception:", e);
+			return null;
+		}
 		return cartNoticeResponse;
 	}
 	
@@ -343,42 +350,48 @@ public class TableQueryer implements SmartBehaviour<BrainIoTEvent> { // TODO mus
 	//	Coordinate targetPoint = noCartNotice.pickPoint;
 		Coordinate targetPoint = getCoordinate(noCartNotice.pickPoint);
 		Coordinate pickPose = null;
-		ResultSet rs;
+	
 		try {
-			rs = stmt.executeQuery("SELECT * FROM PickingTable WHERE isAssigned=true");
-
-			while (rs.next()) {
-				pickPose = getCoordinate(rs.getString("pose"));
-				
-				if(pickPose.getX() == targetPoint.getX() && pickPose.getY() == targetPoint.getY() && pickPose.getZ() == targetPoint.getZ()) {
-					stmt.executeUpdate(
-							"UPDATE PickingTable SET isAssigned='" + false + "' WHERE PPid='" + rs.getString("PPid") + "'");
+			ResultSet rs = tablesCreator.executeQuery("SELECT * FROM PickingTable WHERE isAssigned=true");
+			if (rs == null) {
+				logger.error("Error accours to query PickingTable marked with TRUE, nothing to reply");
+				return null;
+			} else {
+				while (rs.next()) {
+					pickPose = getCoordinate(rs.getString("pose"));
+					
+					if(pickPose.getX() == targetPoint.getX() && pickPose.getY() == targetPoint.getY() && pickPose.getZ() == targetPoint.getZ()) {
+						tablesCreator.executeUpdate(
+								"UPDATE PickingTable SET isAssigned='" + false + "' WHERE PPid='" + rs.getString("PPid") + "'");
+						pickPose = null;
+						break;
+					}
 					pickPose = null;
-					break;
+					
 				}
-				pickPose = null;
-				
 			}
-		} catch (SQLException e) {
-			logger.error("\n Exception:", e);
-		}
+			logger.info("------------Queryer:  PickingTable ----------------");
+
+			  rs = tablesCreator.executeQuery("SELECT * FROM PickingTable");
+
+			  while (rs.next()) {
+			       logger.info(rs.getString("PPid") + ", " + rs.getString("pose")+ ", " + rs.getString("isAssigned"));
+			  }
+			  
+			  logger.info("Table Queryer is sending CartNoticeResponse = "+CartNoticeResponse.noticeStatus);
+				
+			} catch (Exception e) {
+				logger.error("\n Exception:", e);
+				return null;
+			}
 
 		return cartNoticeResponse;
 	}
 	
 	
+	
 	@Deactivate
 	void stop() {
-		try {
-			if (stmt != null && !stmt.isClosed()) {
-				stmt.close();
-			}
-			if (conn != null && !conn.isClosed()) {
-				conn.close();
-			}
-		} catch (SQLException e) {
-			logger.error("\n Exception:", e);
-		}
 		worker.shutdown();
 		try {
 			worker.awaitTermination(1, TimeUnit.SECONDS);
@@ -386,8 +399,44 @@ public class TableQueryer implements SmartBehaviour<BrainIoTEvent> { // TODO mus
 			Thread.currentThread().interrupt();
 			logger.error("\n Exception:", ie);
 		}
+		logger.info("------------  Table Queryer is deactivated----------------");
 	}
+	
+	
 
+	private static class PendingRequest {
+		public Predicate<? super BrainIoTEvent> consumer;  // acceptableResponse
+		public BrainIoTEvent toResend;     // requestEvent
+		public Deferred<? super BrainIoTEvent> latch;
+		
+		public int processed = -1;
+	}
+	
+	private Promise<NewPickPointResponse> pickResponseAsync(NewPickPointRequest pickRequest) {
+		
+			return awaitResponse(pickRequest, response -> {
+				if(response instanceof NewPickPointResponse) {
+					NewPickPointResponse resp = (NewPickPointResponse) response;
+					return pickRequest.robotID == resp.robotID;
+				}
+				return false;
+			})
+			.map(e -> (NewPickPointResponse)e)
+			.thenAccept(e -> logger.info("------Table Queryer Recieved a NewPickPointResponse with robotID=" + e.robotID +" from Table Creator -----"));
+	}
+	
+	
+	private Promise<BrainIoTEvent> awaitResponse(BrainIoTEvent requestEvent, 
+			Predicate<BrainIoTEvent> acceptableResponse) {
+		PendingRequest pr = new PendingRequest();
+		pr.toResend = requestEvent;
+		pr.consumer = acceptableResponse;
+		Deferred<BrainIoTEvent> deferred = new Deferred<>();
+		pr.latch = deferred;
+		pendingRequests.add(pr);    // CopyOnWriteArrayList
+		eventBus.deliver(requestEvent);   // for each await, a new command will be sent
+		return deferred.getPromise().timeout(10000).onResolve(() -> pendingRequests.remove(pr));
+	}
 
 
 }

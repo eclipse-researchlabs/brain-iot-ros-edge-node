@@ -26,7 +26,8 @@
 	bnd.identity;version='0.2.1';id='org.ros.rosjava.message_generation',\
 	bnd.identity;version='latest';id='eu.brain.iot.robot.behaviour',\
 	bnd.identity;version='latest';id='eu.brain.iot.robot.tables.queryer',\
-	bnd.identity;id='eu.brain.iot.service.robotic.door.impl'
+	bnd.identity;id='eu.brain.iot.service.robotic.door.impl',\
+	bnd.identity;version='latest';id='eu.brain.iot.robot.tables.creator'
 
 
 
@@ -69,14 +70,17 @@
 	log4j;version='[1.2.17,1.2.18)',\
 	org.ros.rosjava;version='[0.2.2,0.2.3)',\
 	slf4j.api;version='[1.7.30,1.7.31)',\
-	be.iminds.iot.ros.core;version=snapshot,\
-	eu.brain.iot.robot.api;version=snapshot,\
-	eu.brain.iot.robot.behaviour;version=snapshot,\
-	eu.brain.iot.robot.config;version=snapshot,\
-	eu.brain.iot.robot.msgs;version=snapshot,\
-	eu.brain.iot.robot.service;version=snapshot,\
-	eu.brain.iot.robot.tables.queryer;version=snapshot,\
-	org.apache.felix.configurator;version='[1.0.6,1.0.7)'
+	org.apache.felix.configurator;version='[1.0.6,1.0.7)',\
+	be.iminds.iot.ros.core;version='[0.0.4,0.0.5)',\
+	com.google.gson.bundle;version='[2.8.5,2.8.6)',\
+	eu.brain.iot.robot.api;version='[0.0.4,0.0.5)',\
+	eu.brain.iot.robot.behaviour;version='[0.0.4,0.0.5)',\
+	eu.brain.iot.robot.config;version='[0.0.4,0.0.5)',\
+	eu.brain.iot.robot.msgs;version='[0.0.4,0.0.5)',\
+	eu.brain.iot.robot.service;version='[0.0.4,0.0.5)',\
+	eu.brain.iot.robot.tables.creator;version='[0.0.4,0.0.5)',\
+	eu.brain.iot.robot.tables.creator.api;version='[0.0.4,0.0.5)',\
+	eu.brain.iot.robot.tables.queryer;version='[0.0.4,0.0.5)'
 	
 	
 	
