@@ -511,7 +511,7 @@ public class RobotBehaviour implements SmartBehaviour<BrainIoTEvent> {
 		WriteGoTo writeGoTo = createWriteGoTo(coordinate); // writeGOTO
 		queryReturn = null;
 		eventBus.deliver(writeGoTo);
-		logger.info("-->RB" + robotID + " is sending WriteGoTo: "+ coordinate +"with robotID = "+writeGoTo.robotID);
+		logger.info("-->RB" + robotID + " is sending WriteGoTo: "+ coordinate +" with robotID = "+writeGoTo.robotID);
 
 		if (waitQueryReturn(writeGoTo.command)) { // always true.
 			CurrentState currentState = queryReturn.currentState;

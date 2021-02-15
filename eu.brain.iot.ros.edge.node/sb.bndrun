@@ -3,8 +3,6 @@
 
 -runee: JavaSE-1.8
 
-#; skip:="osgi.service"
-
 -resolve.effective: resolve, active
 
 -runtrace: 		false
@@ -19,8 +17,6 @@
 
 
 -runrequires: \
-	bnd.identity;id='be.iminds.iot.ros.core',\
-	bnd.identity;id='eu.brain.iot.robot.msgs',\
 	bnd.identity;id='eu.brain.iot.ros.edge.node'
 
 

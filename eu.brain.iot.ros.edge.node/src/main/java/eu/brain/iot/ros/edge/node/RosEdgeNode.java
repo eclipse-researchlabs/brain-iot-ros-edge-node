@@ -1,5 +1,12 @@
 package eu.brain.iot.ros.edge.node;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.RandomAccessFile;
+import java.nio.ByteBuffer;
+import java.nio.channels.FileChannel;
+import java.nio.charset.StandardCharsets;
 import java.util.Dictionary;
 import java.util.Hashtable;
 import java.util.LinkedList;
@@ -10,6 +17,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
+
+import org.apache.commons.lang.exception.ExceptionUtils;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.component.annotations.Activate;
@@ -48,7 +57,7 @@ import org.slf4j.LoggerFactory;
 
 @Component(
 		immediate=true,
-		service = {SmartBehaviour.class, NodeMain.class})
+		service = {NodeMain.class})
 @SmartBehaviourDefinition(
 		consumed = {WriteGoTo.class, Cancel.class, PickCart.class, PlaceCart.class, QueryState.class, CheckMarker.class },    
 		author = "LINKS", name = "ROS Edge Node",
@@ -82,6 +91,9 @@ public class RosEdgeNode extends AbstractNodeMain implements SmartBehaviour<Robo
 
 	private static final Logger logger = (Logger) LoggerFactory.getLogger(RosEdgeNode.class.getSimpleName());
 	
+//	private BufferedWriter out = null;
+	private static volatile FileWriter out = null;
+	
     @Activate
 	void activate(BundleContext context, Map<String,Object> props){
     	
@@ -89,11 +101,26 @@ public class RosEdgeNode extends AbstractNodeMain implements SmartBehaviour<Robo
 			this.robotID = ros.getRobotId();
 			this.robotIP = ros.getRobotIP();
 			
+	/*		RandomAccessFile writer = null;
+			FileChannel channel = null;*/
+			
+		try {
+	/*		writer = new RandomAccessFile("/opt/fabric/resources/roscore1.log", "rw");
+			channel = writer.getChannel();
+			ByteBuffer buff = ByteBuffer.wrap("Hello!  I am ROS Edge Node ".getBytes(StandardCharsets.UTF_8));
+			channel.write(buff);*/
+			out = new FileWriter("/opt/fabric/resources/rosnode.log", true);
+		//	out = new BufferedWriter(new FileWriter("/opt/fabric/resources/rosnode.log", true));
 
-    	String UUID = context.getProperty("org.osgi.framework.uuid");
-
+			String UUID = context.getProperty("org.osgi.framework.uuid");
+			
+    	out.write("\nHello!  I am ROS Edge Node : "+robotID+ "  name = "+robotName+ "  IP = "+robotIP+ ",  UUID = "+UUID);
+    	out.flush();
+    	
     	logger.info("\nHello!  I am ROS Edge Node : "+robotID+ "  name = "+robotName+ "  IP = "+robotIP+ ",  UUID = "+UUID);
-	    
+    	
+    	System.out.println("\nHello!  I am ROS Edge Node : "+robotID+ "  name = "+robotName+ "  IP = "+robotIP+ ",  UUID = "+UUID);
+    	
 	    worker = Executors.newFixedThreadPool(10);
 
 		Dictionary<String, Object> serviceProps = new Hashtable<>(props.entrySet().stream()
@@ -103,7 +130,21 @@ public class RosEdgeNode extends AbstractNodeMain implements SmartBehaviour<Robo
 				String.format("(|(robotID=%s)(robotID=%s))", robotID, RobotCommand.ALL_ROBOTS));
 
 		logger.info("+++++++++ Ros Edge Node filter = " + serviceProps.get(SmartBehaviourDefinition.PREFIX_ + "filter"));
+		out.write("\n+++++++++ Ros Edge Node filter = " + serviceProps.get(SmartBehaviourDefinition.PREFIX_ + "filter"));
 		reg = context.registerService(SmartBehaviour.class, this, serviceProps);
+		
+			} catch (IOException e) {
+				logger.error("\n ROS Edge Node Write log.txt Exception: {}", ExceptionUtils.getStackTrace(e));
+			} finally {
+				if (out != null) {
+					try {
+						out.flush();
+						out.close();
+					} catch (IOException e) {
+						logger.error("\n ROS Edge Node close log.txt Exception: {}", ExceptionUtils.getStackTrace(e));
+					}
+				}
+			}
 
 	}
 
@@ -116,15 +157,24 @@ public class RosEdgeNode extends AbstractNodeMain implements SmartBehaviour<Robo
 	public void onStart(ConnectedNode connectedNode) {
 		
 		logger.info("\n The ROS Edge Node is registering....for Robot "+robotID);
+		System.out.println("\n The ROS Edge Node is registering....for Robot "+robotID);
+		
 		try {
+		out = new FileWriter("/opt/fabric/resources/rosnode.log", true);
+		out.write("\n The ROS Edge Node is registering....for Robot "+robotID);
+		
 		MessageFactory msgfactory =  connectedNode.getTopicMessageFactory();  
 
 		availibility =new AvailibilityComponent(connectedNode,robotName) {};
 		availibility.register();
 		logger.info("availibility registered.");
+		out.write("\navailibility registered.");
+		
 		ar_pose_marker=new PoseMarkerComponent(connectedNode,robotName) {};
 		ar_pose_marker.register();
 		logger.info("ar_pose_marker registered."); 
+		out.write("\nar_pose_marker registered.");
+		
 		goToComponent=new GoToComponent(connectedNode,msgfactory,robotName) {
 			@Override
 			 public GoToPetitionRequest constructMsg_gotoRun()
@@ -163,19 +213,22 @@ public class RosEdgeNode extends AbstractNodeMain implements SmartBehaviour<Robo
 		};
 		goToComponent.register();
 		logger.info("GoToComponent service registed.");
+		out.write("\nGoToComponent service registed.");
 		
 		pickComponent=new PickComponent(connectedNode,msgfactory,robotName) {
 			@Override
 			public PickPetitionRequest constructMsg_pickRun() {
 				robot_local_control_msgs.PickPetitionRequest pickRequest=pickRun.serviceClient.newMessage();
 				Pick procedure= msgfactory.newFromType(Pick._TYPE);
-			//	procedure.setPickFrameId(pickFrameId);
+				procedure.setPickFrameId(pickFrameId); // TODO 1, to be used in real robot, 2 is in queryer
 				pickRequest.setProcedure(procedure);
 				return pickRequest;
 			}
 		};
 		pickComponent.register();
 		logger.info("PickComponent service registed.");
+		out.write("\nPickComponent service registed.");
+		
 		placeComponent=new PlaceComponent(connectedNode,msgfactory,robotName) {
 			@Override
 			public PlacePetitionRequest constructMsg_placeRun() {
@@ -188,18 +241,47 @@ public class RosEdgeNode extends AbstractNodeMain implements SmartBehaviour<Robo
 		};
 		placeComponent.register();
 		logger.info("PlaceComponent service registed.");
+		out.write("\nPlaceComponent service registed.");
 		
 		broadCastReady();
 
-		}catch(Exception e) {
-			logger.error("\n ROS Edge Node Exception:", e);
+		} catch(IOException e) { // for write to log file
+			logger.error("\n ROS Edge Node IOException: {}", ExceptionUtils.getStackTrace(e));
+	/*		if (out != null) {
+				try {
+					out.close();
+				} catch (IOException ei) {
+					logger.error("\n ROS Edge Node Close log.txt Exception: {}", ExceptionUtils.getStackTrace(ei));
+				}
+			}*/
+		} catch(Exception e) {
+			logger.error("\n ROS Edge Node Exception: {}", ExceptionUtils.getStackTrace(e));
+			try {
+				out.write("\n ROS Edge Node Exception: "+ ExceptionUtils.getStackTrace(e));
+			} catch (IOException e1) {
+				logger.error("\n ROS Edge Node Close log.txt Exception: {}", ExceptionUtils.getStackTrace(e1));
+			/*	if (out != null) {
+					try {
+						out.close();
+					} catch (IOException ei) {
+						logger.error("\n ROS Edge Node Close log.txt Exception: {}", ExceptionUtils.getStackTrace(ei));
+					}
+				}*/
+			}
+		} finally {
+			if (out != null) {
+				try {
+					out.flush();
+					out.close();
+				} catch (IOException ei) {
+					logger.error("\n ROS Edge Node Close log.txt Exception: {}", ExceptionUtils.getStackTrace(ei));
+				}
+			}
 		}
-	
-		
 	}
 	
 	
-	public void broadCastReady()
+	public void broadCastReady() throws IOException
 	{
 		RobotReadyBroadcast rbc=new RobotReadyBroadcast();  // TODO  RobotReady not exist in real robot, now only for local test
 		rbc.robotID = robotID;
@@ -207,13 +289,19 @@ public class RosEdgeNode extends AbstractNodeMain implements SmartBehaviour<Robo
 		rbc.isReady = true;
 		eventBus.deliver(rbc);
 		logger.info(" >>> robot_"+robotID+" broadCast Ready info");
+		RosEdgeNode.out.write("\n >>> robot_"+robotID+" broadCast Ready info");
 		
 	}
 
 	@Override
 	public void notify(RobotCommand event) {
 		
-		logger.info(" >>> Robot "+robotID+" received an event: " + event.getClass()+" with robotID = "+event.robotID);
+		try {
+			out = new FileWriter("/opt/fabric/resources/rosnode.log", true);
+			
+		logger.info(" >>> Robot "+robotID+" received an event: " + event.getClass().getSimpleName()+" with robotID = "+event.robotID);
+		
+		out.write("\n >>> Robot "+robotID+" received an event: " + event.getClass().getSimpleName()+" with robotID = "+event.robotID);
 		
 
 		if (event instanceof WriteGoTo) {
@@ -221,6 +309,11 @@ public class RosEdgeNode extends AbstractNodeMain implements SmartBehaviour<Robo
 			WriteGoTo writeGoTo = (WriteGoTo) event;
 			worker.execute(() ->{
 				logger.info(" >>> Robot "+robotID+" received GoTo: " + writeGoTo.coordinate);
+				try {
+					RosEdgeNode.out.write("\n >>> Robot "+robotID+" received GoTo: " + writeGoTo.coordinate);
+				} catch (IOException e) {
+					logger.error("\n ROS Edge Node write rosnode.txt Exception: {}", ExceptionUtils.getStackTrace(e));
+				}
 				QueryStateValueReturn queryReturnedValue =new QueryStateValueReturn(); 
 				
 				String sendResult = writeGOTO(writeGoTo.coordinate);
@@ -237,9 +330,20 @@ public class RosEdgeNode extends AbstractNodeMain implements SmartBehaviour<Robo
 							
 							logger.info(" >>> robot "+robotID+" WriteGOTO gets CallResponse: result="+callResp.result+", current_state="+callResp.current_state
 									+", last_event="+callResp.last_event+", message is: "+callResp.message);
+							try {
+								RosEdgeNode.out.write("\n >>> robot "+robotID+" WriteGOTO gets CallResponse: result="+callResp.result+", current_state="+callResp.current_state
+										+", last_event="+callResp.last_event+", message is: "+callResp.message);
+							} catch (IOException e) {
+								logger.error("\n ROS Edge Node write rosnode.txt Exception: {}", ExceptionUtils.getStackTrace(e));
+							}
 							
 							if(callResp.last_event.equals("abort")) {
 								logger.info(" >>> robot "+robotID+" query WriteGOTO action finished, but last_event = abort, so send CurrentState = unknown!");
+								try {
+									RosEdgeNode.out.write("\n >>> robot "+robotID+" query WriteGOTO action finished, but last_event = abort, so send CurrentState = unknown!");
+								} catch (IOException e) {
+									logger.error("\n ROS Edge Node write rosnode.txt Exception: {}", ExceptionUtils.getStackTrace(e));
+								}
 							//	continue; // the case might be one action is running, another action cmd is also received, 2nd cmd will be abort.
 								queryReturnedValue.currentState = CurrentState.unknown;
 								break;
@@ -251,6 +355,12 @@ public class RosEdgeNode extends AbstractNodeMain implements SmartBehaviour<Robo
 							
 							logger.info(" >>> robot "+robotID+" WriteGOTO gets CallResponse: result="+callResp.result+", current_state="+callResp.current_state
 									+", last_event="+callResp.last_event+", message is: "+callResp.message);
+							try {
+								RosEdgeNode.out.write("\n >>> robot "+robotID+" WriteGOTO gets CallResponse: result="+callResp.result+", current_state="+callResp.current_state
+										+", last_event="+callResp.last_event+", message is: "+callResp.message);
+							} catch (IOException e) {
+								logger.error("\n ROS Edge Node write rosnode.txt Exception: {}", ExceptionUtils.getStackTrace(e));
+							}
 							queryReturnedValue.currentState = CurrentState.unknown;
 							break;
 						} else {
@@ -259,12 +369,22 @@ public class RosEdgeNode extends AbstractNodeMain implements SmartBehaviour<Robo
 					}else {
 						queryReturnedValue.currentState = CurrentState.unknown;
 						logger.info(" >>> robot "+robotID+" query WriteGOTO no response, timeout!"); //TODO, let it query max=3 times, ==> may be done in goToComponent
+						try {
+							RosEdgeNode.out.write("\n >>> robot "+robotID+" query WriteGOTO no response, timeout!");
+						} catch (IOException e) {
+							logger.error("\n ROS Edge Node write rosnode.txt Exception: {}", ExceptionUtils.getStackTrace(e));
+						}
 						break;
 					}
 				  }  // while end
 				} else {
 					queryReturnedValue.currentState = CurrentState.unknown;
 					logger.info(" >>> robot "+robotID+" sends WriteGOTO failed! Return CurrentState.unknown");
+					try {
+						RosEdgeNode.out.write("\n >>> robot "+robotID+" sends WriteGOTO failed! Return CurrentState.unknown");
+					} catch (IOException e) {
+						logger.error("\n ROS Edge Node write rosnode.txt Exception: {}", ExceptionUtils.getStackTrace(e));
+					}
 				}
 				eventBus.deliver(queryReturnedValue);
 				}
@@ -293,9 +413,20 @@ public class RosEdgeNode extends AbstractNodeMain implements SmartBehaviour<Robo
 								
 								logger.info(" >>> robot "+robotID+" pickCart gets CallResponse: result="+callResp.result+", current_state="+callResp.current_state
 										+", last_event="+callResp.last_event+", message is: "+callResp.message);
+								try {
+									RosEdgeNode.out.write("\n >>> robot "+robotID+" pickCart gets CallResponse: result="+callResp.result+", current_state="+callResp.current_state
+											+", last_event="+callResp.last_event+", message is: "+callResp.message);
+								} catch (IOException e) {
+									logger.error("\n ROS Edge Node write rosnode.txt Exception: {}", ExceptionUtils.getStackTrace(e));
+								}
 								
 								if(callResp.last_event.equals("abort")) {
 									logger.info("robot "+robotID+" query pickCart action finished, but last_event = abort, so send CurrentState = unknown!");
+									try {
+										RosEdgeNode.out.write("\nrobot "+robotID+" query pickCart action finished, but last_event = abort, so send CurrentState = unknown!");
+									} catch (IOException e) {
+										logger.error("\n ROS Edge Node write rosnode.txt Exception: {}", ExceptionUtils.getStackTrace(e));
+									}
 								//	continue; // the case might be one action is running, another action cmd is also received, 2nd cmd will be abort.
 									queryReturnedValue.currentState = CurrentState.unknown;
 									break;
@@ -306,6 +437,12 @@ public class RosEdgeNode extends AbstractNodeMain implements SmartBehaviour<Robo
 								
 								logger.info(" >>> robot "+robotID+" pickCart gets CallResponse: result="+callResp.result+", current_state="+callResp.current_state
 										+", last_event="+callResp.last_event+", message is: "+callResp.message);
+								try {
+									RosEdgeNode.out.write("\n >>> robot "+robotID+" pickCart gets CallResponse: result="+callResp.result+", current_state="+callResp.current_state
+											+", last_event="+callResp.last_event+", message is: "+callResp.message);
+								} catch (IOException e) {
+									logger.error("\n ROS Edge Node write rosnode.txt Exception: {}", ExceptionUtils.getStackTrace(e));
+								}
 								queryReturnedValue.currentState = CurrentState.unknown;
 								break;
 							} else {
@@ -314,12 +451,22 @@ public class RosEdgeNode extends AbstractNodeMain implements SmartBehaviour<Robo
 						}else {
 							queryReturnedValue.currentState = CurrentState.unknown;
 							logger.info(" >>> robot "+robotID+" query pickCart no response, timeout!"); //TODO, let it query max=3 times, ==> may be done in goToComponent
+							try {
+								RosEdgeNode.out.write("\n >>> robot "+robotID+" query pickCart no response, timeout!");
+							} catch (IOException e) {
+								logger.error("\n ROS Edge Node write rosnode.txt Exception: {}", ExceptionUtils.getStackTrace(e));
+							}
 							break;
 						}
 					  }  // while end
 					}else {
 						queryReturnedValue.currentState = CurrentState.unknown;
 						logger.info(" >>> robot "+robotID+" sends pickCart failed! Return CurrentState.unknown");
+						try {
+							RosEdgeNode.out.write("\n >>> robot "+robotID+" sends pickCart failed! Return CurrentState.unknown");
+						} catch (IOException e) {
+							logger.error("\n ROS Edge Node write rosnode.txt Exception: {}", ExceptionUtils.getStackTrace(e));
+						}
 					}
 					eventBus.deliver(queryReturnedValue);
 					}
@@ -429,6 +576,19 @@ public class RosEdgeNode extends AbstractNodeMain implements SmartBehaviour<Robo
 								
 		}
 		
+		} catch (IOException e) {
+			logger.error("\n ROS Edge Node write rosnode.txt Exception: {}", ExceptionUtils.getStackTrace(e));
+		} finally {
+			if (out != null) {
+				try {
+					out.flush();
+					out.close();
+				} catch (IOException ei) {
+					logger.error("\n ROS Edge Node Close log.txt Exception: {}", ExceptionUtils.getStackTrace(ei));
+				}
+			}
+		}
+		
 	}
 
 	private String writeGOTO(String coordinate) {
@@ -447,8 +607,8 @@ public class RosEdgeNode extends AbstractNodeMain implements SmartBehaviour<Robo
 	}
 	
 	private String pickCart(int markerID){
-	//	String cartName= cartMapper.getCartName(markerID);
-	//	this.pickFrameId=cartName;
+		String cartName= cartMapper.getCartName(markerID);//
+		this.pickFrameId=cartName;//
 		robot_local_control_msgs.PickPetitionRequest Pickrequest= pickComponent.constructMsg_pickRun();
 		return pickComponent.call_pickRun(Pickrequest);  // ok/error
 	}
@@ -522,7 +682,7 @@ public class RosEdgeNode extends AbstractNodeMain implements SmartBehaviour<Robo
 				try {
 					TimeUnit.SECONDS.sleep(1);
 				} catch (InterruptedException e) {
-					e.printStackTrace();
+					logger.error("\nRos Edge Node Exception: {}", ExceptionUtils.getStackTrace(e));
 				}
 				markerList = ar_pose_marker.get_poseMarker_value().getMarkers();
 			}
@@ -537,12 +697,18 @@ public class RosEdgeNode extends AbstractNodeMain implements SmartBehaviour<Robo
 		try {
 			TimeUnit.SECONDS.sleep(t);
 		} catch (InterruptedException e) {
-			logger.error("\n Exception:", e);
+			logger.error("\nRos Edge Node Exception: {}", ExceptionUtils.getStackTrace(e));
 		}
 	}
 	
 	  @Deactivate
 		void stop() {
+		  try {
+			out.close();
+		} catch (IOException e) {
+			logger.error("\nRos Edge Node Exception: {}", ExceptionUtils.getStackTrace(e));
+		} 
+		  if(reg!=null) {
 			reg.unregister();
 			worker.shutdown();
 			try {
@@ -550,6 +716,7 @@ public class RosEdgeNode extends AbstractNodeMain implements SmartBehaviour<Robo
 			} catch (InterruptedException ie) {
 				Thread.currentThread().interrupt();
 			}
+		  }
 			logger.info("------------  ROS Edge Node "+ robotID+" is deactivated----------------");
 		}
 }

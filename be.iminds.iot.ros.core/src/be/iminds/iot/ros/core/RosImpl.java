@@ -22,7 +22,10 @@
  *******************************************************************************/
 package be.iminds.iot.ros.core;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Map.Entry;
 import java.net.Socket;
 import java.net.URI;
@@ -39,6 +42,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang.exception.ExceptionUtils;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.component.ComponentContext;
 import org.osgi.service.component.annotations.Activate;
@@ -105,12 +109,16 @@ public class RosImpl extends AbstractNodeMain implements Ros {
 
 	// also register a node to get access to basic ros info
 	private ConnectedNode node;
+//	private BufferedWriter out = null;
+	private static volatile FileWriter out = null;
 
 	private static final Logger logger = (Logger) LoggerFactory.getLogger(RosImpl.class.getSimpleName());
 	
 	@Activate
-	void activate(BundleContext context, Map<String, Object> properties) throws Exception {
+	void activate(BundleContext context, Map<String, Object> properties) {
 		try {
+			
+
 			String uri = null;
 
 			if (!properties.isEmpty()) {
@@ -135,33 +143,36 @@ public class RosImpl extends AbstractNodeMain implements Ros {
 					uri = getVariable(context, "ROS_MASTER_URI", "ros.master.uri");
 				}
 			}
+			
+	//		out = new BufferedWriter(new FileWriter("/opt/fabric/resources/rosImpl.log", true));
+			out = new FileWriter("/opt/fabric/resources/rosImpl.log", true);
 
 			if(uri == null){
-				logger.error("Exception:", new Exception("No master URI configured!"));
-			//	throw new Exception("No master URI configured!");
-			//	deactivate();
+				logger.error("Exception: No master URI configured!");
+				out.write("\nException: No master URI configured!");
+				deactivate();
 			}
 			masterURI = new URI(uri);//uri
 			logger.info("--> masterURI = "+masterURI);
+			out.write("\n--> masterURI = "+masterURI);
 			
 			if(robotIP == null) {
 				String[] strs = uri.split(":");
 				robotIP = strs[1].substring(2);
 				logger.info("--> robotIP = "+robotIP);
+				out.write("\n--> robotIP = "+robotIP);
 			}
 
 			logger.info("--> robotName = "+robotName);
+			out.write("\n--> robotName = "+robotName);
 			logger.info("--> robotId = "+robotId);
+			out.write("\n--> robotId = "+robotId);
 			
 			distro = getVariable(context, "ROS_DISTRO", "ros.distro");
 			namespace = getVariable(context, "ROS_NAMESPACE", "ros.namespace");
 			root = getVariable(context, "ROS_ROOT", "ros.root");
 			packagePath = getVariable(context, "ROS_PACKAGE_PATH", "ros.package.path");
-		} catch(Exception e){
-		//	System.err.println("Error setting up the ROS environment: "+e.getMessage());
-		//	throw e;
-			logger.error("Error setting up the ROS environment: ", e);
-		} 
+		
 		
 		// create threadpool for running additional rosjava nodes
 		// these parameters are equal as for CachedThreadPool ... change if useful
@@ -177,6 +188,7 @@ public class RosImpl extends AbstractNodeMain implements Ros {
 		// start ROS core if required
 		boolean start = rosCoreActive();
 		logger.info("roscore has been started = " + start);
+		out.write("\nroscore has been started = " + start);
 		
 		if(!start){
 			logger.info("start installed ROS system");
@@ -192,10 +204,6 @@ public class RosImpl extends AbstractNodeMain implements Ros {
 				// native ROScore process
 				ProcessBuilder builder = new ProcessBuilder("roscore", "-p "+masterURI.getPort());
 				builder.environment().put("ROS_MASTER_URI", masterURI.toString());
-				/* File log = new File("log");
-				 builder.redirectErrorStream(true);
-				 builder.redirectOutput(Redirect.appendTo(log));
-				//builder.inheritIO();*/
 				nativeCore = builder.start();
 				
 			} else {
@@ -206,7 +214,7 @@ public class RosImpl extends AbstractNodeMain implements Ros {
 				logger.info("ROS core service [/rosout] started on "+core.getUri());
 			}
 			} catch(Exception e){
-					logger.error("Launch roscore Exception: ", e);
+					logger.error("Launch roscore Exception: {}", ExceptionUtils.getStackTrace(e));
 			} 
 		}
 		
@@ -220,6 +228,19 @@ public class RosImpl extends AbstractNodeMain implements Ros {
 		addNode(this);
 		
 		logger.info("ROS Edge Node is connected");
+		out.write("\nROS Edge Node is connected");
+		} catch(Exception e){
+				logger.error("Error setting up the ROS environment: {}", ExceptionUtils.getStackTrace(e));
+			} finally {
+				if (out != null) {
+					try {
+						out.flush();
+						out.close();
+					} catch (IOException ei) {
+						logger.error("\n ROS Edge Node Close log.txt Exception: {}", ExceptionUtils.getStackTrace(ei));
+					}
+				}
+			}
 	}
 	
 	@Deactivate

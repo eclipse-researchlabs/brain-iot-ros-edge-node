@@ -1,6 +1,5 @@
 # Configure Repositories
 
-
 -releaserepo: Release
 -baselinerepo: Release
 # Always use contracts  
@@ -21,7 +20,7 @@ mockito-deps: org.objenesis; version=2.6.0,\
   net.bytebuddy.byte-buddy-agent; version=1.7.9 
 
 
-# -buildrepo: 			BrainIot  
+# -buildrepo: 			BrainIot   
 
 #To access Maven Central use the following configuration:
 -plugin.4.Central = \

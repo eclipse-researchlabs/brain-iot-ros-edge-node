@@ -126,7 +126,7 @@ public class TableQueryer implements SmartBehaviour<BrainIoTEvent> { // TODO mus
 	@Override
 	public void notify(BrainIoTEvent event) {
 
-		logger.info("--> Table Queryer received an event "+event.getClass());
+		logger.info("--> Table Queryer received an event "+event.getClass().getSimpleName());
 		
 		if (event instanceof NewPickPointRequest) {
 			NewPickPointRequest pickRequest = (NewPickPointRequest) event;

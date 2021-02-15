@@ -15,13 +15,6 @@
 	</properties>
 
 	<repositories>
-
-	<!--  	<repository>
-			<id>spring</id>
-			<name>Spring Libs Repository</name>
-			<url>https://repo.spring.io/libs-release</url>
-		</repository>
--->
 		<repository>
 			<id>jfrog</id>
 			<name>jfrog libs-releases</name>
@@ -116,9 +109,6 @@
 			<version>1.1.1</version>
 			<scope>runtime</scope>
 		</dependency>
-
-		<!-- <dependency> <groupId>org.apache.commons</groupId> <artifactId>com.springsource.org.apache.commons.net</artifactId> 
-			<version>2.0.0</version> <scope>runtime</scope> </dependency> https://mvnrepository.com/artifact/commons-net/commons-net -->
 		<dependency>
 			<groupId>commons-net</groupId>
 			<artifactId>commons-net</artifactId>
@@ -158,23 +148,17 @@
 			<version>1.3</version>
 			<scope>runtime</scope>
 		</dependency>
-
-		<!-- <dependency> <groupId>org.apache.commons</groupId> <artifactId>com.springsource.org.apache.commons.io</artifactId> 
-			<version>1.4.0</version> <scope>runtime</scope> </dependency> https://mvnrepository.com/artifact/commons-io/commons-io -->
 		<dependency>
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
 			<version>1.4</version>
 			<scope>runtime</scope>
 		</dependency>
-
-		<!-- <dependency> <groupId>org.apache.commons</groupId> <artifactId>com.springsource.org.apache.commons.lang</artifactId> 
-			<version>2.4.0</version> <scope>runtime</scope> </dependency> https://mvnrepository.com/artifact/commons-lang/commons-lang -->
 		<dependency>
 			<groupId>commons-lang</groupId>
 			<artifactId>commons-lang</artifactId>
 			<version>2.6</version>
-			<scope>runtime</scope>
+
 		</dependency>
 
 
@@ -246,12 +230,6 @@
 			<artifactId>be.iminds.iot.ros.api</artifactId>
 			<version>0.0.4-SNAPSHOT</version>
 		</dependency>
-		<dependency>
-			<groupId>eu.brain.iot.service.robotic</groupId>
-			<artifactId>eu.brain.iot.robot.config</artifactId>
-			<version>0.0.4-SNAPSHOT</version>
-			<scope>runtime</scope>
-		</dependency>
 
 		<dependency>
 			<groupId>eu.brain.iot.service.robotic</groupId>
@@ -259,24 +237,43 @@
 			<version>0.0.4-SNAPSHOT</version>
 			<scope>runtime</scope>
 		</dependency>
-		<!-- <dependency> <groupId>eu.brain.iot.service.robotic</groupId> <artifactId>eu.brain.iot.robot.behaviour</artifactId> 
-			<version>0.0.2-SNAPSHOT</version> <scope>runtime</scope> </dependency> <dependency> 
-			<groupId>eu.brain.iot.service.robotic</groupId> <artifactId>eu.brain.iot.robot.tables.queryer</artifactId> 
-			<version>0.0.2-SNAPSHOT</version> <scope>runtime</scope> </dependency> <dependency> 
-			<groupId>com.h2database</groupId> <artifactId>h2</artifactId> <version>1.4.200</version> 
-			</dependency> -->
-
-
-		<!-- this block is for test.bndrun for all 3 components <dependency> <groupId>eu.brain.iot.service.robotic</groupId> 
-			<artifactId>eu.brain.iot.robot.tables.queryer</artifactId> <version>0.0.2-SNAPSHOT</version> 
-			<scope>runtime</scope> </dependency> <dependency> <groupId>eu.brain.iot.service.robotic</groupId> 
-			<artifactId>eu.brain.iot.robot.behaviour</artifactId> <version>0.0.2-SNAPSHOT</version> 
-			<scope>runtime</scope> </dependency> <dependency> <groupId>eu.brain.iot.service.robotic</groupId> 
-			<artifactId>door.impl</artifactId> <version>0.0.2-SNAPSHOT</version> <scope>runtime</scope> 
-			</dependency> <dependency> <groupId>com.h2database</groupId> <artifactId>h2</artifactId> 
-			<version>1.4.200</version> </dependency> <dependency> <groupId>org.apache.felix</groupId> 
-			<artifactId>org.apache.felix.gogo.runtime</artifactId> <version>1.1.4</version> 
-			</dependency> -->
+		
+		<!-- this block is for test.bndrun for all 3 components -->
+		
+		<dependency>
+			<groupId>eu.brain.iot.service.robotic</groupId>
+			<artifactId>eu.brain.iot.robot.tables.creator</artifactId>
+			<version>0.0.4-SNAPSHOT</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>eu.brain.iot.service.robotic</groupId>
+			<artifactId>eu.brain.iot.robot.tables.queryer</artifactId>
+			<version>0.0.4-SNAPSHOT</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>eu.brain.iot.service.robotic</groupId>
+			<artifactId>eu.brain.iot.robot.behaviour</artifactId>
+			<version>0.0.4-SNAPSHOT</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>eu.brain.iot.service.robotic</groupId>
+			<artifactId>door.impl</artifactId>
+			<version>0.0.2-SNAPSHOT</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<version>1.4.200</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.felix</groupId>
+			<artifactId>org.apache.felix.gogo.runtime</artifactId>
+			<version>1.1.4</version>
+		</dependency>
 
 
 		<dependency>
@@ -365,29 +362,29 @@
 			<artifactId>org.apache.felix.configadmin</artifactId>
 			<version>1.9.8</version>
 		</dependency>
-		
-		<dependency>
-    <groupId>ch.qos.logback</groupId>
-    <artifactId>logback-classic</artifactId>
-    <version>1.1.2</version>
-</dependency>
-<dependency>
-    <groupId>ch.qos.logback</groupId>
-    <artifactId>logback-core</artifactId>
-    <version>1.1.2</version>
-</dependency>
-<dependency>
-    <groupId>org.slf4j</groupId>
-    <artifactId>slf4j-api</artifactId>
-    <version>1.7.7</version>
-</dependency>
 
-<!-- https://mvnrepository.com/artifact/io.netty/netty -->
-<dependency>
-    <groupId>io.netty</groupId>
-    <artifactId>netty</artifactId>
-    <version>3.5.2.Final</version>
-</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>1.1.2</version>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-core</artifactId>
+			<version>1.1.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.7.7</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/io.netty/netty -->
+		<dependency>
+			<groupId>io.netty</groupId>
+			<artifactId>netty</artifactId>
+			<version>3.5.2.Final</version>
+		</dependency>
 
 	</dependencies>
 
@@ -546,7 +543,7 @@
 						<phase>package</phase>
 						<configuration>
 							<bndruns>
-								<bndrun>sb.bndrun</bndrun>
+								<bndrun>launch.bndrun</bndrun>
 							</bndruns>
 						</configuration>
 					</execution>
@@ -559,9 +556,9 @@
 				<version>${bnd.version}</version>
 				<configuration>
 					<bndruns>
-						<bndrun>sb.bndrun</bndrun>
+						<bndrun>launch.bndrun</bndrun>
 					</bndruns>
-					<resolve>true</resolve>
+					<resolve>false</resolve>
 					<failOnChanges>true</failOnChanges>
 				</configuration>
 				<executions>
@@ -574,58 +571,19 @@
 			</plugin>
 
 			<!-- Expected to inherit configuration from a parent enRoute pom. This 
-				includes -contract definitions and maven-jar-plugin setup -->
+				includes -contract definitions and maven-jar-plugin setup <plugin> <groupId>com.paremus.brain.iot.maven</groupId> 
+				<artifactId>smart-behaviour-maven-plugin</artifactId> <version>0.0.1-SNAPSHOT</version> 
+				<executions> <execution> <goals> <goal>smart-behaviour</goal> </goals> <configuration> 
+				<bndrun>sb.bndrun</bndrun> </configuration> </execution> </executions> </plugin> -->
 
-			<plugin>
-				<groupId>com.paremus.brain.iot.maven</groupId>
-				<artifactId>smart-behaviour-maven-plugin</artifactId>
-				<version>0.0.1-SNAPSHOT</version>
-				<executions>
-					<execution>
-						<goals>
-							<goal>smart-behaviour</goal>
-						</goals>
-						<configuration>
-							<bndrun>sb.bndrun</bndrun>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-			
-			<!-- Setup the indexer for running and testing 
-				<plugin>
-					<groupId>biz.aQute.bnd</groupId>
-					<artifactId>bnd-indexer-maven-plugin</artifactId>
-					<version>${bnd.version}</version>
-					<configuration>
-						<localURLs>REQUIRED</localURLs>
-						<attach>false</attach>
-						<includeJar>true</includeJar>
-					</configuration>
-					<executions>
-						<execution>
-							<id>index</id>
-							<goals>
-								<goal>index</goal>
-							</goals>
-							<configuration>
-								<indexName>${project.artifactId}</indexName>
-							</configuration>
-						</execution>
-						<execution>
-							<id>test-index</id>
-							<goals>
-								<goal>index</goal>
-							</goals>
-							<configuration>
-								<indexName>${project.artifactId}</indexName>
-								<outputFile>${project.build.directory}/test-index.xml</outputFile>
-								<scopes>
-									<scope>test</scope>
-								</scopes>
-							</configuration>
-						</execution>
-					</executions>
+			<!-- Setup the indexer for running and testing <plugin> <groupId>biz.aQute.bnd</groupId> 
+				<artifactId>bnd-indexer-maven-plugin</artifactId> <version>${bnd.version}</version> 
+				<configuration> <localURLs>REQUIRED</localURLs> <attach>false</attach> <includeJar>true</includeJar> 
+				</configuration> <executions> <execution> <id>index</id> <goals> <goal>index</goal> 
+				</goals> <configuration> <indexName>${project.artifactId}</indexName> </configuration> 
+				</execution> <execution> <id>test-index</id> <goals> <goal>index</goal> </goals> 
+				<configuration> <indexName>${project.artifactId}</indexName> <outputFile>${project.build.directory}/test-index.xml</outputFile> 
+				<scopes> <scope>test</scope> </scopes> </configuration> </execution> </executions> 
 				</plugin> -->
 
 		</plugins>

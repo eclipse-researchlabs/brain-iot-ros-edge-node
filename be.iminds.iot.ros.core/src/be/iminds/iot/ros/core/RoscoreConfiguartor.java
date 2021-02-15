@@ -1,23 +1,34 @@
 package be.iminds.iot.ros.core;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileWriter;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.RandomAccessFile;
+import java.nio.ByteBuffer;
+import java.nio.channels.FileChannel;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.StandardOpenOption;
 import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+
+import org.apache.commons.lang.exception.ExceptionUtils;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.cm.Configuration;
 import org.osgi.service.cm.ConfigurationAdmin;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.metatype.annotations.ObjectClassDefinition;
 import org.slf4j.Logger;
@@ -38,8 +49,10 @@ public class RoscoreConfiguartor {
 	
 	@ObjectClassDefinition
 	public static @interface Config {
-		String resourcesPath() default "/home/rui/resources/"; // "/opt/fabric/resources/";  /home/rui/resources
+		String resourcesPath() default "/opt/fabric/resources/"; // "/opt/fabric/resources/";  /home/rui/resources
 	}
+	
+	private static volatile BufferedWriter out = null;
 
 	@Activate
 	void activate(BundleContext context, Config config) throws Exception {
@@ -50,10 +63,28 @@ public class RoscoreConfiguartor {
 			}
 			
 		}
-		System.setProperty("logback.configurationFile", resourcesPath+"logback.xml");		
+		System.setProperty("logback.configurationFile", resourcesPath+"logback.xml");	
+		
+		FileWriter fr = null;
+/*		RandomAccessFile writer = null;
+		FileChannel channel = null;*/
+		try {
+	/*		writer = new RandomAccessFile(resourcesPath+"roscore1.log", "rw",StandardOpenOption.APPEND);
+			channel = writer.getChannel();
+			ByteBuffer buff = ByteBuffer.wrap("Hello world".getBytes(StandardCharsets.UTF_8));
+			channel.write(buff);
+	*/		
+			
+			fr = new FileWriter(resourcesPath+"roscore.log", true);
+
+			out = new BufferedWriter(fr);
+		
 		logger = (Logger) LoggerFactory.getLogger(RoscoreConfiguartor.class.getSimpleName());
 	
 		logger.info("{} activating....... ", "RoscoreConfiguartor");
+		
+		out.write("RoscoreConfiguartor activating....... ");
+	//	out.flush();
 
 		executor = Executors.newSingleThreadExecutor();
 		BufferedReader reader = null;
@@ -83,7 +114,6 @@ public class RoscoreConfiguartor {
 				fstream = new FileInputStream(resourcesPath+configFile); // absolute path
 				reader = new BufferedReader(new InputStreamReader(fstream));
 				line = reader.readLine();
-				logger.info("roscore config file: " + resourcesPath+configFile);
 				while (line != null && line.trim() != null) {
 
 					if (line.trim().isEmpty() || line.startsWith("#") || line.startsWith("//")) {
@@ -104,15 +134,17 @@ public class RoscoreConfiguartor {
 				reader.close();
 				flag = 1;
 
-			} catch (IOException ex) {
+			} catch (IOException e) {
 				if (reader != null) {
 					reader.close();
 				}
-				ex.printStackTrace();
+				logger.error("\nRoscoreConfiguartor read rosConfig.txt Exception: {}", ExceptionUtils.getStackTrace(e));
 			}
-			logger.info("successfully read file "+configFile +" with flag = "+flag);
+			
 
 			if (flag == 1) {
+				logger.info("successfully read file "+configFile +" with flag = "+flag);
+				out.write("\nsuccessfully read file "+configFile +" with flag = "+flag);
 				try {
 					roscoreConfig = ca.createFactoryConfiguration("eu.brain.iot.robotics.roscore.ROS", null);
 					Properties props = new Properties();
@@ -123,17 +155,35 @@ public class RoscoreConfiguartor {
 
 					roscoreConfig.update((Dictionary) props);
 
-				} catch (Exception ex) {
-					ex.printStackTrace();
+				} catch (Exception e) {
+					logger.error("\nRoscoreConfiguartor Exception: {}", ExceptionUtils.getStackTrace(e));
+					out.write("\nRoscoreConfiguartor Exception: "+ ExceptionUtils.getStackTrace(e));
 				}
 			}
 		}
-
+		
+		} catch (IOException e) {
+			logger.error("\n ROS Edge Node write log.txt Exception: {}", ExceptionUtils.getStackTrace(e));
+		} finally {
+			if (out != null) {
+				out.flush();
+				out.close();
+			}
+			if (fr != null) {
+				fr.close();
+			}
+		}
 	}
 
 	@Reference
 	void setConfigurationAdmin(ConfigurationAdmin ca) {
 		this.ca = ca;
+	}
+	
+	@Deactivate
+	void stop() {
+	
+		logger.info("------------  RoscoreConfiguartor is deactivated----------------");
 	}
 
 }

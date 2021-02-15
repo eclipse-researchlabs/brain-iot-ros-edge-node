@@ -20,8 +20,11 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
+
+import javax.sql.DataSource;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
@@ -29,6 +32,8 @@ import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.ConfigurationPolicy;
 import org.osgi.service.component.annotations.Deactivate;
+import org.osgi.service.component.annotations.Reference;
+import org.osgi.service.jdbc.DataSourceFactory;
 import org.osgi.service.metatype.annotations.AttributeDefinition;
 import org.osgi.service.metatype.annotations.ObjectClassDefinition;
 import org.slf4j.Logger;
@@ -54,7 +59,7 @@ import eu.brain.iot.robot.tables.jsonReader.StorageTable;
 @Component(
 		immediate=true,
 		configurationPid = "eu.brain.iot.robot.tables.creator.TablesCreator", 
-		configurationPolicy = ConfigurationPolicy.REQUIRE, 
+		configurationPolicy = ConfigurationPolicy.OPTIONAL, 
 		service = {TableCreator.class, SmartBehaviour.class}
 )
 @SmartBehaviourDefinition(consumed = {}, 
@@ -74,11 +79,17 @@ public class TablesCreatorImpl implements SmartBehaviour<BrainIoTEvent>, TableCr
 		  private JsonDataReader jsonDataReader;
 		  private String resourcesPath;
 		  
-
+		  /*	  DataSourceFactory dsf;
+		  DataSource ds;
+		  
+		  @Reference
+		   void setDataSourceFactory( DataSourceFactory ds) {
+		     this.dsf = dsf;
+		   }*/
 		  
 		  @ObjectClassDefinition
 			public static @interface Config {
-				String resourcesPath() default "/home/rui/resources/"; // "/opt/fabric/resources/"; /home/rui/resources
+				String resourcesPath() default "/opt/fabric/resources/"; // "/opt/fabric/resources/"; /home/rui/resources
 			}
 
 			private ServiceRegistration<?> reg;
@@ -108,6 +119,17 @@ public class TablesCreatorImpl implements SmartBehaviour<BrainIoTEvent>, TableCr
 				
 				logger.info("Table Creator is creating "+resourcesPath+"tables.mv.db..........");
 				
+				
+				
+			/*	Properties properties = new Properties();
+			    properties.put(DataSourceFactory.JDBC_DATABASE_NAME, "db");
+			    properties.put("currentSchema", "schema");
+			    DataSource dataSource = dsf.createDataSource(properties);
+				
+				*/
+				
+				
+				
 				Class.forName(DRIVER_CLASS);
 
 				conn = DriverManager.getConnection(JDBC_URL, USER, PASSWORD);
@@ -119,10 +141,10 @@ public class TablesCreatorImpl implements SmartBehaviour<BrainIoTEvent>, TableCr
 				initDockTable(stmt);
 
 				logger.info("Table Creator finished to create "+resourcesPath+"tables.mv.db..........");
-				Dictionary<String, Object> serviceProps = new Hashtable<>(props.entrySet().stream()
+		/*		Dictionary<String, Object> serviceProps = new Hashtable<>(props.entrySet().stream()
 						.filter(e -> !e.getKey().startsWith(".")).collect(Collectors.toMap(Entry::getKey, Entry::getValue)));
 				
-				reg = context.registerService(SmartBehaviour.class, this, serviceProps);
+				reg = context.registerService(SmartBehaviour.class, this, serviceProps);*/
 				
 			} catch (ClassNotFoundException e) {
 				logger.error("\n Exception:", e);
