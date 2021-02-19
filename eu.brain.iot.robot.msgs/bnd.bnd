@@ -3,6 +3,8 @@
 	osgi.annotation;version=7.0,\
 	org.ros.rosjava_bootstrap.message_generation;version=0.2
 
+
+
 Bundle-Version: 0.0.4
 Export-Package: \
 actionlib,\

@@ -52,8 +52,6 @@ public class RoscoreConfiguartor {
 		String resourcesPath() default "/opt/fabric/resources/"; // "/opt/fabric/resources/";  /home/rui/resources
 	}
 	
-	private static volatile BufferedWriter out = null;
-
 	@Activate
 	void activate(BundleContext context, Config config) throws Exception {
 		this.resourcesPath = config.resourcesPath();
@@ -65,26 +63,9 @@ public class RoscoreConfiguartor {
 		}
 		System.setProperty("logback.configurationFile", resourcesPath+"logback.xml");	
 		
-		FileWriter fr = null;
-/*		RandomAccessFile writer = null;
-		FileChannel channel = null;*/
-		try {
-	/*		writer = new RandomAccessFile(resourcesPath+"roscore1.log", "rw",StandardOpenOption.APPEND);
-			channel = writer.getChannel();
-			ByteBuffer buff = ByteBuffer.wrap("Hello world".getBytes(StandardCharsets.UTF_8));
-			channel.write(buff);
-	*/		
-			
-			fr = new FileWriter(resourcesPath+"roscore.log", true);
-
-			out = new BufferedWriter(fr);
-		
 		logger = (Logger) LoggerFactory.getLogger(RoscoreConfiguartor.class.getSimpleName());
 	
 		logger.info("{} activating....... ", "RoscoreConfiguartor");
-		
-		out.write("RoscoreConfiguartor activating....... ");
-	//	out.flush();
 
 		executor = Executors.newSingleThreadExecutor();
 		BufferedReader reader = null;
@@ -103,7 +84,7 @@ public class RoscoreConfiguartor {
 
 		String[] pathnames = file.list(filter);
 
-		FileInputStream fstream;
+		FileInputStream fstream = null;
 		int flag = 0;
 
 		for (String configFile : pathnames) {   // analysing multiple config files is not necessary, because RobotService will only refer to one ROS service.  
@@ -131,20 +112,20 @@ public class RoscoreConfiguartor {
 							line = reader.readLine();
 					}
 				}
-				reader.close();
+				
 				flag = 1;
 
 			} catch (IOException e) {
+				logger.error("\nRoscoreConfiguartor read rosConfig.txt Exception: {}", ExceptionUtils.getStackTrace(e));
+			} finally {
 				if (reader != null) {
 					reader.close();
+					fstream.close();
 				}
-				logger.error("\nRoscoreConfiguartor read rosConfig.txt Exception: {}", ExceptionUtils.getStackTrace(e));
 			}
 			
-
 			if (flag == 1) {
 				logger.info("successfully read file "+configFile +" with flag = "+flag);
-				out.write("\nsuccessfully read file "+configFile +" with flag = "+flag);
 				try {
 					roscoreConfig = ca.createFactoryConfiguration("eu.brain.iot.robotics.roscore.ROS", null);
 					Properties props = new Properties();
@@ -152,25 +133,11 @@ public class RoscoreConfiguartor {
 					for (Map.Entry<String, String> entry : map.entrySet()) {
 						props.put(entry.getKey(), entry.getValue());
 					}
-
 					roscoreConfig.update((Dictionary) props);
 
 				} catch (Exception e) {
 					logger.error("\nRoscoreConfiguartor Exception: {}", ExceptionUtils.getStackTrace(e));
-					out.write("\nRoscoreConfiguartor Exception: "+ ExceptionUtils.getStackTrace(e));
 				}
-			}
-		}
-		
-		} catch (IOException e) {
-			logger.error("\n ROS Edge Node write log.txt Exception: {}", ExceptionUtils.getStackTrace(e));
-		} finally {
-			if (out != null) {
-				out.flush();
-				out.close();
-			}
-			if (fr != null) {
-				fr.close();
 			}
 		}
 	}
