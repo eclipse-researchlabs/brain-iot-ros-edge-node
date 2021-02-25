@@ -294,21 +294,13 @@
 			<artifactId>org.apache.felix.converter</artifactId>
 			<version>1.0.12</version>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.apache.felix/org.apache.felix.gogo.command 
-			<dependency> <groupId>org.apache.felix</groupId> <artifactId>org.apache.felix.gogo.command</artifactId> 
-			<version>1.1.2</version> </dependency> -->
-		<!-- https://mvnrepository.com/artifact/org.apache.felix/org.apache.felix.gogo.shell 
-			<dependency> <groupId>org.apache.felix</groupId> <artifactId>org.apache.felix.gogo.shell</artifactId> 
-			<version>1.1.4</version> </dependency> -->
+
 		<!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
 		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
 			<version>12.0</version>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/com.google.guava/guava <dependency> 
-			<groupId>com.google.guava</groupId> <artifactId>guava</artifactId> <version>19.0</version> 
-			</dependency> -->
 		<dependency>
 			<groupId>org.ros.rosjava_core</groupId>
 			<artifactId>org.ros.rosjava_core.apache_xmlrpc_common</artifactId>
@@ -587,16 +579,6 @@
 			</execution>
 		</executions>
 	</plugin> 
-
-			<!-- Setup the indexer for running and testing <plugin> <groupId>biz.aQute.bnd</groupId> 
-				<artifactId>bnd-indexer-maven-plugin</artifactId> <version>${bnd.version}</version> 
-				<configuration> <localURLs>REQUIRED</localURLs> <attach>false</attach> <includeJar>true</includeJar> 
-				</configuration> <executions> <execution> <id>index</id> <goals> <goal>index</goal> 
-				</goals> <configuration> <indexName>${project.artifactId}</indexName> </configuration> 
-				</execution> <execution> <id>test-index</id> <goals> <goal>index</goal> </goals> 
-				<configuration> <indexName>${project.artifactId}</indexName> <outputFile>${project.build.directory}/test-index.xml</outputFile> 
-				<scopes> <scope>test</scope> </scopes> </configuration> </execution> </executions> 
-				</plugin> -->
 
 		</plugins>
 
