@@ -16,6 +16,6 @@
 
 -includeresource: resources
 Bundle-Version: 0.0.4
-Private-Package: eu.brain.iot.robot.service
+Export-Package: eu.brain.iot.robot.service
 
 				

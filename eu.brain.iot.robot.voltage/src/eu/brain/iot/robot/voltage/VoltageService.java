@@ -2,6 +2,7 @@ package eu.brain.iot.robot.voltage;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.concurrent.TimeUnit;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.component.annotations.Activate;
@@ -88,8 +89,13 @@ public class VoltageService extends AbstractNodeMain{
 	}
 
 
-
+/*  #Two-integer timestamp that is expressed as:
+	# * stamp.sec: seconds (stamp_secs) since epoch (in Python the variable is called 'secs')
+	# * stamp.nsec: nanoseconds since stamp_secs (in Python the variable is called 'nsecs')
+	# time-handling sugar is provided by the client library */
 /*	public String index; // timestamp format: yyyy-MM-dd HH:mm:ss  org.ros.message.Time getStamp();
+ 
+ *  uint8==>byte  battery         # battery voltage in 0.1V (ex. 16.1V -> 161)
 	public double target; // voltage     byte getBattery();*/
 	
 	private BetteryVoltage createBetteryVoltage(SensorState state ) {
@@ -97,11 +103,36 @@ public class VoltageService extends AbstractNodeMain{
 		BetteryVoltage bv = new BetteryVoltage();
 		
 		Time time = state.getHeader().getStamp();
-		double s = time.toSeconds();
-		Timestamp timeStamp = new Timestamp((long) s);
-	    String formattedDate = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss").format(timeStamp.getTime());
 		
-		bv.index = formattedDate;
+		int secs = time.secs;
+		int nsecs = time.nsecs;
+		
+		long tplus = secs*1000 + nsecs/1000000;  //msecs
+		String plus = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(tplus));		
+		System.out.println("plus1: "+plus);
+		
+				
+		double totalSecs = time.toSeconds();    //secs
+		String tSecs = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date((long) (totalSecs * 1000L)));
+		System.out.println("tSecs2: "+tSecs);
+		
+		
+		long totalNsecs = time.totalNsecs();    //Nsecs
+		String tNsecs = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(totalNsecs/1000000));
+		System.out.println("tNsecs3: "+tNsecs);
+		
+		
+		
+	//	Timestamp timeStamp = new Timestamp((long) s);
+		
+	/*	long ns = time.totalNsecs();
+		Timestamp timeStamp1 = new Timestamp(ns);*/
+		
+	//    String formattedDate = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss").format(timeStamp.getTime());
+		
+	//	bv.index = formattedDate;
+		
+		bv.index = tNsecs;
 		
 		bv.target = state.getBattery();
 
