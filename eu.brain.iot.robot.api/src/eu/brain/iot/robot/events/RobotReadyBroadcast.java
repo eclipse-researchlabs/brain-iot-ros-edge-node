@@ -25,4 +25,6 @@ public class RobotReadyBroadcast extends RobotCommand {
 	public String robotIP;
 	
 	public boolean isReady;
+	
+	public String UUID;
 }

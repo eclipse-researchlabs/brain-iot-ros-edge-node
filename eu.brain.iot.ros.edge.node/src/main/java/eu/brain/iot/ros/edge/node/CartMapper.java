@@ -19,13 +19,14 @@
 package eu.brain.iot.ros.edge.node;
 
 import java.util.HashMap;
+
+import org.apache.commons.lang.exception.ExceptionUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -38,19 +39,17 @@ import java.io.InputStreamReader;
 public class CartMapper {
 
 	private HashMap<Integer,String> Cart=new HashMap<Integer,String>();
-	
-//	private static final Logger logger = (Logger) LoggerFactory.getLogger(RobotService.class.getSimpleName());
-	private  Logger logger;
+//	private  Logger logger;
+	private static final Logger logger = (Logger) LoggerFactory.getLogger(CartMapper.class.getSimpleName());
+
 
 	@Activate
 	public CartMapper() throws IOException
 	{
-		System.setProperty("logback.configurationFile", "/opt/fabric/resources/logback.xml");
-    	logger = (Logger) LoggerFactory.getLogger(RosEdgeNode.class.getSimpleName());
+		logger.info("--------------------Internal CartMapper 2---------------------------");
     	
 		loadCart();
-
-		logger.info("--------------------Internal CartMapper---------------------------");
+		
 		logger.info(Cart.toString());
 		logger.info("-----------------------------------------------");
 	}
@@ -85,13 +84,13 @@ public class CartMapper {
 			}
 			br.close();
 		} catch (IOException e) {
-			logger.error("\n Exception:", e);
+			logger.error("CartMapper Exception: {}", ExceptionUtils.getStackTrace(e));
 		} finally {
 		    if (is != null) {
 		        try {
 		            is.close();
 		        } catch (IOException e) {
-		        	logger.error("\n Exception:", e);
+		        	logger.error("CartMapper Exception: {}", ExceptionUtils.getStackTrace(e));
 		        }
 		    }
 		}

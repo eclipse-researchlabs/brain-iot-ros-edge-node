@@ -33,7 +33,7 @@ import org.ros.node.ConnectedNode;
 import org.ros.node.NodeMain;
 import be.iminds.iot.ros.api.Ros;
 import eu.brain.iot.eventing.api.EventBus;
-import eu.brain.iot.robot.events.BetteryVoltage;
+import eu.brain.iot.robot.events.BatteryVoltage;
 import kobuki_msgs.SensorState;
 import std_msgs.Header;
 import org.slf4j.Logger;
@@ -96,7 +96,7 @@ public class VoltageService extends AbstractNodeMain{
 		}
 		
 		SensorState state = null;
-		BetteryVoltage voltage = null;
+		BatteryVoltage voltage = null;
 				
 		while(true) {
 			state = batteryVoltageComponent.get_voltage_value();
@@ -116,9 +116,9 @@ public class VoltageService extends AbstractNodeMain{
  *  uint8==>byte  battery         # battery voltage in 0.1V (ex. 16.1V -> 161)
 	public double target; // voltage     byte getBattery();*/
 	
-	private BetteryVoltage createBetteryVoltage(SensorState state ) {
+	private BatteryVoltage createBetteryVoltage(SensorState state ) {
 		
-		BetteryVoltage bv = new BetteryVoltage();
+		BatteryVoltage bv = new BatteryVoltage();
 		
 		Time time = state.getHeader().getStamp();
 		
