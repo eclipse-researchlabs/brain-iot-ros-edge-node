@@ -21,6 +21,9 @@ package eu.brain.iot.ros.edge.node;
 import org.ros.message.MessageFactory;
 import org.ros.message.Time;
 import org.ros.node.ConnectedNode;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import procedures_msgs.ProcedureHeader;
 import procedures_msgs.ProcedureQueryRequest;
 import procedures_msgs.ProcedureQueryResponse;
@@ -43,6 +46,8 @@ public abstract class GoToComponent {
     private String robotName;
     public GenericService<ProcedureQueryRequest, ProcedureQueryResponse> gotoCancle;
     public GenericService<ProcedureQueryRequest, ProcedureQueryResponse> gotoQuery;
+    
+    private static final Logger logger = (Logger) LoggerFactory.getLogger(GenericService.class.getSimpleName());
 
     public GoToComponent(ConnectedNode node, MessageFactory Factory, String robotName) {
         this.node = node;
@@ -72,6 +77,7 @@ public abstract class GoToComponent {
             result = responseVal.getResult().getResult();
         } else {
         	System.out.println(robotName+" GoToComponent GoTo Response timeout! return null");
+        	logger.info(robotName+" GoToComponent GoTo Response timeout! return null");
         }
         return result;
     }
@@ -94,6 +100,7 @@ public abstract class GoToComponent {
             result = responseVal.getResult().getResult();
         } else {
         	System.out.println(robotName+" GoToComponent Cancel Response timeout! return null");
+        	logger.info(robotName+" GoToComponent Cancel Response timeout! return null");
         }
         return result;
     }
@@ -137,6 +144,7 @@ public abstract class GoToComponent {
             
         } else {
         	System.out.println(robotName+" GoToComponent Query Response timeout! return null");
+        	logger.info(robotName+" GoToComponent Query Response timeout! return null");
         }
         return callResp;
     }

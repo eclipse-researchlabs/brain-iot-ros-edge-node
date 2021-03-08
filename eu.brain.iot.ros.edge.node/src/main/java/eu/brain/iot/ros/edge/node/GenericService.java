@@ -25,6 +25,8 @@ import org.ros.exception.ServiceNotFoundException;
 import org.ros.node.ConnectedNode;
 import org.ros.node.service.ServiceClient;
 import org.ros.node.service.ServiceResponseListener;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class GenericService<T1, T2>  {
@@ -32,16 +34,16 @@ public class GenericService<T1, T2>  {
 	private ConnectedNode node;
 	public ServiceClient<T1,T2> serviceClient;	
 	
+	private static final Logger logger = (Logger) LoggerFactory.getLogger(GenericService.class.getSimpleName());
+	
 	public GenericService(ConnectedNode node){
 		this.node=node;
 	}
 	
 	public void register(String topic,String type) throws Exception{
-	/*	  try {*/
+		
 			serviceClient=node.newServiceClient(topic,type);
-	/*	  } catch (ServiceNotFoundException e) {
-			throw new RosRuntimeException(e);
-		  }  	*/
+
 		} 
 	
 	 public T2 call(T1 request){
@@ -54,8 +56,6 @@ public class GenericService<T1, T2>  {
 			}
 			@Override
 			public void onSuccess(T2 response) {
-
-				// TODO Auto-generated method stub
 				responseAtom.set(response);
 			}
 		  });
@@ -65,6 +65,7 @@ public class GenericService<T1, T2>  {
 				if ((endTime-startTime)>10000)
 				{
 					System.out.println("Response timeout 10s");
+					logger.info("Response timeout 10s");
 					return null;
 				}
 		   }// wait the receving of the response
