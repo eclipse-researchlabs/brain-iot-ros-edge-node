@@ -223,7 +223,7 @@ public class RosEdgeNode extends AbstractNodeMain implements SmartBehaviour<Brai
 			public PickPetitionRequest constructMsg_pickRun() {
 				robot_local_control_msgs.PickPetitionRequest pickRequest=pickRun.serviceClient.newMessage();
 				Pick procedure= msgfactory.newFromType(Pick._TYPE);
-				procedure.setPickFrameId(pickFrameId); // TODO 1, to be used in real robot, 2 is in queryer
+		//		procedure.setPickFrameId(pickFrameId); // TODO 1, to be used in real robot, 2 is in queryer
 				pickRequest.setProcedure(procedure);
 				return pickRequest;
 			}
@@ -248,7 +248,7 @@ public class RosEdgeNode extends AbstractNodeMain implements SmartBehaviour<Brai
 		
 		while(!RosEdgeNode.isStarted) {
 	//		System.out.println("ROS Edge Node  is waiting StartDTO event................");
-			Thread.sleep(1000);
+			TimeUnit.SECONDS.sleep(1);
 		}
 		
 		while(!receivedBroadcastResponse) {
@@ -272,7 +272,7 @@ public class RosEdgeNode extends AbstractNodeMain implements SmartBehaviour<Brai
 		rbc.UUID = UUID;
 		rbc.isReady = true;
 		eventBus.deliver(rbc);
-		
+		logger.info("ROS Edge Node "+robotID +"  is sending RobotReadyBroadcast event................, UUID = "+UUID);
 	}
 	
 	@Modified
@@ -290,6 +290,7 @@ public class RosEdgeNode extends AbstractNodeMain implements SmartBehaviour<Brai
 			logger.info("ROS Edge Node "+ robotID+" received StartDTO event................, UUID = "+UUID);
 			System.out.println("ROS Edge Node "+ robotID+" received StartDTO event................, UUID = "+UUID);
 			
+			worker.execute(() -> {
 			Bundle adminBundle = FrameworkUtil.getBundle(RosEdgeNode.class);
 			String location = adminBundle.getLocation();
 			
@@ -309,6 +310,8 @@ public class RosEdgeNode extends AbstractNodeMain implements SmartBehaviour<Brai
 			} catch (IOException e) {
 				logger.error("RosEdgeNode OSGI Service Exception: {}", ExceptionUtils.getStackTrace(e));
 			}
+			});	
+			
 		} else if(event instanceof BroadcastResponse) {
 			
 			if(!receivedBroadcastResponse) {
@@ -333,7 +336,7 @@ public class RosEdgeNode extends AbstractNodeMain implements SmartBehaviour<Brai
 		   }
 		}
 		else if(event instanceof WriteGoTo || event instanceof PickCart || event instanceof PlaceCart) {
-		logger.info(" >>> Robot "+robotID+" received an event: " + event.getClass().getSimpleName());
+		logger.info(" >>> Robot "+robotID+" received an event: " + event.getClass().getSimpleName()+ ", with robotID = " +((RobotCommand)event).robotID);
 		
 	/*	if(!RosEdgeNode.isIdle) {
 			logger.info(" >>> Robot "+robotID+" received an event: " + event.getClass().getSimpleName()+", But robot is moving now, event is ignored");
