@@ -76,8 +76,8 @@ public abstract class GoToComponent {
         if (responseVal!= null) {
             result = responseVal.getResult().getResult();
         } else {
-        	System.out.println(robotName+" GoToComponent GoTo Response timeout! return null");
-        	logger.info(robotName+" GoToComponent GoTo Response timeout! return null");
+        	System.out.println(robotName+" GoToComponent send GoTo Response timeout! return null");
+        	logger.info(robotName+" GoToComponent send GoTo Response timeout! return null");
         }
         return result;
     }

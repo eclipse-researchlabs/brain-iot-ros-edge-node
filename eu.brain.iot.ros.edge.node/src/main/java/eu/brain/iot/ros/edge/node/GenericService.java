@@ -18,7 +18,10 @@
  ******************************************************************************/
 package eu.brain.iot.ros.edge.node;
 
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
+
+import org.apache.commons.lang.exception.ExceptionUtils;
 import org.ros.exception.RemoteException;
 import org.ros.exception.RosRuntimeException;
 import org.ros.exception.ServiceNotFoundException;
@@ -59,14 +62,20 @@ public class GenericService<T1, T2>  {
 				responseAtom.set(response);
 			}
 		  });
+		   long endTime;
 		   while(responseAtom.get()==null)
 		   {
-			   long endTime = System.currentTimeMillis();
+			   endTime = System.currentTimeMillis();
 				if ((endTime-startTime)>10000)
 				{
-					System.out.println("Response timeout 10s");
-					logger.info("Response timeout 10s");
+					System.out.println("Call Response timeout 10s");
+					logger.info("Call Response timeout 10s");
 					return null;
+				}
+				try {
+					TimeUnit.SECONDS.sleep(1);
+				} catch (InterruptedException e) {
+					logger.error("\n GenericService Exception: {}", ExceptionUtils.getStackTrace(e));
 				}
 		   }// wait the receving of the response
 		   return responseAtom.get();

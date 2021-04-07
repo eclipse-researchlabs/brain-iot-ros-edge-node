@@ -383,7 +383,7 @@
   			<artifactId>startButton.api</artifactId>
   			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
-	<!--	<dependency>
+	<!-- 	<dependency>
 			<groupId>eu.brain.iot.service.robotic</groupId>
     		<artifactId>startButton.impl</artifactId>
     		<version>0.0.1-SNAPSHOT</version>
@@ -548,7 +548,7 @@
 				</configuration>
 			</plugin>
 
-			<!-- Validate that the smart behaviour can resolve -->
+			<!-- Validate that the smart behaviour can resolve 
 			<plugin>
 				<groupId>biz.aQute.bnd</groupId>
 				<artifactId>bnd-resolver-maven-plugin</artifactId>
@@ -566,20 +566,20 @@
 						<phase>package</phase>
 						<configuration>
 							<bndruns>
-								<bndrun>node.bndrun</bndrun>
+								<bndrun>sb.bndrun</bndrun>
 							</bndruns>
 						</configuration>
 					</execution>
 				</executions>
-			</plugin>
-			<!-- Define the version of the export plugin we use -->
+			</plugin>   -->
+			<!-- Define the version of the export plugin we use 
 			<plugin>
 				<groupId>biz.aQute.bnd</groupId>
 				<artifactId>bnd-export-maven-plugin</artifactId>
 				<version>${bnd.version}</version>
 				<configuration>
 					<bndruns>
-						<bndrun>node.bndrun</bndrun>
+						<bndrun>sb.bndrun</bndrun>
 					</bndruns>
 					<resolve>false</resolve>
 					<failOnChanges>true</failOnChanges>
@@ -591,7 +591,7 @@
 						</goals>
 					</execution>
 				</executions>
-			</plugin>
+			</plugin>  -->
 
 			<!-- Expected to inherit configuration from a parent enRoute pom. This 
 				includes -contract definitions and maven-jar-plugin setup -->
@@ -604,9 +604,6 @@
 				<goals>
 					<goal>smart-behaviour</goal>
 				</goals>
-		<!-- 		<configuration>
-					<bndrun>sb.bndrun</bndrun>
-				</configuration>  -->
 			</execution>
 		</executions>
 	</plugin> 

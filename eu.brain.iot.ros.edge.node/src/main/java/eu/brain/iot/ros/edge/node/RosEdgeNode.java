@@ -76,7 +76,7 @@ import org.osgi.service.component.annotations.ServiceScope;
 @Component(
 		immediate=true,
 		configurationPid = "eu.brain.iot.ros.edge.node.RosEdgeNode", 
-		configurationPolicy = ConfigurationPolicy.IGNORE,
+		configurationPolicy = ConfigurationPolicy.OPTIONAL,
 		scope=ServiceScope.SINGLETON,
 		service = {SmartBehaviour.class, NodeMain.class})
 @SmartBehaviourDefinition(
@@ -133,9 +133,6 @@ public class RosEdgeNode extends AbstractNodeMain implements SmartBehaviour<Brai
 			this.robotName = ros.getRobotName();
 			this.robotID = ros.getRobotId();
 			this.robotIP = ros.getRobotIP();
-			
-		/*	System.setProperty("logback.configurationFile", "/opt/fabric/resources/logback.xml");
-			logger = (Logger) LoggerFactory.getLogger(RosEdgeNode.class.getSimpleName());*/
 
 			UUID = context.getProperty("org.osgi.framework.uuid");
     	
@@ -144,15 +141,6 @@ public class RosEdgeNode extends AbstractNodeMain implements SmartBehaviour<Brai
     	System.out.println("\nHello!  I am ROS Edge Node : "+robotID+ "  name = "+robotName+ "  IP = "+robotIP+ ",  UUID = "+UUID);
     	
 	    worker = Executors.newFixedThreadPool(10);
-
-/*		Dictionary<String, Object> serviceProps = new Hashtable<>(props.entrySet().stream()
-				.filter(e -> !e.getKey().startsWith(".")).collect(Collectors.toMap(Entry::getKey, Entry::getValue)));
-
-		serviceProps.put(SmartBehaviourDefinition.PREFIX_ + "filter",
-				String.format("(|(robotID=%s)(robotID=%s))", robotID, RobotCommand.ALL_ROBOTS));*/
-
-	//	logger.info("+++++++++ Ros Edge Node filter = " + serviceProps.get(SmartBehaviourDefinition.PREFIX_ + "filter"));
-	//	reg = context.registerService(SmartBehaviour.class, this, serviceProps);
 
 	}
 
@@ -164,7 +152,7 @@ public class RosEdgeNode extends AbstractNodeMain implements SmartBehaviour<Brai
 	@Override
 	public void onStart(ConnectedNode connectedNode) {
 		
-		logger.info("The ROS Edge Node is registering....for Robot "+robotID);
+		logger.info("\n The ROS Edge Node is registering....for Robot "+robotID);
 		System.out.println("\n The ROS Edge Node is registering....for Robot "+robotID);
 		
 		try {
@@ -223,7 +211,7 @@ public class RosEdgeNode extends AbstractNodeMain implements SmartBehaviour<Brai
 			public PickPetitionRequest constructMsg_pickRun() {
 				robot_local_control_msgs.PickPetitionRequest pickRequest=pickRun.serviceClient.newMessage();
 				Pick procedure= msgfactory.newFromType(Pick._TYPE);
-		//		procedure.setPickFrameId(pickFrameId); // TODO 1, to be used in real robot, 2 is in queryer
+				procedure.setPickFrameId(pickFrameId); // TODO 1, to be used in real robot, 2 is in queryer
 				pickRequest.setProcedure(procedure);
 				return pickRequest;
 			}
@@ -244,10 +232,7 @@ public class RosEdgeNode extends AbstractNodeMain implements SmartBehaviour<Brai
 		placeComponent.register();
 		logger.info("PlaceComponent service registed.");
 		
-	//	RosEdgeNode.isIdle = true;
-		
-		while(!RosEdgeNode.isStarted) {
-	//		System.out.println("ROS Edge Node  is waiting StartDTO event................");
+	/*	while(!RosEdgeNode.isStarted) {
 			TimeUnit.SECONDS.sleep(1);
 		}
 		
@@ -255,9 +240,8 @@ public class RosEdgeNode extends AbstractNodeMain implements SmartBehaviour<Brai
 			broadCastReady();
 			logger.info("ROS Edge Node "+robotID +"  is sending RobotReadyBroadcast event................, UUID = "+UUID);
 			System.out.println("ROS Edge Node "+robotID +"  is sending RobotReadyBroadcast event................, UUID = "+UUID);
-			Thread.sleep(1000);
-		}
-	//	broadCastReady();
+			TimeUnit.SECONDS.sleep(1);
+		}*/
 
 		} catch(Exception e) {
 			logger.error("\n ROS Edge Node Exception: {}", ExceptionUtils.getStackTrace(e));
@@ -272,11 +256,11 @@ public class RosEdgeNode extends AbstractNodeMain implements SmartBehaviour<Brai
 		rbc.UUID = UUID;
 		rbc.isReady = true;
 		eventBus.deliver(rbc);
-		logger.info("ROS Edge Node "+robotID +"  is sending RobotReadyBroadcast event................, UUID = "+UUID);
 	}
 	
 	@Modified
     void modified(Map<String, Object> properties) {
+		
 		logger.info("-->Hi, RosEdgeNode " + robotID + "  has osgi service properties :" + properties+ ", UUID="+UUID+"\n");
 		System.out.println("-->Hi, RosEdgeNode " + robotID + "  has osgi service properties :" + properties+ ", UUID="+UUID+"\n");
 
@@ -286,7 +270,7 @@ public class RosEdgeNode extends AbstractNodeMain implements SmartBehaviour<Brai
 	public void notify(BrainIoTEvent event) {
 		
 		if(event instanceof StartDTO) {
-	//		RosEdgeNode.isStarted = true;
+
 			logger.info("ROS Edge Node "+ robotID+" received StartDTO event................, UUID = "+UUID);
 			System.out.println("ROS Edge Node "+ robotID+" received StartDTO event................, UUID = "+UUID);
 			
@@ -302,22 +286,32 @@ public class RosEdgeNode extends AbstractNodeMain implements SmartBehaviour<Brai
 				props.put(SmartBehaviourDefinition.PREFIX_ + "filter", // only receive some sepecific events with robotID
 						String.format("(|(robotID=%s)(robotID=%s))", robotID, RobotCommand.ALL_ROBOTS));
 				config.update(props); // the modified() method will be called. it will receive only the events with the robotID.
-				logger.info("-->RosEdgeNode " + robotID + " update properties = "+props+" , UUID = "+UUID);
-				System.out.println("-->RosEdgeNode " + robotID + " update properties = "+props+" , UUID = "+UUID);
+				logger.info("-->RosEdgeNode " + robotID + " update properties = "+props+" , UUID = "+UUID+"\n");
+				System.out.println("-->RosEdgeNode " + robotID + " update properties = "+props+" , UUID = "+UUID+"\n");
 				
-				RosEdgeNode.isStarted = true;
+		//		RosEdgeNode.isStarted = true;
 				
-			} catch (IOException e) {
+				TimeUnit.SECONDS.sleep(1);
+				
+				while(!receivedBroadcastResponse) {
+					broadCastReady();
+					logger.info("ROS Edge Node "+robotID +"  is sending RobotReadyBroadcast event................, UUID = "+UUID);
+					System.out.println("ROS Edge Node "+robotID +"  is sending RobotReadyBroadcast event................, UUID = "+UUID);
+					TimeUnit.SECONDS.sleep(1);
+				}
+				
+			} catch (Exception e) {
 				logger.error("RosEdgeNode OSGI Service Exception: {}", ExceptionUtils.getStackTrace(e));
 			}
 			});	
 			
 		} else if(event instanceof BroadcastResponse) {
-			
-			if(!receivedBroadcastResponse) {
 			BroadcastResponse bcr = (BroadcastResponse) event;
+			worker.execute(() -> {
+			if(!receivedBroadcastResponse) {
+		//	BroadcastResponse bcr = (BroadcastResponse) event;
 			logger.info("-->RosEdgeNode " + robotID + " received an BroadcastResponse event with robotID="+bcr.robotID+ " and UUID="+bcr.UUID+ "==>  RosNode.UUID="+UUID+"\n");
-			System.out.println("-->RosEdgeNode " + robotID + " received an BroadcastResponse event with robotID="+bcr.robotID+ " and UUID="+bcr.UUID+ "==>  RosNode.UUID="+UUID);
+			System.out.println("-->RosEdgeNode " + robotID + " received an BroadcastResponse event with robotID="+bcr.robotID+ " and UUID="+bcr.UUID+ "==>  RosNode.UUID="+UUID+"\n");
 			
 			if(bcr.robotID == robotID && bcr.UUID.equals(UUID)) {
 				receivedBroadcastResponse = true;
@@ -329,11 +323,12 @@ public class RosEdgeNode extends AbstractNodeMain implements SmartBehaviour<Brai
 				logger.info("-->RosEdgeNode " + robotID + " connects to RB "+bcr.robotID+", send BroadcastACK"+" , UUID = "+UUID);
 				System.out.println("-->RosEdgeNode " + robotID + " connects to RB "+bcr.robotID+", send BroadcastACK"+" , UUID = "+UUID);
 			} else {
-				logger.info("-->Failed!! RosEdgeNode " + robotID + " failed to connect to RB "+bcr.robotID);
-				System.out.println("-->Failed!! RosEdgeNode " + robotID + " failed to connect to RB "+bcr.robotID);
+				logger.info("-->Failed!! RosEdgeNode " + robotID + " rejected to connect to RB "+bcr.robotID);
+				System.out.println("-->Failed!! RosEdgeNode " + robotID + " rejected to connect to RB "+bcr.robotID);
 			}
 			
 		   }
+		});
 		}
 		else if(event instanceof WriteGoTo || event instanceof PickCart || event instanceof PlaceCart) {
 		logger.info(" >>> Robot "+robotID+" received an event: " + event.getClass().getSimpleName()+ ", with robotID = " +((RobotCommand)event).robotID);
@@ -349,8 +344,9 @@ public class RosEdgeNode extends AbstractNodeMain implements SmartBehaviour<Brai
 		if (event instanceof WriteGoTo) {
 			
 			WriteGoTo writeGoTo = (WriteGoTo) event;
-			if(writeGoTo.robotID == robotID) {
+	//		if(writeGoTo.robotID == robotID) {
 			worker.execute(() ->{
+				if(writeGoTo.robotID == robotID) {
 				logger.info(" >>> Robot "+robotID+" received GoTo: " + writeGoTo.coordinate +" with robotID="+writeGoTo.robotID);
 				System.out.println(" >>> Robot "+robotID+" received GoTo: " + writeGoTo.coordinate+" with robotID="+writeGoTo.robotID);
 				
@@ -359,6 +355,7 @@ public class RosEdgeNode extends AbstractNodeMain implements SmartBehaviour<Brai
 				String sendResult = writeGOTO(writeGoTo.coordinate);
 				queryReturnedValue.robotID = robotID;
 				queryReturnedValue.command = writeGoTo.command;
+				if(!sendResult.isEmpty()) {
 				if(sendResult.equals("ok"))  // sending goto ok
 				{
 					CallResponse callResp;
@@ -402,20 +399,30 @@ public class RosEdgeNode extends AbstractNodeMain implements SmartBehaviour<Brai
 						break;
 					}
 				  }  // while end
-				} else {
+				} else { // send result is ERROR
 					queryReturnedValue.currentState = CurrentState.unknown;
-					logger.info(" >>> robot "+robotID+" sends WriteGOTO failed! Return CurrentState.unknown");
+					logger.info(" >>> robot "+robotID+" failed to send WriteGOTO with ERROR response ! Return CurrentState.unknown");
 
 				}
-				eventBus.deliver(queryReturnedValue);
+				} else { // timeout, no response
+					queryReturnedValue.currentState = CurrentState.unknown;
+					logger.info(" >>> robot "+robotID+" failed to send WriteGOTO without response(timeout) ! Return CurrentState.unknown");
 				}
+				
+				eventBus.deliver(queryReturnedValue);
+				} else {
+					logger.info(" >>> Robot "+robotID+" received GoTo: " + writeGoTo.coordinate +" with robotID="+writeGoTo.robotID+", but to be ignored......");
+					System.out.println(" >>> Robot "+robotID+" received GoTo: " + writeGoTo.coordinate+" with robotID="+writeGoTo.robotID+", but to be ignored......");
+				}
+			}
 			);
-		}
+	//	}
 		} else if (event instanceof PickCart) {
 			
 			PickCart pickCart = (PickCart) event;
-			if(pickCart.robotID == robotID) {
-			worker.execute(() ->{ 
+		//	if(pickCart.robotID == robotID) {
+			worker.execute(() ->{
+				if(pickCart.robotID == robotID) {
 				logger.info(" >>> Robot "+robotID+" received PickCart: " + pickCart.markerID+" with robotID="+pickCart.robotID);
 				System.out.println(" >>> Robot "+robotID+" received PickCart: " + pickCart.markerID+" with robotID="+pickCart.robotID);
 				
@@ -424,6 +431,7 @@ public class RosEdgeNode extends AbstractNodeMain implements SmartBehaviour<Brai
 				
 				queryReturnedValue.robotID = robotID;
 				queryReturnedValue.command = pickCart.command;  // "PICK"
+				if(!sendResult.isEmpty()) {
 				if(sendResult.equals("ok"))  // sensing pick ok
 				{
 					CallResponse callResp;
@@ -463,21 +471,30 @@ public class RosEdgeNode extends AbstractNodeMain implements SmartBehaviour<Brai
 							break;
 						}
 					  }  // while end
-					}else {
+					}else { // send result is ERROR
 						queryReturnedValue.currentState = CurrentState.unknown;
-						logger.info(" >>> robot "+robotID+" sends pickCart failed! Return CurrentState.unknown");
+						logger.info(" >>> robot "+robotID+" failed to send PickCart with ERROR response ! Return CurrentState.unknown");
 
 					}
+				} else { // timeout, no response
+					queryReturnedValue.currentState = CurrentState.unknown;
+					logger.info(" >>> robot "+robotID+" failed to send PickCart without response(timeout) ! Return CurrentState.unknown");
+				}
 					eventBus.deliver(queryReturnedValue);
+					} else {
+						logger.info(" >>> Robot "+robotID+" received PickCart: " + pickCart.markerID+" with robotID="+pickCart.robotID+", but to be ignored......");
+						System.out.println(" >>> Robot "+robotID+" received PickCart: " + pickCart.markerID+" with robotID="+pickCart.robotID+", but to be ignored......");
 					}
-				);
 			}
+				);
+		//	}
 			
 		} else if (event instanceof PlaceCart) {
 			
 			PlaceCart plceCart = (PlaceCart) event;
-			if(plceCart.robotID == robotID) {
-			worker.execute(() ->{ 
+		//	if(plceCart.robotID == robotID) {
+			worker.execute(() ->{
+				if(plceCart.robotID == robotID) {
 				logger.info(" >>> Robot "+robotID+" received PlaceCart  with robotID="+plceCart.robotID);
 				System.out.println(" >>> Robot "+robotID+" received PlaceCart  with robotID="+plceCart.robotID);
 				
@@ -485,6 +502,7 @@ public class RosEdgeNode extends AbstractNodeMain implements SmartBehaviour<Brai
 				String sendResult = placeCart();
 				queryReturnedValue.robotID = robotID;
 				queryReturnedValue.command = plceCart.command;   // "PLACE"
+				if(!sendResult.isEmpty()) {
 				if(sendResult.equals("ok"))  // sending place ok
 				{
 					CallResponse callResp;
@@ -521,18 +539,26 @@ public class RosEdgeNode extends AbstractNodeMain implements SmartBehaviour<Brai
 							break;
 						}
 					  } // while end
-					}else {
+					}else { // send result is ERROR
 						queryReturnedValue.currentState = CurrentState.unknown;
-						logger.info(" >>> robot "+robotID+" sends PlaceCart failed! Return CurrentState.unknown");
+						logger.info(" >>> robot "+robotID+" failed to send PlaceCart with ERROR response ! Return CurrentState.unknown");
 					}
+				} else { // timeout, no response
+					queryReturnedValue.currentState = CurrentState.unknown;
+					logger.info(" >>> robot "+robotID+" failed to send PlaceCart without response(timeout) ! Return CurrentState.unknown");
+				}
 					eventBus.deliver(queryReturnedValue);
 			//	checkDoorStatus = false;
 				isWorkDone = true;  // TODO
 				logger.info(" >>> ROBOT "+robotID +" finishs this iteration......... ");
-				});
+			} else {
+				logger.info(" >>> Robot "+robotID+" received PlaceCart  with robotID="+plceCart.robotID+", but to be ignored......");
+				System.out.println(" >>> Robot "+robotID+" received PlaceCart  with robotID="+plceCart.robotID+", but to be ignored......");
 			}
+				});
+		//	}  // end if
 						
-			  } 
+			  } // end if PlaceCart
 		//	} // else if robot is idle 
 		
 		}  // end if WriteGoTo, PickCart, PlaceCart
@@ -601,6 +627,7 @@ public class RosEdgeNode extends AbstractNodeMain implements SmartBehaviour<Brai
 		}
 		
 		}  // if other events that can be executed at same time 
+		
 		
 	}
 
