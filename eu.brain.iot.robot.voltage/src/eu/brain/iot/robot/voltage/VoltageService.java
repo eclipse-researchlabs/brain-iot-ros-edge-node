@@ -58,7 +58,7 @@ public class VoltageService extends AbstractNodeMain{
 	 
 
 
-	private static final Logger logger = (Logger) LoggerFactory.getLogger(VoltageService.class.getSimpleName());
+	//private static final Logger logger = (Logger) LoggerFactory.getLogger(VoltageService.class.getSimpleName());
 	
     @Activate
 	void activate(BundleContext context){
