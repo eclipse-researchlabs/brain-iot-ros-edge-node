@@ -41,7 +41,8 @@ public abstract class BatteryVoltageComponent {
 
     public SensorState get_voltage_value() {
     	SensorState status = voltage.getCurrentValue();
-        while (status == null) {
+/*        while (status == null) {
+        	System.out.println("get empty voltage, again....");
         	try {
 				TimeUnit.SECONDS.sleep(2);
 			} catch (InterruptedException e) {
@@ -49,6 +50,7 @@ public abstract class BatteryVoltageComponent {
 			}
         	status = voltage.getCurrentValue();
         }
+*/
         return status;
     }
 }

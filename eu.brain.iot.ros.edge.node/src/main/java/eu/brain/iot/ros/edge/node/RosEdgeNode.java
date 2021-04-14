@@ -19,6 +19,8 @@
 package eu.brain.iot.ros.edge.node;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Dictionary;
 import java.util.Hashtable;
 import java.util.LinkedList;
@@ -59,6 +61,7 @@ import eu.brain.iot.robot.api.Command;
 import eu.brain.iot.robot.api.Coordinate;
 import eu.brain.iot.robot.api.RobotCommand;
 import geometry_msgs.Pose2D;
+import kobuki_msgs.SensorState;
 import procedures_msgs.ProcedureQueryRequest;
 import robot_local_control_msgs.GoTo;
 import robot_local_control_msgs.GoToPetitionRequest;
@@ -72,6 +75,7 @@ import std_msgs.Header;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.osgi.service.component.annotations.ServiceScope;
+import org.osgi.service.metatype.annotations.ObjectClassDefinition;
 
 @Component(
 		immediate=true,
@@ -94,7 +98,7 @@ public class RosEdgeNode extends AbstractNodeMain implements SmartBehaviour<Brai
     private GoToComponent  goToComponent;
     private PickComponent pickComponent;
     private PlaceComponent placeComponent;
- //   private BatteryVoltageComponent batteryVoltageComponent;
+    private BatteryVoltageComponent batteryVoltageComponent;
 	private Coordinate coordinate;
 	private String pickFrameId;
 
@@ -109,6 +113,14 @@ public class RosEdgeNode extends AbstractNodeMain implements SmartBehaviour<Brai
 	private static volatile String UUID;
 	private static volatile boolean receivedBroadcastResponse = false;
 	
+	private static volatile int voltageFrequency = 3;
+
+	/*   //1
+	@ObjectClassDefinition
+	public static @interface Config {
+		int voltageFrequency() default 1;
+	}*/
+	
 	@Reference
 	private Ros ros;
 	
@@ -118,7 +130,6 @@ public class RosEdgeNode extends AbstractNodeMain implements SmartBehaviour<Brai
 	@Reference
 	private CartMapper cartMapper;
 
-//	private  Logger logger;
 	
 	private static final Logger logger = (Logger) LoggerFactory.getLogger(RosEdgeNode.class.getSimpleName());
 
@@ -128,18 +139,19 @@ public class RosEdgeNode extends AbstractNodeMain implements SmartBehaviour<Brai
     }
 	
     @Activate
-	void activate(BundleContext context, Map<String,Object> props){
+	void activate(BundleContext context, /* Config config,*/ Map<String,Object> props){
     	
+    /*		this.voltageFrequency = config.voltageFrequency(); //2 ||*/
 			this.robotName = ros.getRobotName();
 			this.robotID = ros.getRobotId();
 			this.robotIP = ros.getRobotIP();
 
 			UUID = context.getProperty("org.osgi.framework.uuid");
     	
-    	logger.info("\nHello!  I am ROS Edge Node : "+robotID+ "  name = "+robotName+ "  IP = "+robotIP+ ",  UUID = "+UUID);
-    	
-    	System.out.println("\nHello!  I am ROS Edge Node : "+robotID+ "  name = "+robotName+ "  IP = "+robotIP+ ",  UUID = "+UUID);
-    	
+			logger.info("\nHello!  I am ROS Edge Node : "+robotID+ "  name = "+robotName+ "  IP = "+robotIP+ ",  UUID = "+UUID + ", with voltageFrequency = "+voltageFrequency);
+	    	
+	    	System.out.println("\nHello!  I am ROS Edge Node : "+robotID+ "  name = "+robotName+ "  IP = "+robotIP+ ",  UUID = "+UUID + ", with voltageFrequency = "+voltageFrequency);
+	    	
 	    worker = Executors.newFixedThreadPool(10);
 
 	}
@@ -211,7 +223,7 @@ public class RosEdgeNode extends AbstractNodeMain implements SmartBehaviour<Brai
 			public PickPetitionRequest constructMsg_pickRun() {
 				robot_local_control_msgs.PickPetitionRequest pickRequest=pickRun.serviceClient.newMessage();
 				Pick procedure= msgfactory.newFromType(Pick._TYPE);
-				procedure.setPickFrameId(pickFrameId); // TODO 1, to be used in real robot, 2 is in queryer
+		//		procedure.setPickFrameId(pickFrameId); // TODO 1, to be used in real robot, 2 is in queryer
 				pickRequest.setProcedure(procedure);
 				return pickRequest;
 			}
@@ -231,17 +243,16 @@ public class RosEdgeNode extends AbstractNodeMain implements SmartBehaviour<Brai
 		};
 		placeComponent.register();
 		logger.info("PlaceComponent service registed.");
+		System.out.println("PlaceComponent service registed.");
 		
-	/*	while(!RosEdgeNode.isStarted) {
-			TimeUnit.SECONDS.sleep(1);
-		}
 		
-		while(!receivedBroadcastResponse) {
-			broadCastReady();
-			logger.info("ROS Edge Node "+robotID +"  is sending RobotReadyBroadcast event................, UUID = "+UUID);
-			System.out.println("ROS Edge Node "+robotID +"  is sending RobotReadyBroadcast event................, UUID = "+UUID);
-			TimeUnit.SECONDS.sleep(1);
-		}*/
+		
+/*		batteryVoltageComponent =new BatteryVoltageComponent(connectedNode,robotName) {};	//3
+		batteryVoltageComponent.register();
+		logger.info("BatteryVoltageComponent registered.");
+		System.out.println("BatteryVoltageComponent registered.");
+	*/	
+		
 
 		} catch(Exception e) {
 			logger.error("\n ROS Edge Node Exception: {}", ExceptionUtils.getStackTrace(e));
@@ -308,8 +319,9 @@ public class RosEdgeNode extends AbstractNodeMain implements SmartBehaviour<Brai
 		} else if(event instanceof BroadcastResponse) {
 			BroadcastResponse bcr = (BroadcastResponse) event;
 			worker.execute(() -> {
-			if(!receivedBroadcastResponse) {
-		//	BroadcastResponse bcr = (BroadcastResponse) event;
+			
+				if(!receivedBroadcastResponse) {
+
 			logger.info("-->RosEdgeNode " + robotID + " received an BroadcastResponse event with robotID="+bcr.robotID+ " and UUID="+bcr.UUID+ "==>  RosNode.UUID="+UUID+"\n");
 			System.out.println("-->RosEdgeNode " + robotID + " received an BroadcastResponse event with robotID="+bcr.robotID+ " and UUID="+bcr.UUID+ "==>  RosNode.UUID="+UUID+"\n");
 			
@@ -322,6 +334,28 @@ public class RosEdgeNode extends AbstractNodeMain implements SmartBehaviour<Brai
 				
 				logger.info("-->RosEdgeNode " + robotID + " connects to RB "+bcr.robotID+", send BroadcastACK"+" , UUID = "+UUID);
 				System.out.println("-->RosEdgeNode " + robotID + " connects to RB "+bcr.robotID+", send BroadcastACK"+" , UUID = "+UUID);
+			
+		/*		worker.execute(() ->{			//4
+					SensorState state = null;
+					BatteryVoltage voltage = null;
+					
+					System.out.println("New Worker starts to read Battery Voltage info ........... ");
+					
+					while(true) {
+						state = batteryVoltageComponent.get_voltage_value();
+						if(state != null) {
+							voltage = createBetteryVoltage(state );
+							logger.info("Voltage: "+voltage.index+", "+voltage.target);
+							System.out.println("Voltage: "+voltage.index+", "+voltage.target);
+						}else {
+							logger.info("get empty voltage, again....");
+							System.out.println("get empty voltage, again....");
+						}
+						wait(voltageFrequency);
+					}
+					}
+				); */
+				
 			} else {
 				logger.info("-->Failed!! RosEdgeNode " + robotID + " rejected to connect to RB "+bcr.robotID);
 				System.out.println("-->Failed!! RosEdgeNode " + robotID + " rejected to connect to RB "+bcr.robotID);
@@ -332,14 +366,6 @@ public class RosEdgeNode extends AbstractNodeMain implements SmartBehaviour<Brai
 		}
 		else if(event instanceof WriteGoTo || event instanceof PickCart || event instanceof PlaceCart) {
 		logger.info(" >>> Robot "+robotID+" received an event: " + event.getClass().getSimpleName()+ ", with robotID = " +((RobotCommand)event).robotID);
-		
-	/*	if(!RosEdgeNode.isIdle) {
-			logger.info(" >>> Robot "+robotID+" received an event: " + event.getClass().getSimpleName()+", But robot is moving now, event is ignored");
-			System.out.println(" >>> Robot "+robotID+" received an event: " + event.getClass().getSimpleName()+", But robot is moving now, event is ignored");
-		} else {*/
-	/*		logger.info(" >>> Robot "+robotID+" received an event: " + event.getClass().getSimpleName());
-			System.out.println(" >>> Robot "+robotID+" received an event: " + event.getClass().getSimpleName());*/
-	//		setIsIdle(false);
 			
 		if (event instanceof WriteGoTo) {
 			
@@ -733,6 +759,39 @@ public class RosEdgeNode extends AbstractNodeMain implements SmartBehaviour<Brai
 			 return 100;
 		 }
 		
+	}
+	
+	
+	private BatteryVoltage createBetteryVoltage(SensorState state ) {
+		
+		BatteryVoltage bv = new BatteryVoltage();
+		
+		Time time = state.getHeader().getStamp();
+		
+		int secs = time.secs;
+		int nsecs = time.nsecs;
+		
+		long tplus = secs*1000 + nsecs/1000000;  //msecs
+		String plus = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(tplus));		
+		System.out.println("plus1: "+plus);
+		
+				
+		double totalSecs = time.toSeconds();    //secs
+		String tSecs = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date((long) (totalSecs * 1000L))); //msecs
+		System.out.println("tSecs2: "+tSecs);
+		
+		
+		long totalNsecs = time.totalNsecs();    //Nsecs
+		String tNsecs = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(totalNsecs/1000000)); //msecs
+		System.out.println("tNsecs3: "+tNsecs);
+		
+		bv.index = tNsecs;
+		
+		byte voltage = state.getBattery();
+		bv.target = Byte.toUnsignedInt(voltage);
+
+		return bv;
+
 	}
 	
 	

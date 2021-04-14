@@ -98,11 +98,20 @@ public class VoltageService extends AbstractNodeMain{
 		SensorState state = null;
 		BatteryVoltage voltage = null;
 				
-		while(true) {
+		int counter = 3;
+		
+		while(counter>0) {
 			state = batteryVoltageComponent.get_voltage_value();
-			voltage = createBetteryVoltage(state );
-			System.out.println("Voltage: "+voltage.index+", "+voltage.target);
-			wait(3);
+			if (state != null) {
+				voltage = createBetteryVoltage(state );
+				System.out.println("Voltage: "+voltage.index+", "+voltage.target);
+				wait(2);
+			} else {
+				System.out.println("get empty voltage, again....");
+				wait(2);
+			}
+			counter --;
+			
 		}
 	}
 
@@ -127,17 +136,17 @@ public class VoltageService extends AbstractNodeMain{
 		
 		long tplus = secs*1000 + nsecs/1000000;  //msecs
 		String plus = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(tplus));		
-		System.out.println("plus1: "+plus);
+		System.out.println("plus1: "+plus); // plus1: 1970-01-07 15:20:22
 		
 				
 		double totalSecs = time.toSeconds();    //secs
-		String tSecs = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date((long) (totalSecs * 1000L)));
-		System.out.println("tSecs2: "+tSecs);
+		String tSecs = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date((long) (totalSecs * 1000L))); //msecs
+		System.out.println("tSecs2: "+tSecs);  // tSecs2: 2021-03-11 16:48:45
 		
 		
 		long totalNsecs = time.totalNsecs();    //Nsecs
-		String tNsecs = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(totalNsecs/1000000));
-		System.out.println("tNsecs3: "+tNsecs);
+		String tNsecs = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(totalNsecs/1000000)); //msecs
+		System.out.println("tNsecs3: "+tNsecs);  // tNsecs3: 2021-03-11 16:48:45
 		
 		
 		
