@@ -214,7 +214,8 @@ public class RosImpl extends AbstractNodeMain implements Ros {
 		// add this node
 		addNode(this);
 		
-		logger.info("ROS Edge Node is connected");
+		logger.info("ROSImpl ADDED a new Node: "+this.getDefaultNodeName());
+		System.out.println("ROSImpl ADDED a new Node: "+this.getDefaultNodeName());
 	}
 	
 	@Deactivate
@@ -252,7 +253,7 @@ public class RosImpl extends AbstractNodeMain implements Ros {
 			s.close();
 			return true;
 		} catch(Exception e){
-			// not active
+			logger.error("Detecting active ROS core Exception: {}", ExceptionUtils.getStackTrace(e));
 			return false;
 		}
 	}
@@ -261,15 +262,25 @@ public class RosImpl extends AbstractNodeMain implements Ros {
 	
 	@Override
 	public GraphName getDefaultNodeName() {
-		return GraphName.of("rosinfo"+robotId+"/");
+		logger.info("ROSImpl gets a new default Node name in ROS: Rosinfo/Robot_"+robotId+"/");
+		System.out.println("ROSImpl gets a new default Node name in ROS: Rosinfo/Robot_"+robotId+"/");
+		return GraphName.of("Rosinfo/Robot_"+robotId+"/");
 	}
 
+	/* Called when the Node has started and successfully connected to the master. */
 	@Override
 	public void onStart(final ConnectedNode connectedNode) {
-		node = connectedNode;
-		master = new MasterStateClient(connectedNode, connectedNode.getMasterUri());
-		synchronized(this){
-			notifyAll();
+		try {
+			node = connectedNode;
+			master = new MasterStateClient(connectedNode, connectedNode.getMasterUri());
+			synchronized(this){
+				notifyAll();
+			}
+			logger.info("onStart(): roscore successfully connected to the master,  created a remote master state client");
+			System.out.println("onStart(): roscore successfully connected to the master,  created a remote master state client");
+		
+		} catch(Exception e){
+			logger.error("onStart(): roscore failed to create a remote master state client in onStart(): Exception: {}", ExceptionUtils.getStackTrace(e));
 		}
 	}
 	
@@ -340,11 +351,17 @@ public class RosImpl extends AbstractNodeMain implements Ros {
 	 */
 	private synchronized void waitForInit() {
 		if(master!=null){
+			logger.info("The RosImpl detected Master is initialized, master!=null");
+			System.out.println("The RosImpl detected Master is initialized, master!=null");
 			return;
 		} else {
+			logger.info("The RosImpl havn't connect to Master, waiting...");
+			System.out.println("The RosImpl havn't connect to Master, waiting...");
 			try {
 				this.wait();
-			} catch(InterruptedException e){}
+			} catch(InterruptedException e){
+				logger.error("waitForInit(): waiting for connecting to Master Exception: {}", ExceptionUtils.getStackTrace(e));
+			}
 		}
 	}
 	
@@ -467,15 +484,19 @@ public class RosImpl extends AbstractNodeMain implements Ros {
 	@Reference(cardinality=ReferenceCardinality.MULTIPLE, 
 			   policy=ReferencePolicy.DYNAMIC)
 	public void addNode(NodeMain node) {
+		logger.info("RosImpl DETECTED a new NodeMain: "+node.getDefaultNodeName()+ " in addNode()");
+		System.out.println("RosImpl DETECTED a new NodeMain: "+node.getDefaultNodeName()+ " in addNode()");
 		if(node != this)
 			waitForInit();
 		try {
 			NodeConfiguration nodeConfiguration = NodeConfiguration.newPublic(masterHost(), masterURI());
 			nodeConfiguration.setRosRoot(root());
 			nodeConfiguration.setRosPackagePath(packagePath());
-			executor.execute(node, nodeConfiguration);
+			executor.execute(node, nodeConfiguration);  // Executes the supplied NodeMain using the supplied NodeConfiguration.
+			logger.info("NodeMainExecutor is executing : "+node.getDefaultNodeName()+ " in addNode()");
+			System.out.println("NodeMainExecutor is executing : "+node.getDefaultNodeName()+ " in addNode()");
 		} catch(Throwable e){
-			e.printStackTrace();
+			logger.error("RosImpl addNode() method Exception: {}", ExceptionUtils.getStackTrace(e));
 		}
 	}
 	
@@ -483,8 +504,8 @@ public class RosImpl extends AbstractNodeMain implements Ros {
 		waitForInit();
 		try {
 			executor.shutdownNodeMain(node);
-		} catch(Throwable t){
-			t.printStackTrace();
+		} catch(Throwable e){
+			logger.error("RosImpl removeNode() method Exception: {}", ExceptionUtils.getStackTrace(e));
 		}
 	}
 

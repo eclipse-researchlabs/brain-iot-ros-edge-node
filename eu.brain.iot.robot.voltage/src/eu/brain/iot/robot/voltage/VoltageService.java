@@ -41,7 +41,7 @@ import org.slf4j.LoggerFactory;
 
 @Component(
 		immediate=true,
-		service = {NodeMain.class})
+		service = {VoltageService.class, NodeMain.class})
 
 public class VoltageService extends AbstractNodeMain{
 	

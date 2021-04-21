@@ -28,6 +28,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.SynchronousQueue;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.osgi.framework.Bundle;
@@ -42,12 +45,19 @@ import org.osgi.service.component.annotations.ConfigurationPolicy;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Modified;
 import org.osgi.service.component.annotations.Reference;
+import org.osgi.service.component.annotations.ReferenceCardinality;
+import org.osgi.service.component.annotations.ReferencePolicy;
+import org.ros.concurrent.DefaultScheduledExecutorService;
 import org.ros.message.MessageFactory;
 import org.ros.message.Time;
 import org.ros.namespace.GraphName;
 import org.ros.node.AbstractNodeMain;
 import org.ros.node.ConnectedNode;
+import org.ros.node.DefaultNodeMainExecutor;
+import org.ros.node.NodeConfiguration;
 import org.ros.node.NodeMain;
+import org.ros.node.NodeMainExecutor;
+
 import ar_track_alvar_msgs.AlvarMarker;
 import be.iminds.iot.ros.api.Ros;
 import eu.brain.iot.eventing.annotation.SmartBehaviourDefinition;
@@ -114,6 +124,8 @@ public class RosEdgeNode extends AbstractNodeMain implements SmartBehaviour<Brai
 	private static volatile boolean receivedBroadcastResponse = false;
 	
 	private static volatile int voltageFrequency = 3;
+	
+	
 
 	/*   //1
 	@ObjectClassDefinition
@@ -148,24 +160,27 @@ public class RosEdgeNode extends AbstractNodeMain implements SmartBehaviour<Brai
 
 			UUID = context.getProperty("org.osgi.framework.uuid");
     	
-			logger.info("\nHello!  I am ROS Edge Node : "+robotID+ "  name = "+robotName+ "  IP = "+robotIP+ ",  UUID = "+UUID + ", with voltageFrequency = "+voltageFrequency);
+			logger.info("Hello!  I am ROS Edge Node : "+robotID+ "  name = "+robotName+ "  IP = "+robotIP+ ",  UUID = "+UUID + ", with voltageFrequency = "+voltageFrequency);
 	    	
-	    	System.out.println("\nHello!  I am ROS Edge Node : "+robotID+ "  name = "+robotName+ "  IP = "+robotIP+ ",  UUID = "+UUID + ", with voltageFrequency = "+voltageFrequency);
+	    	System.out.println("Hello!  I am ROS Edge Node : "+robotID+ "  name = "+robotName+ "  IP = "+robotIP+ ",  UUID = "+UUID + ", with voltageFrequency = "+voltageFrequency);
 	    	
 	    worker = Executors.newFixedThreadPool(10);
-
+	    
 	}
 
    @Override
 	public GraphName getDefaultNodeName() {
-		return GraphName.of("robot_"+robotID+"/ros_edge_node");
+	    logger.info("RosEdgeNode gets a new default Node name in ROS: Robot_"+robotID+"/Ros_Edge_Node");
+		System.out.println("RosEdgeNode gets a new default Node name in ROS: Robot_"+robotID+"/Ros_Edge_Node");
+		return GraphName.of("Robot_"+robotID+"/Ros_Edge_Node");
 	}
 
+   /* Called when the Node has started and successfully connected to the master. */
 	@Override
-	public void onStart(ConnectedNode connectedNode) {
+	public void onStart(final ConnectedNode connectedNode) {
 		
-		logger.info("\n The ROS Edge Node is registering....for Robot "+robotID);
-		System.out.println("\n The ROS Edge Node is registering....for Robot "+robotID);
+		logger.info("The ROS Edge Node is registering service clients....for Robot "+robotID+" in onStart()\n");
+		System.out.println("The ROS Edge Node is registering service clients....for Robot "+robotID+" in onStart()\n");
 		
 		try {
 		
@@ -223,7 +238,7 @@ public class RosEdgeNode extends AbstractNodeMain implements SmartBehaviour<Brai
 			public PickPetitionRequest constructMsg_pickRun() {
 				robot_local_control_msgs.PickPetitionRequest pickRequest=pickRun.serviceClient.newMessage();
 				Pick procedure= msgfactory.newFromType(Pick._TYPE);
-		//		procedure.setPickFrameId(pickFrameId); // TODO 1, to be used in real robot, 2 is in queryer
+				procedure.setPickFrameId(pickFrameId); // TODO 1, to be used in real robot, 2 is in queryer
 				pickRequest.setProcedure(procedure);
 				return pickRequest;
 			}
@@ -737,9 +752,11 @@ public class RosEdgeNode extends AbstractNodeMain implements SmartBehaviour<Brai
 		int flag = 0;
 		while(markerList!=null) {
 			logger.info("\n >>> Robot "+robotID+" see Markers List size = "+ markerList.size());
+			System.out.println("\n >>> Robot "+robotID+" see Markers List size = "+ markerList.size());
 			
 			if(markerList.size()>=1) {
 				logger.info("\n >>> Robot "+robotID+" see first Marker ID = "+ markerList.get(0).getId());
+				System.out.println("\n >>> Robot "+robotID+" see first Marker ID = "+ markerList.get(0).getId());
 				flag = 1;
 				break;
 			}
@@ -756,6 +773,7 @@ public class RosEdgeNode extends AbstractNodeMain implements SmartBehaviour<Brai
 			 return markerList.get(0).getId();
 		 } else {
 			 logger.info("\n >>> Robot "+robotID+" see Marker List is empty, return default marker =100");
+			 System.out.println("\n >>> Robot "+robotID+" see Marker List is empty, return default marker =100");
 			 return 100;
 		 }
 		
@@ -809,6 +827,7 @@ public class RosEdgeNode extends AbstractNodeMain implements SmartBehaviour<Brai
 	
 	  @Deactivate
 		void stop() {
+		  
 		  if(reg!=null) {
 			reg.unregister();
 			worker.shutdown();
@@ -820,4 +839,7 @@ public class RosEdgeNode extends AbstractNodeMain implements SmartBehaviour<Brai
 		  }
 			logger.info("------------  ROS Edge Node "+ robotID+" is deactivated----------------");
 		}
+	  
+	  
+	 
 }
