@@ -135,14 +135,15 @@ public class RoscoreConfiguartor {
 			if (flag == 1) {
 				logger.info("successfully read file "+configFile +" with flag = "+flag);
 				try {
-					roscoreConfig = ca.createFactoryConfiguration("eu.brain.iot.robotics.roscore.ROS", null);
+					roscoreConfig = ca.getConfiguration("eu.brain.iot.ros.edge.node.RosEdgeNode", null);
 					Properties props = new Properties();
 
 					for (Map.Entry<String, String> entry : map.entrySet()) {
 						props.put(entry.getKey(), entry.getValue());
 					}
 					roscoreConfig.update((Dictionary) props);
-
+					logger.info("successfully create Factory Configuration for roscore");
+					
 				} catch (Exception e) {
 					logger.error("\nRoscoreConfiguartor Exception: {}", ExceptionUtils.getStackTrace(e));
 				}

@@ -39,7 +39,7 @@ public class GenericService<T1, T2>  {
 	
 	private static final Logger logger = (Logger) LoggerFactory.getLogger(GenericService.class.getSimpleName());
 	
-	public GenericService(ConnectedNode node){
+	public GenericService(final ConnectedNode node){
 		this.node=node;
 	}
 	
