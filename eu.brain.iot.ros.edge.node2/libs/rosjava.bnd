@@ -1,0 +1,15 @@
+-classpath: org.ros.rosjava-0.2.2.jar
+Manifest-Version: 1.0
+Bundle-Description: Rosjava library
+Bundle-ManifestVersion: 2
+Bundle-Name: rosjava
+Bundle-SymbolicName: org.ros.rosjava_core.rosjava
+ver: 0.2.2
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+-output: ${bsn}-${ver}.jar
+Bundle-Version: ${ver}
+#Import-Package: com.google.gson.annotations;version=${ver}
+#Require-Capability: osgi.ee;filter:="(&(osgi.ee=JavaSE)(version=1.6))"
+Export-Package: *;version=${ver}
+-groupid: org.ros.rosjava_core
+-pom: true
