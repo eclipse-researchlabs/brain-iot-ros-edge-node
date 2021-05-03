@@ -1,4 +1,4 @@
-Bundle-Version: 0.0.4
+Bundle-Version: 0.0.5
 
 -buildpath: \
 	osgi.core;version=7.0,\
@@ -17,3 +17,8 @@ Export-Package: be.iminds.iot.ros.api
 
 -includeresource: resources
 
+
+-pom: 					groupid	=	eu.brain.iot.service.robotic,\
+						version =	0.0.5-SNAPSHOT
+						
+						

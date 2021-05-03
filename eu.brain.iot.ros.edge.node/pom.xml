@@ -5,7 +5,7 @@
 
 	<groupId>eu.brain.iot.service.robotic</groupId>
 	<artifactId>eu.brain.iot.ros.edge.node</artifactId>
-	<version>0.0.7-SNAPSHOT</version>
+	<version>0.0.7-SNAPSHOT</version>  <!-- v0.7 for test in simulation, v0.8 for demo -->
 
 	<properties>
 		<maven.compiler.source>1.8</maven.compiler.source>
@@ -384,12 +384,12 @@
   			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		
-	<!-- -->	<dependency>
+	<!-- 	<dependency>
 			<groupId>eu.brain.iot.service.robotic</groupId>
   			<artifactId>startButton.impl</artifactId>
   			<version>0.0.1-SNAPSHOT</version>
   			<scope>runtime</scope>
-		</dependency>   
+		</dependency>   -->
 
 	</dependencies>
 
@@ -562,7 +562,7 @@
 						<phase>package</phase>
 						<configuration>
 							<bndruns>
-								<bndrun>sb.bndrun</bndrun>
+								<bndrun>node.bndrun</bndrun>
 							</bndruns>
 						</configuration>
 					</execution>
@@ -575,7 +575,7 @@
 				<version>${bnd.version}</version>
 				<configuration>
 					<bndruns>
-						<bndrun>sb.bndrun</bndrun>
+						<bndrun>node.bndrun</bndrun>
 					</bndruns>
 					<resolve>false</resolve>
 					<failOnChanges>true</failOnChanges>

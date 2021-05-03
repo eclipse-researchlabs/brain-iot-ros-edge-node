@@ -118,7 +118,7 @@ import std_msgs.Header;
 
 @Component(service = {Ros.class, SmartBehaviour.class/*, NodeMain.class*/},
 	immediate=true,
-//	scope=ServiceScope.SINGLETON,
+	scope=ServiceScope.SINGLETON,
 	configurationPolicy=ConfigurationPolicy.REQUIRE,
 //	name= "eu.brain.iot.robotics.roscore.ROS",
 	configurationPid = "eu.brain.iot.ros.edge.node.RosEdgeNode",
@@ -354,8 +354,9 @@ public class RosEdgeNode extends AbstractNodeMain implements Ros, SmartBehaviour
 				}
 			  }
 				logger.info("------------  ROS Edge Node "+ robotID+" is deactivated----------------");
-		
+				System.out.println("------------  ROS Edge Node "+ robotID+" is deactivated----------------");
 	}
+	
 	@Override
 	public String getRobotIP() {
 		return robotIP;
@@ -491,8 +492,8 @@ public class RosEdgeNode extends AbstractNodeMain implements Ros, SmartBehaviour
 			}
 		};
 		placeComponent.register();
-		logger.info("PlaceComponent service registed.");
-		System.out.println("PlaceComponent service registed.--");
+		logger.info("ROS Edge Node "+robotID+" PlaceComponent service registed.");
+		System.out.println("ROS Edge Node "+robotID+" PlaceComponent service registed.--");
 		
 		
 		

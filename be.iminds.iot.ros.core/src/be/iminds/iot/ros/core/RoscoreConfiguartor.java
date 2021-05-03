@@ -47,6 +47,7 @@ public class RoscoreConfiguartor {
 
 	private ConfigurationAdmin ca;
 	private Configuration roscoreConfig;
+	private Configuration RBConfig;
 
 	private ExecutorService executor;
 
@@ -74,6 +75,7 @@ public class RoscoreConfiguartor {
 		logger = (Logger) LoggerFactory.getLogger(RoscoreConfiguartor.class.getSimpleName());
 	
 		logger.info("{} activating....... ", "RoscoreConfiguartor");
+		System.out.println("RoscoreConfiguartor is activating....... \n");
 
 		executor = Executors.newSingleThreadExecutor();
 		BufferedReader reader = null;
@@ -86,11 +88,12 @@ public class RoscoreConfiguartor {
 		FilenameFilter filter = new FilenameFilter() {
 			@Override
 			public boolean accept(File f, String name) {
-				return name.startsWith("rosConfig");
+				return name.startsWith("Ros");  // rosConfig
 			}
 		};
 
 		String[] pathnames = file.list(filter);
+		System.out.println("RoscoreConfiguartor found "+pathnames.length+" ROS config files\n");
 
 		FileInputStream fstream = null;
 		int flag = 0;
@@ -100,6 +103,7 @@ public class RoscoreConfiguartor {
 			if (map.size() != 0)
 				map.clear();
 			try {
+				System.out.println("\nRoscoreConfiguartor is reading "+configFile+" file ....... \n");
 				fstream = new FileInputStream(resourcesPath+configFile); // absolute path
 				reader = new BufferedReader(new InputStreamReader(fstream));
 				line = reader.readLine();
@@ -109,8 +113,10 @@ public class RoscoreConfiguartor {
 						line = reader.readLine();
 
 					} else {
-						if (line.contains("=")) {
+						if (line.contains("=")) { 
 							logger.info(line);
+							System.out.println(line);
+							
 							String[] strs = line.trim().split("=");
 							if (strs.length == 2) {
 								map.put(strs[0], strs[1]);
@@ -125,28 +131,51 @@ public class RoscoreConfiguartor {
 
 			} catch (IOException e) {
 				logger.error("\nRoscoreConfiguartor read rosConfig.txt Exception: {}", ExceptionUtils.getStackTrace(e));
+				e.printStackTrace();
 			} finally {
 				if (reader != null) {
 					reader.close();
 					fstream.close();
 				}
 			}
+			System.out.println("\nRoscoreConfiguartor finished to read "+configFile+" file ......., with flag = "+flag);
 			
 			if (flag == 1) {
-				logger.info("successfully read file "+configFile +" with flag = "+flag);
+				logger.info("successfully read file "+configFile+",  initialize the ROS Edge Node: "+configFile.replace(".txt", ""));
+				System.out.println("successfully read file "+configFile+",  initialize the ROS Edge Node: "+configFile.replace(".txt", "")+",    eu.brain.iot.ros.edge.nodes."+configFile.replace(".txt", ""));
+				
 				try {
-					roscoreConfig = ca.getConfiguration("eu.brain.iot.ros.edge.node.RosEdgeNode", null);
+			/*		roscoreConfig = ca.getConfiguration("eu.brain.iot.ros.edge.nodes."+configFile.replace(".txt", ""), null);
 					Properties props = new Properties();
 
 					for (Map.Entry<String, String> entry : map.entrySet()) {
 						props.put(entry.getKey(), entry.getValue());
 					}
+					props.put("configName", configFile.replace(".txt", ""));
 					roscoreConfig.update((Dictionary) props);
-					logger.info("successfully create Factory Configuration for roscore");
+					logger.info("\n successfully create a Configuration for ROS Edge Node: "+configFile.replace(".txt", ""));
+					System.out.println("\n successfully create a Configuration for ROS Edge Node: "+configFile.replace(".txt", ""));
+				*/	
 					
+					/*
+					
+					RBConfig = ca.getConfiguration("eu.brain.iot.example.robot.RobotBehavior."+configFile.replace(".txt", ""), null);
+					Properties props1 = new Properties();
+
+					for (Map.Entry<String, String> entry : map.entrySet()) {
+						props1.put(entry.getKey(), entry.getValue());
+					}
+					props1.put("configName", configFile.replace(".txt", ""));
+					RBConfig.update((Dictionary) props1);
+					logger.info("successfully create a Configuration for RB: "+configFile.replace(".txt", ""));
+					System.out.println("successfully create a Configuration for RB: "+configFile.replace(".txt", ""));
+				*/	
 				} catch (Exception e) {
 					logger.error("\nRoscoreConfiguartor Exception: {}", ExceptionUtils.getStackTrace(e));
 				}
+			} else {
+				logger.info("Failed to read file "+configFile+",  initialize the ROS Edge Node: "+configFile.replace(".txt", ""));
+				System.out.println("Failed to read file "+configFile+",  initialize the ROS Edge Node: "+configFile.replace(".txt", ""));
 			}
 		}
 	}

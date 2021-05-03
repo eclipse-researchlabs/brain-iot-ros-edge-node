@@ -55,7 +55,7 @@
 	org.ros.rosjava_core.rosjava;version='[0.2.2,0.2.3)',\
 	slf4j.api;version='[1.7.7,1.7.8)',\
 	ws-commons-util;version='[1.0.1,1.0.2)',\
-	eu.brain.iot.ros.edge.node;version='[0.0.6,0.0.7)'
+	eu.brain.iot.ros.edge.node;version='[0.0.7,0.0.8)'
 	
 	
 	

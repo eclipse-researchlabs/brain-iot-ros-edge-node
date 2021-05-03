@@ -1,1 +1,2 @@
 org.osgi:org.osgi.service.jdbc:1.0.0
+eu.brain.iot.service.robotic:be.iminds.iot.ros.core:0.0.4-SNAPSHOT

@@ -6,11 +6,18 @@
 
 -runtrace: 		false
 
+
+-runproperties: \
+	org.eclipse.jetty.util.log.class=org.eclipse.jetty.util.log.StdErrLog,\
+	org.eclipse.jetty.LEVEL=WARN,\
+	org.apache.felix.log.storeDebug=false,\
+	org.osgi.service.http.port=8081
+
 -runrequires: \
 	osgi.identity;filter:='(osgi.identity=org.apache.felix.gogo.shell)',\
 	osgi.identity;filter:='(osgi.identity=org.apache.felix.gogo.command)',\
 	bnd.identity;version='latest';id='eu.brain.iot.robot.voltage',\
-	bnd.identity;version='latest';id='be.iminds.iot.ros.core',\
+	bnd.identity;version='0.0.4';id='be.iminds.iot.ros.core',\
 	bnd.identity;version='latest';id='eu.brain.iot.robot.msgs',\
 	bnd.identity;id='org.ros.rosjava_bootstrap.message_generation'
 
