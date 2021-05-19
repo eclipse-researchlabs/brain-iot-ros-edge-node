@@ -43,9 +43,14 @@ public class GenericService<T1, T2>  {
 		this.node=node;
 	}
 	
-	public void register(String topic,String type) throws Exception{
+	public void register(String topic,String type) {
 		
-			serviceClient=node.newServiceClient(topic,type);
+			try {
+				serviceClient=node.newServiceClient(topic,type);
+			} catch (Exception e) {
+				logger.error("\n Exception Exception: {}", ExceptionUtils.getStackTrace(e));
+				e.printStackTrace();
+			}
 
 		} 
 	

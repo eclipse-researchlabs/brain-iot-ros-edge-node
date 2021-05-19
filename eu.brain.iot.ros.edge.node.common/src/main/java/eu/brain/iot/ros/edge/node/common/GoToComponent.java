@@ -18,6 +18,8 @@
  ******************************************************************************/
 package eu.brain.iot.ros.edge.node.common;
 
+import org.apache.commons.lang.exception.ExceptionUtils;
+import org.ros.exception.ServiceNotFoundException;
 import org.ros.message.MessageFactory;
 import org.ros.message.Time;
 import org.ros.node.ConnectedNode;
@@ -47,7 +49,7 @@ public abstract class GoToComponent {
     public GenericService<ProcedureQueryRequest, ProcedureQueryResponse> gotoCancle;
     public GenericService<ProcedureQueryRequest, ProcedureQueryResponse> gotoQuery;
     
-    private static final Logger logger = (Logger) LoggerFactory.getLogger(GenericService.class.getSimpleName());
+    private static final Logger logger = (Logger) LoggerFactory.getLogger(GoToComponent.class.getSimpleName());
 
     public GoToComponent(ConnectedNode node, MessageFactory Factory, String robotName) {
         this.node = node;
@@ -55,13 +57,18 @@ public abstract class GoToComponent {
         this.robotName = robotName;
     }
 
-    public void register() throws Exception {
-        gotoRun = new GenericService<GoToPetitionRequest, GoToPetitionResponse>(node);
-        gotoRun.register((("/"+ robotName)+"/robot_local_control/NavigationComponent/GoToComponent/add"), "robot_local_control_msgs/GoToPetition");
-        gotoCancle = new GenericService<ProcedureQueryRequest, ProcedureQueryResponse>(node);
-        gotoCancle.register((("/"+ robotName)+"/robot_local_control/NavigationComponent/GoToComponent/cancel"), "procedures_msgs/ProcedureQuery");
-        gotoQuery = new GenericService<ProcedureQueryRequest, ProcedureQueryResponse>(node);
-        gotoQuery.register((("/"+ robotName)+"/robot_local_control/NavigationComponent/GoToComponent/query_state"), "procedures_msgs/ProcedureQuery");
+    public void register() {
+    	try {
+    		gotoRun = new GenericService<GoToPetitionRequest, GoToPetitionResponse>(node);
+    		gotoRun.register((("/"+ robotName)+"/robot_local_control/NavigationComponent/GoToComponent/add"), "robot_local_control_msgs/GoToPetition");
+    		gotoCancle = new GenericService<ProcedureQueryRequest, ProcedureQueryResponse>(node);
+    		gotoCancle.register((("/"+ robotName)+"/robot_local_control/NavigationComponent/GoToComponent/cancel"), "procedures_msgs/ProcedureQuery");
+    		gotoQuery = new GenericService<ProcedureQueryRequest, ProcedureQueryResponse>(node);
+    		gotoQuery.register((("/"+ robotName)+"/robot_local_control/NavigationComponent/GoToComponent/query_state"), "procedures_msgs/ProcedureQuery");
+    	} catch (Exception e) {
+			logger.error("\n GoToComponent REGISTER Exception: {}", ExceptionUtils.getStackTrace(e));
+			e.printStackTrace();
+		}
     }
 
     /**

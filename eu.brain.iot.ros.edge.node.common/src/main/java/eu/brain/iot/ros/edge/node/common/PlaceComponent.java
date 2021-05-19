@@ -18,9 +18,13 @@
  ******************************************************************************/
 package eu.brain.iot.ros.edge.node.common;
 
+import org.apache.commons.lang.exception.ExceptionUtils;
 import org.ros.message.MessageFactory;
 import org.ros.message.Time;
 import org.ros.node.ConnectedNode;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import procedures_msgs.ProcedureHeader;
 import procedures_msgs.ProcedureQueryRequest;
 import procedures_msgs.ProcedureQueryResponse;
@@ -43,19 +47,26 @@ public abstract class PlaceComponent {
     public GenericService<ProcedureQueryRequest, ProcedureQueryResponse> placeCancle;
     public GenericService<ProcedureQueryRequest, ProcedureQueryResponse> placeQuery;
 
+    private static final Logger logger = (Logger) LoggerFactory.getLogger(PlaceComponent.class.getSimpleName());
+    
     public PlaceComponent(ConnectedNode node, MessageFactory Factory, String robotName) {
         this.node = node;
         this.Factory = Factory;
         this.robotName = robotName;
     }
 
-    public void register() throws Exception {
-        placeRun = new GenericService<PlacePetitionRequest, PlacePetitionResponse>(node);
-        placeRun.register((("/"+ robotName)+"/robot_local_control/NavigationComponent/PlaceComponent/add"), "robot_local_control_msgs/PlacePetition");
-        placeCancle = new GenericService<ProcedureQueryRequest, ProcedureQueryResponse>(node);
-        placeCancle.register((("/"+ robotName)+"/robot_local_control/NavigationComponent/PlaceComponent/cancel"), "procedures_msgs/ProcedureQuery");
-        placeQuery = new GenericService<ProcedureQueryRequest, ProcedureQueryResponse>(node);
-        placeQuery.register((("/"+ robotName)+"/robot_local_control/NavigationComponent/PlaceComponent/query_state"), "procedures_msgs/ProcedureQuery");
+    public void register() {
+    	try {
+    		placeRun = new GenericService<PlacePetitionRequest, PlacePetitionResponse>(node);
+    		placeRun.register((("/"+ robotName)+"/robot_local_control/NavigationComponent/PlaceComponent/add"), "robot_local_control_msgs/PlacePetition");
+    		placeCancle = new GenericService<ProcedureQueryRequest, ProcedureQueryResponse>(node);
+    		placeCancle.register((("/"+ robotName)+"/robot_local_control/NavigationComponent/PlaceComponent/cancel"), "procedures_msgs/ProcedureQuery");
+    		placeQuery = new GenericService<ProcedureQueryRequest, ProcedureQueryResponse>(node);
+    		placeQuery.register((("/"+ robotName)+"/robot_local_control/NavigationComponent/PlaceComponent/query_state"), "procedures_msgs/ProcedureQuery");
+    	} catch (Exception e) {
+			logger.error("\n PlaceComponent REGISTER Exception: {}", ExceptionUtils.getStackTrace(e));
+			e.printStackTrace();
+		}
     }
 
     /**

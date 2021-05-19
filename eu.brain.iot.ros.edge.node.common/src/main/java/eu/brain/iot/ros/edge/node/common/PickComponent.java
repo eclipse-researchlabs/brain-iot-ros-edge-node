@@ -18,9 +18,13 @@
  ******************************************************************************/
 package eu.brain.iot.ros.edge.node.common;
 
+import org.apache.commons.lang.exception.ExceptionUtils;
 import org.ros.message.MessageFactory;
 import org.ros.message.Time;
 import org.ros.node.ConnectedNode;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import procedures_msgs.ProcedureHeader;
 import procedures_msgs.ProcedureQueryRequest;
 import procedures_msgs.ProcedureQueryResponse;
@@ -43,20 +47,27 @@ public abstract class PickComponent {
     public GenericService<ProcedureQueryRequest, ProcedureQueryResponse> pickCancle;
     public GenericService<ProcedureQueryRequest, ProcedureQueryResponse> pickQuery;
 
+    private static final Logger logger = (Logger) LoggerFactory.getLogger(PickComponent.class.getSimpleName());
+
     public PickComponent(ConnectedNode node, MessageFactory Factory, String robotName) {
         this.node = node;
         this.Factory = Factory;
         this.robotName = robotName;
     }
 
-    public void register() throws Exception {
-        pickRun = new GenericService<PickPetitionRequest, PickPetitionResponse>(node);
-        pickRun.register((("/"+ robotName)+"/robot_local_control/NavigationComponent/PickComponent/add"), "robot_local_control_msgs/PickPetition");
-        pickCancle = new GenericService<ProcedureQueryRequest, ProcedureQueryResponse>(node);
-        pickCancle.register((("/"+ robotName)+"/robot_local_control/NavigationComponent/PickComponent/cancel"), "procedures_msgs/ProcedureQuery");
-        pickQuery = new GenericService<ProcedureQueryRequest, ProcedureQueryResponse>(node);
-        pickQuery.register((("/"+ robotName)+"/robot_local_control/NavigationComponent/PickComponent/query_state"), "procedures_msgs/ProcedureQuery");
-    }
+    public void register() {
+    	try {
+    		pickRun = new GenericService<PickPetitionRequest, PickPetitionResponse>(node);
+    		pickRun.register((("/"+ robotName)+"/robot_local_control/NavigationComponent/PickComponent/add"), "robot_local_control_msgs/PickPetition");
+    		pickCancle = new GenericService<ProcedureQueryRequest, ProcedureQueryResponse>(node);
+    		pickCancle.register((("/"+ robotName)+"/robot_local_control/NavigationComponent/PickComponent/cancel"), "procedures_msgs/ProcedureQuery");
+    		pickQuery = new GenericService<ProcedureQueryRequest, ProcedureQueryResponse>(node);
+    		pickQuery.register((("/"+ robotName)+"/robot_local_control/NavigationComponent/PickComponent/query_state"), "procedures_msgs/ProcedureQuery");
+    	} catch (Exception e) {
+			logger.error("\n PickComponent REGISTER Exception: {}", ExceptionUtils.getStackTrace(e));
+			e.printStackTrace();
+		}
+    	}
 
     /**
      * @return

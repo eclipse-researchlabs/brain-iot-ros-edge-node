@@ -58,7 +58,7 @@ public class RoscoreConfiguartor {
 	
 	@ObjectClassDefinition
 	public static @interface Config {
-		String resourcesPath() default "/opt/fabric/resources/"; // "/opt/fabric/resources/";  /home/rui/resources
+		String resourcesPath() default "./logback.xml"; // "/opt/fabric/resources/";  /home/rui/resources
 	}
 	
 	@Activate
@@ -70,7 +70,7 @@ public class RoscoreConfiguartor {
 			}
 			
 		}
-		System.setProperty("logback.configurationFile", resourcesPath+"logback.xml");	
+	//	System.setProperty("logback.configurationFile", resourcesPath+"logback.xml");	
 		
 		logger = (Logger) LoggerFactory.getLogger(RoscoreConfiguartor.class.getSimpleName());
 	

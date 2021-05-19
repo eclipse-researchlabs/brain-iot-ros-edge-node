@@ -177,24 +177,7 @@
 			<version>0.0.4-SNAPSHOT</version>
 		</dependency>
 		
-		<dependency>
-			<groupId>org.osgi</groupId>
-			<artifactId>org.osgi.service.configurator</artifactId>
-			<version>1.0.0</version>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.felix</groupId>
-			<artifactId>org.apache.felix.gogo.runtime</artifactId>
-			<version>1.0.2</version>
-			<scope>runtime</scope>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.apache.felix/org.apache.felix.converter -->
-		<dependency>
-			<groupId>org.apache.felix</groupId>
-			<artifactId>org.apache.felix.converter</artifactId>
-			<version>1.0.12</version>
-		</dependency>
+		
 		<!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
 		<dependency>
 			<groupId>com.google.guava</groupId>
@@ -320,7 +303,7 @@
 					</execution>
 				</executions>
 			</plugin>   
-			<!-- Define the version of the export plugin we use -->
+			<!-- Define the version of the export plugin we use 
 			<plugin>
 				<groupId>biz.aQute.bnd</groupId>
 				<artifactId>bnd-export-maven-plugin</artifactId>
@@ -339,7 +322,7 @@
 						</goals>
 					</execution>
 				</executions>
-			</plugin> 
+			</plugin> -->
             
             <plugin>
 				<groupId>org.apache.maven.plugins</groupId>

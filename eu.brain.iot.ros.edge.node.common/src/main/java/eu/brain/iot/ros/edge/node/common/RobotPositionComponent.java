@@ -37,7 +37,7 @@ public abstract class RobotPositionComponent {
 
     public void register() {
     	robotPosition = new GenericSubscriber<PoseWithCovarianceStamped>(node); // geometry_msgs/PoseWithCovarianceStamped
-    	robotPosition.register((("/"+ robotName)+"/amcl_pose"), "robot_local_control_msgs/Status");
+    	robotPosition.register((("/"+ robotName)+"/amcl_pose"), "geometry_msgs/PoseWithCovarianceStamped");
     }
 
     public PoseWithCovarianceStamped get_robotPosition_value() {

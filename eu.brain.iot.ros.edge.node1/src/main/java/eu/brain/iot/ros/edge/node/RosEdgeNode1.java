@@ -241,8 +241,15 @@ public class RosEdgeNode1 extends AbstractNodeMain implements Ros, SmartBehaviou
 			this.robotName = context.getProperty("name1");
 			this.robotID = Integer.parseInt(context.getProperty("ID1"));
 			String fre = context.getProperty("positionFrequency");
+			
 			if(fre!=null) {
 				this.positionFrequency = Integer.parseInt(fre);
+			}
+			
+			String vo = context.getProperty("voltageFrequency");
+			
+			if(vo!=null) {
+				this.voltageFrequency = Integer.parseInt(vo);
 			}
 			
 			
@@ -407,11 +414,12 @@ public class RosEdgeNode1 extends AbstractNodeMain implements Ros, SmartBehaviou
 			synchronized(this){
 				notifyAll();
 			}
-			logger.info("\nonStart(): roscore successfully connected to the master,  created a remote master state client");
-			System.out.println("\nonStart(): roscore successfully connected to the master,  created a remote master state client");
+			logger.info("\nonStart(): roscore successfully connected to the master,  created a remote master state client, "+node.getMasterUri().toString());
+			System.out.println("\nonStart(): roscore successfully connected to the master,  created a remote master state client, "+node.getMasterUri().toString());
 		
 		} catch(Exception e){
 			logger.error("\nonStart(): roscore failed to create a remote master state client in onStart(): Exception: {}", ExceptionUtils.getStackTrace(e));
+			e.printStackTrace();
 		}
 		
 		logger.info("The ROS Edge Node is registering service clients....for Robot "+robotID+" in onStart()\n");
@@ -421,9 +429,10 @@ public class RosEdgeNode1 extends AbstractNodeMain implements Ros, SmartBehaviou
 		
 		MessageFactory msgfactory =  connectedNode.getTopicMessageFactory();  
 
-		availibility =new AvailibilityComponent(connectedNode,robotName) {};
+	/*	availibility =new AvailibilityComponent(connectedNode,robotName) {};
 		availibility.register();
-		logger.info("availibility registered.");
+		logger.info("\n ROS Edge Node "+robotID+" availibility service registed.");
+		System.out.println("\n ROS Edge Node "+robotID+" availibility service registed.");*/
 		
 		ar_pose_marker=new PoseMarkerComponent(connectedNode,robotName) {};
 		ar_pose_marker.register();
@@ -466,7 +475,8 @@ public class RosEdgeNode1 extends AbstractNodeMain implements Ros, SmartBehaviou
 			}
 		};
 		goToComponent.register();
-		logger.info("GoToComponent service registed.");
+		logger.info("\n ROS Edge Node "+robotID+" GoToComponent service registed.");
+		System.out.println("\n ROS Edge Node "+robotID+" GoToComponent service registed.");
 		
 		pickComponent=new PickComponent(connectedNode,msgfactory,robotName) {
 			@Override
@@ -479,7 +489,8 @@ public class RosEdgeNode1 extends AbstractNodeMain implements Ros, SmartBehaviou
 			}
 		};
 		pickComponent.register();
-		logger.info("PickComponent service registed.");
+		logger.info("\n ROS Edge Node "+robotID+" PickComponent service registed.");
+		System.out.println("\n ROS Edge Node "+robotID+" PickComponent service registed.");
 		
 		placeComponent=new PlaceComponent(connectedNode,msgfactory,robotName) {
 			@Override
@@ -492,18 +503,40 @@ public class RosEdgeNode1 extends AbstractNodeMain implements Ros, SmartBehaviou
 			}
 		};
 		placeComponent.register();
-		logger.info("ROS Edge Node "+robotID+" PlaceComponent service registed.");
-		System.out.println("ROS Edge Node "+robotID+" PlaceComponent service registed.");
+		logger.info("\n ROS Edge Node "+robotID+" PlaceComponent service registed.");
+		System.out.println("\n ROS Edge Node "+robotID+" PlaceComponent service registed.");
 		
 		
 		
 /*		batteryVoltageComponent =new BatteryVoltageComponent(connectedNode,robotName) {};	//3
 		batteryVoltageComponent.register();
-		logger.info("BatteryVoltageComponent registered.");
-		System.out.println("BatteryVoltageComponent registered.");
-	*/	
+		logger.info("\n ROS Edge Node "+robotID+" BatteryVoltageComponent service registed.");
+		System.out.println("\n ROS Edge Node "+robotID+" BatteryVoltageComponent service registed.");
+	
+			
+	worker.execute(() ->{			//4
+		SensorState state = null;
+		BatteryVoltage voltage = null;
 		
-	/*	positionComponent =new RobotPositionComponent(connectedNode,robotName) {};
+		System.out.println("New Worker starts to read Battery Voltage info ........... ");
+		
+		while(true) {
+			state = batteryVoltageComponent.get_voltage_value();
+			if(state != null) {
+				voltage = createBetteryVoltage(state );
+				logger.info("Voltage: "+voltage.index+", "+voltage.target);
+				System.out.println("Voltage: "+voltage.index+", "+voltage.target);
+			}else {
+				logger.info("get empty voltage, again....");
+				System.out.println("get empty voltage, again....");
+			}
+			wait(voltageFrequency);
+		}
+		}
+	); 
+*/		
+		
+	/* */ 	positionComponent =new RobotPositionComponent(connectedNode,robotName) {};
 		positionComponent.register();
 		logger.info("ROS Edge Node "+robotID+" RobotPositionComponent service registed.");
 		System.out.println("ROS Edge Node "+robotID+" RobotPositionComponent service registed.");
@@ -515,28 +548,48 @@ public class RosEdgeNode1 extends AbstractNodeMain implements Ros, SmartBehaviou
 			
 			System.out.println("ROS Edge Node "+robotID+": New Thread starts to read Robot Position info ........... ");
 			
+			try {
+				TimeUnit.SECONDS.sleep(1);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			
 			while(true) {
 				positionMsg = positionComponent.get_robotPosition_value();
 				if(positionMsg != null) {
 					robotPosition = createRobotPosition(positionMsg );
 					
-					System.out.println("Position: "+robotPosition.x+", "+robotPosition.y+", "+robotPosition.z);
+			//		System.out.println("Position: "+robotPosition.x+", "+robotPosition.y+", "+robotPosition.z);
 					if(robotPosition!=null) {
 						eventBus.deliver(robotPosition);
+						
 					}
 				}else {
 					
 					System.out.println("get empty position, again....");
 				}
 				wait(positionFrequency);
-			}
+			} 
 		});
 		
+	
 		
-		*/
+		/*		RobotPosition p =  new RobotPosition();
+		p.x=6.763;
+		p.y=-0.439;
+		p.z=-1.44;
+		eventBus.deliver(p);
+		RobotPosition p2 =  new RobotPosition();
+		p2.x=8.624;
+		p2.y=-1.130;
+		p2.z=0.054;
+		eventBus.deliver(p2);
+		System.out.println("ROS Edge Node "+robotID+": 2 positions delivered ........... ");*/
+		
 
 		} catch(Exception e) {
 			logger.error("\n ROS Edge Node Exception: {}", ExceptionUtils.getStackTrace(e));
+			e.printStackTrace();
 		}
 	}
 	
@@ -1072,9 +1125,9 @@ public class RosEdgeNode1 extends AbstractNodeMain implements Ros, SmartBehaviou
 		PoseWithCovariance pose = positionMsg.getPose();
 		if(pose!=null) {
 			Pose p = pose.getPose();
-			position.x = p.getPosition().getX();
-			position.y = p.getPosition().getY();
-			position.z = p.getPosition().getZ();
+			position.x = Double.parseDouble(String.format("%.3f", p.getPosition().getX()));
+			position.y = Double.parseDouble(String.format("%.3f", p.getPosition().getY()));
+			position.z = Double.parseDouble(String.format("%.3f", p.getPosition().getZ()));
 		} else {
 			System.out.println("ROS Edge Node "+robotID+" get null PoseWithCovariance.");
 			return null;

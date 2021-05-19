@@ -55,7 +55,6 @@
 	com.springsource.org.apache.commons.logging;version='[1.1.1,1.1.2)',\
 	eu.brain.iot.robot.api;version='[0.0.4,0.0.5)',\
 	eu.brain.iot.robot.msgs;version='[0.0.4,0.0.5)',\
-	eu.brain.iot.service.robotic.redeployment.api;version='[0.0.1,0.0.2)',\
 	json;version='[20190722.0.0,20190722.0.1)',\
 	org.apache.aries.javax.jax.rs-api;version='[1.0.0,1.0.1)',\
 	org.apache.aries.jax.rs.jackson;version='[1.0.2,1.0.3)',\
@@ -82,10 +81,10 @@
 	slf4j.api;version='[1.7.7,1.7.8)',\
 	ws-commons-util;version='[1.0.1,1.0.2)',\
 	be.iminds.iot.ros.core;version='[0.0.5,0.0.6)',\
-	eu.brain.iot.service.robotic.startButton.api;version='[0.0.2,0.0.3)',\
-	eu.brain.iot.service.robotic.startButton.impl;version='[0.0.2,0.0.3)',\
 	eu.brain.iot.ros.edge.node.common;version='[0.0.1,0.0.2)',\
-	eu.brain.iot.ros.edge.node1;version='[0.0.1,0.0.2)'
+	eu.brain.iot.service.robotic.startButton-demo;version='[0.0.1,0.0.2)',\
+	eu.brain.iot.service.robotic.startButton.api;version='[0.0.3,0.0.4)',\
+	eu.brain.iot.ros.edge.node5;version='[0.0.1,0.0.2)'
 	
 	
 	
